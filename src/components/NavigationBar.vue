@@ -4,7 +4,7 @@
   const items = ref([
     { label: 'Records', icon: 'pi pi-palette', route: '/records' },
     { label: 'Statistics', icon: 'pi pi-link', route: '/statistics' }
-  ])
+  ]);
 </script>
 
 <template>

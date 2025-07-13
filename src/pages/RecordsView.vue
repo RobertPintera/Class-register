@@ -4,7 +4,6 @@
   import { ref } from 'vue';
 
   const showAddStudentDialog = ref<boolean>(false);
-
 </script>
 
 <template>
@@ -23,6 +22,8 @@
       <Button label="Import" icon="pi pi-file-import" />
     </ButtonGroup>
   </div>
+
+  <AddStudentView v-model:visible="showAddStudentDialog" />
 </template>
 
 <style scoped>
