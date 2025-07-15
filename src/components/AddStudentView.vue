@@ -15,19 +15,17 @@
 
   const registerStore = useRegisterStore();
 
-  const newStudent = ref<Student>({
-    id: '',
+  const newStudent = ref<Omit<Student, 'id'>>({
     name: '',
     surname: ''
   });
 
   const resetForm = () => {
-    newStudent.value = { id: '', name: '', surname: '' };
+    newStudent.value = { name: '', surname: '' };
   };
 
   const submit = () => {
-    newStudent.value.id = crypto.randomUUID();
-    registerStore.addStudent({...newStudent.value});
+    registerStore.addStudent(newStudent.value);
     resetForm();
     emit('update:visible', false);
   };

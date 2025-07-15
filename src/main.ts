@@ -5,7 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Button, ButtonGroup, Column, DataTable, Dialog, InputText, Menubar, Ripple } from 'primevue';
+import { Button, ButtonGroup, Column, DataTable, Dialog, InputNumber, InputText, Menubar, Ripple } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 
@@ -24,6 +24,7 @@ app.component('Column', Column);
 app.component('ButtonGroup',ButtonGroup);
 app.component('Dialog', Dialog);
 app.component('InputText',InputText);
+app.component("InputNumber",InputNumber);
 
 const pinia = createPinia();
 app.use(pinia);
