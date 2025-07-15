@@ -12,7 +12,7 @@
   const onCellClick = (studentId: string, testId: string) => {
     editingGrade.value = { studentId, testId };
     dialogVisible.value = true;
-  }
+  };
 </script>
     
 <template>

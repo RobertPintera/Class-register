@@ -3,7 +3,7 @@
   import { useRegisterStore } from '@/stores/useRegisterStore';
   import { computed, ref } from 'vue';
 
-  const props = defineProps<{ visible: boolean }>()
+  const props = defineProps<{ visible: boolean }>();
 
   const emit = defineEmits<{
     (e: 'update:visible', value: boolean): void
@@ -23,7 +23,7 @@
   });
 
   const resetForm = () => {
-    newTest.value = { name: '', maxScore: 0, weight: undefined }
+    newTest.value = { name: '', maxScore: 0, weight: undefined };
   };
 
   const submit = () => {

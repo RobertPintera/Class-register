@@ -45,7 +45,7 @@
       const existingGrade = registerStore.getGrade(props.studentId, props.testId);
       localGrade.value = existingGrade ? { ...existingGrade } : { studentId: props.studentId, testId: props.testId, score: 0 };
     }
-  }
+  };
 
   onMounted(() => {
     const v = props.visible;
