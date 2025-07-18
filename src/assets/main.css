@@ -1,19 +1,13 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
 
-
 @layer base{
   /* Menu Bar */
   .p-menubar{
     @apply flex justify-between
   }
-
-  /* DataTable */
-  .p-datatable-tbody > tr > td	{
-    @apply hover:bg-green-100
-  }
 }
 
-@layer components{
-
+@theme{
+  --color-primary-select: var(--color-sky-100);
 }

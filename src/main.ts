@@ -5,16 +5,37 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Button, ButtonGroup, Column, DataTable, Dialog, InputNumber, InputText, Menubar, Ripple } from 'primevue';
+import { Button, ButtonGroup, Column, DataTable, Dialog, IconField, InputIcon, InputNumber, InputText, Menubar, Ripple } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
+import { definePreset } from '@primeuix/themes';
 
 const app = createApp(App);
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura
+
+const CustomPreset = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '{sky.50}',
+            100: '{sky.100}',
+            200: '{sky.200}',
+            300: '{sky.300}',
+            400: '{sky.400}',
+            500: '{sky.500}',
+            600: '{sky.600}',
+            700: '{sky.700}',
+            800: '{sky.800}',
+            900: '{sky.900}',
+            950: '{sky.950}'
+        }
     }
 });
+
+app.use(PrimeVue, {
+    theme: {
+        preset: CustomPreset
+    }
+});
+
 
 app.directive('ripple', Ripple);
 app.component('Menubar', Menubar);
@@ -25,6 +46,9 @@ app.component('ButtonGroup',ButtonGroup);
 app.component('Dialog', Dialog);
 app.component('InputText',InputText);
 app.component("InputNumber",InputNumber);
+app.component("InputIcon",InputIcon);
+app.component("IconField",IconField);
+
 
 const pinia = createPinia();
 app.use(pinia);

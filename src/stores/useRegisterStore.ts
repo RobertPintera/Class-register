@@ -107,12 +107,12 @@ export const useRegisterStore = defineStore('register', () => {
         fullName: `${student.name} ${student.surname}`,
       };
 
-      // for (const test of tests.value) {
-      //   const grade = grades.value.find(
-      //     g => g.studentId === student.id && g.testId === test.id
-      //   );
-      //   row[test.id] = grade ? grade.score : '-';
-      // }
+      for (const test of tests.value) {
+        const grade = grades.value.find(
+          g => g.studentId === student.id && g.testId === test.id
+        );
+        row[test.id] = grade ? grade.score : -1;
+      }
 
       return row;
     })
