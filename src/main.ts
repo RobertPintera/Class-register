@@ -5,10 +5,11 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Button, ButtonGroup, Column, DataTable, Dialog, IconField, InputIcon, InputNumber, InputText, Menubar, Ripple } from 'primevue';
+import { Button, ButtonGroup, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menubar, Message, Ripple } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
+import { Form } from '@primevue/forms';
 
 const app = createApp(App);
 
@@ -48,7 +49,9 @@ app.component('InputText',InputText);
 app.component("InputNumber",InputNumber);
 app.component("InputIcon",InputIcon);
 app.component("IconField",IconField);
-
+app.component("FloatLabel",FloatLabel)
+app.component("Form",Form);
+app.component("Message",Message);
 
 const pinia = createPinia();
 app.use(pinia);
