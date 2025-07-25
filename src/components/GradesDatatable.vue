@@ -76,7 +76,7 @@
     />
 </template>
 
-<style setup>
+<style scoped>
   @import "tailwindcss";
   @import "tailwindcss-primeui";
 

@@ -36,5 +36,5 @@
 </template>
 
 <style scoped>
-  @import "tailwindcss";
+
 </style>
