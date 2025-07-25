@@ -1,13 +1,23 @@
-import RecordsView from "@/pages/RecordsView.vue";
-import StatisticsView from "@/pages/StatisticsView.vue";
-import StudentView from "@/pages/StudentView.vue";
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
+import DashboardView from "@/views/DashboardView.vue";
+import GradesView from "@/views/GradesView.vue";
+import StudentsListView from "@/views/StudentsListView.vue";
+import StudentDetailsView from "@/views/StudentDetailsView.vue";
+
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
+import TestsListView from "@/views/TestsListView.vue";
 
 const routes: RouteRecordRaw[]  = [
-  { path: '/', redirect: '/records' },
-  { path: '/records', component: RecordsView },
-  { path: '/statistics', component: StatisticsView },
-  { path: '/student/:studentId', component: StudentView, props: true }
+  { path: '/', 
+    component: DefaultLayout,
+    children: [
+      { path: '', component: DashboardView },
+      { path: 'grades', component: GradesView },
+      { path: 'tests', component: TestsListView},
+      { path: 'students', component: StudentsListView },
+      { path: 'student/:studentId', component: StudentDetailsView, props: true }
+    ]
+   },
 ];
 
 export default createRouter({

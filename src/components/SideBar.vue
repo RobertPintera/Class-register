@@ -1,0 +1,40 @@
+<script setup lang="ts">
+  import { ref } from 'vue';
+  import SidebarItem from './SideBarItem.vue';
+
+  const items = ref([
+    {
+      label: "Home",
+      items: [
+       { label: 'Dashboard', icon: 'pi pi-home', route: '/' },
+      ]
+    },
+    {
+      label: "Register",
+      items: [
+        { label: 'Grades', icon: 'pi pi-objects-column', route: '/grades' },
+        { label: 'Tests', icon: 'pi pi-book', route: '/tests'},
+        { label: 'Students', icon: 'pi pi-users', route: '/students'}
+      ]
+    },
+  ]);
+</script>
+
+<template>
+  <nav class="m-4 p-4 rounded-2xl bg-amber-200 h-full">
+    <div v-for="section in items" :key="section.label">
+      <h3>{{ section.label }}</h3>
+      <ul class="space-y-1">
+        <SidebarItem
+          v-for="item in section.items" :key="item.route"
+          :label="item.label" :icon="item.icon"
+          :to="item.route" :active="$route.path === item.route"
+        />
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<style scoped>
+  @import "tailwindcss";
+</style>

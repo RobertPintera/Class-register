@@ -15,9 +15,5 @@
   <h4 class="text-xl font-medium leading-snug">Statistics</h4>
   <h5 class="text-lg font-medium leading-snug">Statistics</h5>
   <h6 class="text-base font-medium leading-snug">Statistics</h6>
-  <router-view />
 </template>
 
-<style scoped>
-
-</style>

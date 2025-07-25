@@ -76,7 +76,7 @@ import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
     if (event.valid) {
       const score = event.states.score?.value;
 
-      if(typeof score === 'number' ){
+      if(typeof score === 'number'){
          const grade: Grade = {
           studentId: props.studentId,
           testId: props.testId,
