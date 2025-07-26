@@ -18,17 +18,12 @@
   const onCellClick = (studentId: string, testId: string) => {
     editingGrade.value = { studentId, testId };
     dialogVisible.value = true;
-  };
-
-  const onEditTests = () => {
-    console.log("Kliknięto Edytuj testy");
-  };
-    
+  };    
 </script>
     
 <template>
-  <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table" 
-  scrollable removableSort paginator paginatorPosition="bottom" :rows=10 
+  <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table"
+  scrollable removableSort paginator paginatorPosition="bottom" :rows=5 
   v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['fullName']">
     <template #header>
         <IconField>
@@ -45,10 +40,7 @@
     </template>
     <Column sortable field="fullName" header="Student" filterField="fullName">
       <template #body="{ data }">
-        <div
-          class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition"
-          @click="() => $router.push(`/student/${data.studentId}`)"
-        >
+        <div class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition">
           {{ data.fullName }}
         </div>
       </template>
@@ -82,14 +74,14 @@
 
   .custom-table{
   	--p-datatable-body-cell-padding: 0rem 0rem;
-    @apply w-[80%];
+    @apply w-[100%];
   }
 
   .p-datatable {
-    @apply border m-1;
+    @apply m-1;
   }
 
-  .p-datatable-table-container	{
-    @apply min-h-[500px] h-[60vh] border-t border-b;
+  :deep(.p-datatable-table-container)	{
+    @apply min-h-[500px] h-[60vh] border-l border-r border-[var(--p-datatable-border-color)];
   }
 </style>

@@ -25,16 +25,12 @@
             </ButtonGroup>
           </template>
       </Toolbar>
-    <div class="flex justify-center">
-      <GradesDatatable />
-    </div>
+      <div class="flex justify-center">
+        <GradesDatatable />
+      </div>
 
-    <AddStudentDialog v-model:visible="showAddStudentDialog" />
-    <AddTestView v-model:visible="showAddTestDialog"/>
-
-    <div class="m-10 flex justify-end">
-      
-    </div>
+      <AddStudentDialog v-model:visible="showAddStudentDialog" />
+      <AddTestView v-model:visible="showAddTestDialog"/>
     </div>
   </div>
    

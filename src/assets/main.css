@@ -1,12 +1,11 @@
 @import 'tailwindcss';
+@import "tailwindcss-primeui";
 
 :root{
   @apply
     bg-primary-background
   text-primary-text font-mono;
 }
-
-
 
 @theme{
   --color-primary-background: #fafcff;
@@ -16,8 +15,6 @@
   --color-primary-text: #213547;
   --color-primary-select: var(--color-sky-100);
 }
-
-
 
 @layer base {
   .lol{
