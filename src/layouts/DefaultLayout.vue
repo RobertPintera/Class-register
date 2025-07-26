@@ -6,15 +6,11 @@
 </script>
 
 <template>
-  <div class="h-screen flex flex-col">
+  <div class="min-h-full">
     <TopBar />
-    <div class="flex flex-1 overflow-hidden">
-      <div class="flex-none w-64">
-        <SideBar />
-      </div>
-      <div class="flex-1 overflow-auto">
-        <router-view />
-      </div>
+    <SideBar />
+    <div class="ml-72 pt-16">
+      <router-view /> 
     </div>
   </div>
 </template>

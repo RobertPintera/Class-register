@@ -1,10 +1,28 @@
 @import 'tailwindcss';
 
+:root{
+  @apply
+    bg-primary-background
+  text-primary-text font-mono;
+}
+
+
+
 @theme{
+  --color-primary-background: #fafcff;
+  --color-topbar-background: #ffffff; 
+  --color-sidebar-background: #ced9ff;
+  --color-primary-border: #a4a7aa;
+  --color-primary-text: #213547;
   --color-primary-select: var(--color-sky-100);
 }
 
+
+
 @layer base {
+  .lol{
+    color: #a4a7aa;
+  }
   h1 {
     @apply text-4xl font-bold leading-tight;
   }
@@ -27,7 +45,7 @@
 
 @layer components{
   .card {
-    @apply bg-white shadow
+    @apply bg-white shadow m-4 p-4 rounded-2xl border-2 border-primary-border;
   }
 }
 

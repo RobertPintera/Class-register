@@ -12,8 +12,8 @@
 <template>
   <li class="ml-4 mt-2">
     <router-link :to="to" class="space-x-1">
-      <span :class="icon"/>
-      <span class="text-sm">{{ label }}</span>
+      <i :class="icon" />
+      <span>{{ label }}</span>
     </router-link>
   </li>
   

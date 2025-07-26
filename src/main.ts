@@ -5,7 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Button, ButtonGroup, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menu, Menubar, Message, Ripple } from 'primevue';
+import { Button, ButtonGroup, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Menu, Menubar, Message, Ripple, Toolbar } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
@@ -51,6 +51,7 @@ app.component("IconField",IconField);
 app.component("FloatLabel",FloatLabel);
 app.component("Message",Message);
 app.component("Form",Form);
+app.component("Toolbar",Toolbar);
 
 const pinia = createPinia();
 app.use(pinia);

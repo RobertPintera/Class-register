@@ -10,15 +10,21 @@
 
 <template>
   <div class="w-full">
-    <div class="m-10 flex flex-wrap justify-between gap-2">
-      <ButtonGroup>
-        <Button label="Add student" icon="pi pi-user-plus" @click="showAddStudentDialog = true"/>
-        <Button label="Add test" icon="pi pi-book" @click="showAddTestDialog = true"/>
-      </ButtonGroup>
-
-      <Button label="Edit tests" icon="pi pi-list"/>
-    </div>
-
+    <div class="card">
+      <Toolbar>
+          <template #start>
+            <ButtonGroup>
+              <Button label="Add student" icon="pi pi-user-plus" @click="showAddStudentDialog = true"/>
+              <Button label="Add test" icon="pi pi-book" @click="showAddTestDialog = true"/>
+            </ButtonGroup>
+          </template>
+          <template #end>
+            <ButtonGroup>
+              <Button label="Export" icon="pi pi-file-export" />
+              <Button label="Import" icon="pi pi-file-import" />
+            </ButtonGroup>
+          </template>
+      </Toolbar>
     <div class="flex justify-center">
       <GradesDatatable />
     </div>
@@ -27,10 +33,8 @@
     <AddTestView v-model:visible="showAddTestDialog"/>
 
     <div class="m-10 flex justify-end">
-      <ButtonGroup>
-        <Button label="Export" icon="pi pi-file-export" />
-        <Button label="Import" icon="pi pi-file-import" />
-      </ButtonGroup>
+      
+    </div>
     </div>
   </div>
    

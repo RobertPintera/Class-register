@@ -21,7 +21,7 @@
 </script>
 
 <template>
-  <nav class="m-4 p-4 rounded-2xl bg-amber-200 h-full">
+  <nav class="card fixed top-16 h-[calc(100vh-6rem)] w-64 flex flex-col overflow-auto">
     <div v-for="section in items" :key="section.label">
       <h3>{{ section.label }}</h3>
       <ul class="space-y-1">
