@@ -23,15 +23,18 @@
     
 <template>
   <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table"
-  scrollable removableSort paginator paginatorPosition="bottom" :rows=5 
+  scrollable removableSort paginator paginatorPosition="bottom" :rows=10
   v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['fullName']">
     <template #header>
+      <div class="flex flex-wrap gap-2 items-center justify-between">
+        <h3 class="m-0">Grades</h3>
         <IconField>
             <InputIcon>
                 <i class="pi pi-search" />
             </InputIcon>
             <InputText v-model="filters.fullName.value" placeholder="Global Search" />
         </IconField>
+      </div>
     </template>
     <template #empty>
       <div class="w-full h-full px-3 py-4">
@@ -69,8 +72,7 @@
 </template>
 
 <style scoped>
-  @import "tailwindcss";
-  @import "tailwindcss-primeui";
+  @reference "../assets/main.css";
 
   .custom-table{
   	--p-datatable-body-cell-padding: 0rem 0rem;
@@ -79,6 +81,10 @@
 
   .p-datatable {
     @apply m-1;
+  }
+
+  :deep(.p-paginator){
+    @apply border-t border-[var(--p-datatable-border-color)];
   }
 
   :deep(.p-datatable-table-container)	{

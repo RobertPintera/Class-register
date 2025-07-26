@@ -1,9 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @import "tailwindcss-primeui";
 
 :root{
   @apply
-    bg-primary-background
+  bg-primary-background
   text-primary-text font-mono;
 }
 
