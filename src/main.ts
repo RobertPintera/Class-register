@@ -52,6 +52,7 @@ app.component("FloatLabel",FloatLabel);
 app.component("Message",Message);
 app.component("Form",Form);
 app.component("Toolbar",Toolbar);
+app.component("DataView",DataView);
 
 const pinia = createPinia();
 app.use(pinia);

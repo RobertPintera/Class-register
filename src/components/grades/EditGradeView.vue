@@ -2,7 +2,7 @@
   import type { Grade } from '@/models/Grade';
   import type { Test } from '@/models/Test';
   import { useRegisterStore } from '@/stores/useRegisterStore';
-import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
+  import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
   import { computed, onMounted, reactive, watch } from 'vue';
 
   const props = defineProps<{

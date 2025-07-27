@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import SidebarItem from './SideBarItem.vue';
+  import SideBarItem from './SideBarItem.vue';
 
   const items = ref([
     {
@@ -25,7 +25,7 @@
     <div v-for="section in items" :key="section.label">
       <h3>{{ section.label }}</h3>
       <ul class="space-y-1">
-        <SidebarItem
+        <SideBarItem
           v-for="item in section.items" :key="item.route"
           :label="item.label" :icon="item.icon"
           :to="item.route" :active="$route.path === item.route"

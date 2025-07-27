@@ -1,39 +1,21 @@
 <script setup lang="ts">
-  import GradesDatatable from '@/components/GradesDatatable.vue';
-  import AddStudentDialog from '@/components/AddStudentDialog.vue';
-  import { ref } from 'vue';
-  import AddTestView from '@/components/AddTestView.vue';
-
-  const showAddStudentDialog = ref<boolean>(false);
-  const showAddTestDialog = ref<boolean>(false);
+  import GradesDatatable from '@/components/grades/GradesDatatable.vue';
 </script>
 
 <template>
-  <div class="w-full">
-    <div class="card">
-      <Toolbar>
-          <template #start>
-            <ButtonGroup>
-              <Button label="Add student" icon="pi pi-user-plus" @click="showAddStudentDialog = true"/>
-              <Button label="Add test" icon="pi pi-book" @click="showAddTestDialog = true"/>
-            </ButtonGroup>
-          </template>
-          <template #end>
-            <ButtonGroup>
-              <Button label="Export" icon="pi pi-file-export" />
-              <Button label="Import" icon="pi pi-file-import" />
-            </ButtonGroup>
-          </template>
-      </Toolbar>
-      <div class="flex justify-center">
-        <GradesDatatable />
-      </div>
-
-      <AddStudentDialog v-model:visible="showAddStudentDialog" />
-      <AddTestView v-model:visible="showAddTestDialog"/>
+  <h2 class="m-4">Grades</h2>
+  <div class="card">
+    <div class="mb-4 flex justify-start">
+      <ButtonGroup>
+        <Button label="Export" icon="pi pi-file-export" />
+        <Button label="Import" icon="pi pi-file-import" />
+      </ButtonGroup>
+    </div>
+    
+    <div class="flex justify-center">
+      <GradesDatatable />
     </div>
   </div>
-   
 </template>
 
 <style scoped>

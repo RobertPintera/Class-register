@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useRegisterStore } from '@/stores/useRegisterStore';
-  import EditGradeView from './EditGradeView.vue';
+  import EditGradeView from '@/components/grades/EditGradeView.vue';
   import { ref } from 'vue';
   import type { Grade } from '@/models/Grade';
   import { FilterMatchMode } from '@primevue/core/api';
@@ -27,7 +27,6 @@
   v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['fullName']">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
-        <h3 class="m-0">Grades</h3>
         <IconField>
             <InputIcon>
                 <i class="pi pi-search" />
@@ -72,7 +71,7 @@
 </template>
 
 <style scoped>
-  @reference "../assets/main.css";
+  @reference "@/assets/main.css";
 
   .custom-table{
   	--p-datatable-body-cell-padding: 0rem 0rem;
