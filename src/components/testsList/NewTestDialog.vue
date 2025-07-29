@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { Test } from '@/models/Test';
   import { useRegisterStore } from '@/stores/useRegisterStore';
-import { isTestData } from '@/utility/typeGuards';
+  import { isTestData } from '@/utility/typeGuards';
   import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
   import { computed, reactive } from 'vue';
 

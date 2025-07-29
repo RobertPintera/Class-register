@@ -1,17 +1,52 @@
 <script setup lang="ts">
   import { useRegisterStore } from '@/stores/useRegisterStore';
   import EditGradeView from '@/components/grades/EditGradeView.vue';
-  import { ref } from 'vue';
+  import { onMounted, ref, watch } from 'vue';
+  import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
   import type { Grade } from '@/models/Grade';
-  import { FilterMatchMode } from '@primevue/core/api';
+  import type { AdvancedFilter } from '@/models/AdvancedFilter';
   
   const registerStore = useRegisterStore();
 
   const dialogVisible = ref(false);
+  const filters = ref<Record<string, AdvancedFilter>>({});
 
-  const filters = ref({
-    fullName: { value: null, matchMode: FilterMatchMode.CONTAINS }
-  });
+  const initFilters = () =>  {
+    filters.value = {
+      fullName: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
+    };
+
+    for (const col of registerStore.testColumns) {
+      if (!filters.value[col.field]) {
+        filters.value[col.field] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] };
+      }
+    }
+  };
+
+  initFilters();
+
+  watch(() => registerStore.testColumns, (columns) => {
+    const columnFields = columns.map(c => c.field)
+
+    for (const col of columns) {
+      if (!filters.value[col.field]) {
+        filters.value[col.field] = {
+          operator: FilterOperator.AND,
+          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+          };
+      }
+    }
+
+    for (const key in filters.value) {
+      if (key !== 'fullName' && !columnFields.includes(key)) {
+        delete filters.value[key];
+      }
+    }
+  }, { immediate: true });
+
+  const clearFilter = () => {
+    initFilters();
+  };
 
   const editingGrade = ref<Pick<Grade, 'studentId' | 'testId'> | null>(null);
 
@@ -22,17 +57,16 @@
 </script>
     
 <template>
-  <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table"
-  scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-  v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['fullName']">
+  <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table" 
+    scrollable removableSort paginator paginatorPosition="bottom" :rows=10
+    v-model:filters="filters" filterDisplay="menu">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
-        <IconField>
-            <InputIcon>
-                <i class="pi pi-search" />
-            </InputIcon>
-            <InputText v-model="filters.fullName.value" placeholder="Global Search" />
-        </IconField>
+        <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
+        <ButtonGroup>
+          <Button label="Export" icon="pi pi-file-export" />
+          <Button label="Import" icon="pi pi-file-import" />
+        </ButtonGroup>
       </div>
     </template>
     <template #empty>
@@ -40,25 +74,30 @@
         No students found.
       </div>
     </template>
-    <Column sortable field="fullName" header="Student" filterField="fullName">
+    <Column sortable field="fullName" header="Student" filterField="fullName" frozen>
       <template #body="{ data }">
         <div class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition">
           {{ data.fullName }}
         </div>
+      </template>
+      <template #filter="{ filterModel }">
+        <InputText v-model="filterModel.value" type="text" placeholder="Search by FullName" />
       </template>
     </Column>
     <Column sortable
       v-for="col in registerStore.testColumns"
       :key="col.field"
       :field="col.field"
-      :header="col.header">
+      :header="col.header" :filterField="col.field" dataType="numeric">
       <template #body="{ data }">
          <div
           class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition"
-          @click="onCellClick(data.studentId, col.field)"
-        >
+          @click="onCellClick(data.studentId, col.field)">
           {{ registerStore.getGrade(data.studentId, col.field)?.score ?? '-' }}
         </div>
+      </template>
+      <template #filter="{ filterModel }">
+        <InputNumber v-model="filterModel.value" mode="currency" currency="USD" locale="en-US" />
       </template>
     </Column>
   </DataTable>
