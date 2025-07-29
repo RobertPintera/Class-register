@@ -59,7 +59,7 @@
 <template>
   <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table" 
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-    v-model:filters="filters" filterDisplay="menu">
+    :filters="filters" filterDisplay="menu">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
@@ -97,7 +97,7 @@
         </div>
       </template>
       <template #filter="{ filterModel }">
-        <InputNumber v-model="filterModel.value" mode="currency" currency="USD" locale="en-US" />
+        <InputNumber v-model="filterModel.value"/>
       </template>
     </Column>
   </DataTable>

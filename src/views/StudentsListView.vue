@@ -9,7 +9,9 @@
 <template>
   <h2 class="m-4">Students</h2>
   <div class="card">
-    <Button label="New" icon="pi pi-plus" @click="showNewStudentDialog = true"/>
+    <div class="m-2">
+      <Button label="New" icon="pi pi-plus" @click="showNewStudentDialog = true"/>
+    </div>
     <StudentsDatatable/>
   </div>
   

@@ -20,7 +20,7 @@
 
   const initialValues  = reactive<Omit<Test, 'id'>>({
     name: '',
-    maxScore: 0,
+    maxScore: 100,
     weight: 1
   });
 

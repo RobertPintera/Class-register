@@ -42,7 +42,7 @@
 
 @layer components{
   .card {
-    @apply bg-white shadow m-4 p-4 rounded-2xl border-2 border-primary-border;
+    @apply bg-white shadow m-4 p-4 rounded-lg border-2 border-primary-border;
   }
 }
 
