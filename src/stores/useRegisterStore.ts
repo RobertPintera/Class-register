@@ -39,6 +39,10 @@ export const useRegisterStore = defineStore('register', () => {
     grades.value = grades.value.filter(g => g.studentId !== studentId);
   };
 
+  const getStudent = (studentId: string) => {
+    return students.value.find(s => s.id === studentId);
+  };
+
   // ============ Tests ============
 
   const addTest = async (test: Omit<Test, 'id'>) => {
@@ -62,7 +66,7 @@ export const useRegisterStore = defineStore('register', () => {
   };
 
   const getTest = (testId: string): Test | undefined => {
-    return tests.value.find(g => g.id === testId);
+    return tests.value.find(t => t.id === testId);
   };
 
   // ============ Grades =========
@@ -124,7 +128,7 @@ export const useRegisterStore = defineStore('register', () => {
     students, tests, grades,
     testColumns, studentGrades,
     loadData,
-    addStudent, updateStudent, deleteStudent,
+    addStudent, updateStudent, deleteStudent, getStudent,
     addTest, updateTest, deleteTest, getTest,
     updateGrade, deleteGrade, getGrade
   };
