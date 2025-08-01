@@ -103,6 +103,7 @@
   <Dialog header="Edit Grade" v-model:visible="visibleLocal" modal>
     <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-3">
       <div class="flex flex-col gap-1">
+        <h6>Max score of test: {{ test.maxScore }}</h6>
         <FloatLabel variant="in">
           <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.01"/>
           <label for="score">Score</label>

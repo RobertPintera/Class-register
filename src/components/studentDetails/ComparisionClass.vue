@@ -1,0 +1,82 @@
+<script setup lang="ts">
+  import { onMounted, ref, watch } from 'vue';
+
+  const props = defineProps<{
+    individualData: { weightedAverage: number; median: number; standardDeviation: number, min: number, max: number };
+    classData: { weightedAverage: number; median: number; standardDeviation: number,  min: number, max: number };
+  }>();
+
+  const chartData = ref();
+  const chartOptions = ref();
+
+  
+  const setChartData = () => {
+    return {
+        labels: ['Weighted Average', 'Median', 'Standard Deviation','Min','Max'],
+        datasets: [
+            {
+              label: 'Individual',
+              data: [
+                props.individualData.weightedAverage,
+                props.individualData.median,
+                props.individualData.standardDeviation,
+                props.individualData.min,
+                props.individualData.max
+              ],
+              backgroundColor: 'rgba(101, 219, 144, 0.6)',
+              borderColor: 'rgb(101, 219, 144)',
+              borderWidth: 1
+            },
+            {
+              label: "Class",
+              data: [
+                props.classData.weightedAverage,
+                props.classData.median,
+                props.classData.standardDeviation,
+                props.classData.min,
+                props.classData.max
+              ],
+              backgroundColor: 'rgba(6, 182, 212, 0.6)',
+              borderColor: 'rgb(6, 182, 212)',
+              borderWidth: 1
+            }
+        ]
+    };
+  };
+
+  const setChartOptions = () => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+      },
+      scales: {
+        y: {
+          min: 0,
+          max: 100,
+        },
+      },
+    };
+  };
+
+  const updateChart = () => {
+    chartData.value = setChartData();
+    chartOptions.value = setChartOptions();
+  };
+
+  onMounted(updateChart);
+
+  watch(() => [props.individualData, props.classData], updateChart, { deep: true });
+</script>
+
+<template>
+  <div class="card flex-1 min-w-64 h-fit">
+    <h3>Class Comparison</h3>
+    <div class="relative w-full h-[400px]">
+      <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-full"/>
+    </div>
+  </div>
+</template>

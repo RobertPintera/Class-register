@@ -1,6 +1,12 @@
 import type { Grade } from "@/models/Grade";
 import type { Test } from "@/models/Test";
 
+// Global
+
+export function round2(num: number) {
+  return Math.round(num * 100) / 100;
+}
+
 // Functions for tests
 
 export function getTestAverage(grades: Grade[], testId: string): number {
@@ -91,4 +97,108 @@ export function getStudentStandardDeviation(grades: Grade[], tests: Test[], stud
   const variance = scores.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / scores.length;
 
   return Math.sqrt(variance);
+}
+
+
+export function getStudentMin(grades: Grade[], studentId: string, tests: Test[]): number {
+  const studentGrades = grades
+    .filter(g => g.studentId === studentId)
+    .map(g => {
+      const test = tests.find(t => t.id === g.testId);
+      if (!test || test.maxScore === 0) return 0;
+      return (g.score / test.maxScore) * 100;
+    });
+
+  return studentGrades.length ? Math.min(...studentGrades) : 0;
+}
+
+export function getStudentMax(grades: Grade[], studentId: string, tests: Test[]): number {
+  const studentGrades = grades
+    .filter(g => g.studentId === studentId)
+    .map(g => {
+      const test = tests.find(t => t.id === g.testId);
+      if (!test || test.maxScore === 0) return 0;
+      return (g.score / test.maxScore) * 100;
+    });
+
+  return studentGrades.length ? Math.max(...studentGrades) : 0;
+}
+
+
+// Functions for class
+
+export function getClassWeightedAverage(
+  grades: Grade[],
+  tests: Test[]
+): number {
+  let totalWeightedScore = 0;
+  let totalWeight = 0;
+
+  for (const test of tests) {
+    const testGrades = grades.filter(g => g.testId === test.id);
+    if (testGrades.length === 0) continue;
+
+    // Wynik procentowy dla całej klasy w danym teście
+    const avgPercentage = testGrades.reduce((sum, g) => sum + (g.score / test.maxScore) * 100, 0) / testGrades.length;
+
+    totalWeightedScore += avgPercentage * test.weight;
+    totalWeight += test.weight;
+  }
+
+  return totalWeight > 0 ? +(totalWeightedScore / totalWeight).toFixed(2) : 0;
+}
+
+export function getClassMedian(grades: Grade[], tests: Test[]): number {
+  if (grades.length === 0) return 0;
+
+  const scores = grades.map(g => {
+    const test = tests.find(t => t.id === g.testId);
+    if (!test || test.maxScore === 0) return 0;
+    return (g.score / test.maxScore) * 100;
+  }).sort((a, b) => a - b);
+
+  const mid = Math.floor(scores.length / 2);
+
+  return scores.length % 2 !== 0
+    ? scores[mid]
+    : +((scores[mid - 1] + scores[mid]) / 2).toFixed(2);
+}
+
+export function getClassStandardDeviation(grades: Grade[], tests: Test[]): number {
+  if (grades.length === 0) return 0;
+
+  const normalizedScores = grades.map(g => {
+    const test = tests.find(t => t.id === g.testId);
+    if (!test || test.maxScore === 0) return 0;
+    return (g.score / test.maxScore) * 100;
+  });
+
+  const mean = normalizedScores.reduce((sum, s) => sum + s, 0) / normalizedScores.length;
+  const variance = normalizedScores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / normalizedScores.length;
+
+  return +Math.sqrt(variance).toFixed(2);
+}
+
+export function getClassMin(grades: Grade[], tests: Test[]): number {
+  const relevantGrades = grades
+    .filter(g => tests.some(t => t.id === g.testId))
+    .map(g => {
+      const test = tests.find(t => t.id === g.testId);
+      if (!test || test.maxScore === 0) return 0;
+      return (g.score / test.maxScore) * 100;
+    });
+
+  return relevantGrades.length ? Math.min(...relevantGrades) : 0;
+}
+
+export function getClassMax(grades: Grade[], tests: Test[]): number {
+  const relevantGrades = grades
+    .filter(g => tests.some(t => t.id === g.testId))
+    .map(g => {
+      const test = tests.find(t => t.id === g.testId);
+      if (!test || test.maxScore === 0) return 0;
+      return (g.score / test.maxScore) * 100;
+    });
+
+  return relevantGrades.length ? Math.max(...relevantGrades) : 0;
 }
