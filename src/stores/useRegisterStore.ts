@@ -6,13 +6,22 @@ import { computed, ref } from "vue";
 import type { Test } from "@/models/Test";
 import type { StudentGrades } from "@/models/StudentGrades";
 import { v4 as uuidv4 } from 'uuid';
+import type { Settings } from "@/models/Settings";
+import type { GradeThreshold } from "@/models/GradeThreshold";
 
 export const useRegisterStore = defineStore('register', () => {
   const students = ref<Student[]>([]);
   const tests = ref<Test[]>([]);
   const grades = ref<Grade[]>([]);
+  const thresholds = ref<GradeThreshold[]>([]);
+  const settings = ref<Settings>();
 
   const loadData = async () => {
+    await db.initSettings();
+    await db.initGradeThresholds();
+    
+    thresholds.value = await db.getGradeThresholds();
+    settings.value = await db.getSettings();
     students.value = await db.getAllStudents();
     tests.value = await db.getAllTests();
     grades.value = await db.getAllGrades();
@@ -94,6 +103,13 @@ export const useRegisterStore = defineStore('register', () => {
     return grades.value.find(
       g => g.studentId === studentId && g.testId === testId
     );
+  };
+
+  // ====== Grade Thresholds =======
+
+  const updateSettings = async (data: Partial<Omit<Settings, 'id'>>) => {
+    await db.updateSettings(data);
+    settings.value = await db.getSettings();
   };
 
   // ========== Computed ============

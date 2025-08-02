@@ -3,4 +3,6 @@ export interface Test {
   name: string;
   maxScore: number;
   weight: number;
+  required: boolean;
+  requiredScore: number | null;
 }

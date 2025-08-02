@@ -6,6 +6,7 @@ import StudentDetailsView from "@/views/StudentDetailsView.vue";
 
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import TestsListView from "@/views/TestsListView.vue";
+import SettingsView from "@/views/SettingsView.vue";
 
 const routes: RouteRecordRaw[]  = [
   { path: '/', 
@@ -15,7 +16,8 @@ const routes: RouteRecordRaw[]  = [
       { path: 'grades', component: GradesView },
       { path: 'tests', component: TestsListView},
       { path: 'students', component: StudentsListView },
-      { path: 'student/:studentId', component: StudentDetailsView, props: true }
+      { path: 'student/:studentId', component: StudentDetailsView, props: true },
+      { path: 'settings', component: SettingsView }
     ]
    },
 ];
