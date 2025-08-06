@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, ref } from 'vue';
 
   const props = defineProps<{
     individualData: { weightedAverage: number; median: number; standardDeviation: number, min: number, max: number };
@@ -68,8 +68,6 @@
   };
 
   onMounted(updateChart);
-
-  watch(() => [props.individualData, props.classData], updateChart, { deep: true });
 </script>
 
 <template>

@@ -98,7 +98,7 @@ export class Database extends Dexie {
             { id: uuidv4(), grade: 5, minPercentage: 90 },
             { id: uuidv4(), grade: 4.5, minPercentage: 80 },
             { id: uuidv4(), grade: 4, minPercentage: 70 },
-            { id: uuidv4(), grade: 3.5, minPercentage: 70 },
+            { id: uuidv4(), grade: 3.5, minPercentage: 60 },
             { id: uuidv4(), grade: 3, minPercentage: 50 },
             { id: uuidv4(), grade: 2, minPercentage: 0 },
             ];
@@ -107,7 +107,7 @@ export class Database extends Dexie {
     }
 
     async getGradeThresholds(): Promise<GradeThreshold[]> {
-        return this.thresholds.orderBy('minPercentage').reverse().toArray();
+        return this.thresholds.toArray();
     }
 
     async addGradeThreshold(threshold: GradeThreshold): Promise<string> {

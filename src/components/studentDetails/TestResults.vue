@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { Grade } from '@/models/Grade';
   import type { Test } from '@/models/Test';
-  import { computed, onMounted, ref, watch } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
 
   const props = defineProps<{
     grades: Grade[];
@@ -64,7 +64,6 @@
   };
 
   onMounted(updateChart);
-  watch(() => [props.grades, props.tests], updateChart, { deep: true });
 </script>
 
 <template>

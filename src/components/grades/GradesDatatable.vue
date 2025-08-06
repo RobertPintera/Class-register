@@ -26,7 +26,7 @@
   initFilters();
 
   watch(() => registerStore.testColumns, (columns) => {
-    const columnFields = columns.map(c => c.field)
+    const columnFields = columns.map(c => c.field);
 
     for (const col of columns) {
       if (!filters.value[col.field]) {

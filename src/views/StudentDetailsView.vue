@@ -8,7 +8,7 @@
   import type { Student } from '@/models/Student';
   import { useRegisterStore } from '@/stores/useRegisterStore';
   import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
-  import { onMounted, ref, watch } from 'vue';
+  import { onMounted, ref } from 'vue';
 
   const props = defineProps<{ studentId: string }>();
 
@@ -54,8 +54,6 @@
   onMounted(() => {
     loadStudentData();
   });
-
-  watch(() => [registerStore.grades, registerStore.tests], loadStudentData, { deep: true });
 </script>
 
 <template>
@@ -63,7 +61,7 @@
   <div class="grid grid-cols-4 auto-rows-auto w-full">
     <PersonalData :name="student?.name ?? ''" :surname="student?.surname ?? ''" class="col-span-2"/>
     <FinalGradeResult class="col-start-3"/>
-    <TestsTaken class="col-start-4"/>
+    <!-- <TestsTaken class="col-start-4"/> -->
     <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-2"/>
     <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-2"/>
     <TestResults :grades="registerStore.grades" :tests="registerStore.tests" class="col-span-2 row-start-3"/>

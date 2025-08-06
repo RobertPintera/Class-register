@@ -14,7 +14,8 @@
       items: [
         { label: 'Grades', icon: 'pi pi-objects-column', route: '/grades' },
         { label: 'Tests', icon: 'pi pi-book', route: '/tests'},
-        { label: 'Students', icon: 'pi pi-users', route: '/students'}
+        { label: 'Students', icon: 'pi pi-users', route: '/students'},
+        { label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
       ]
     },
   ]);

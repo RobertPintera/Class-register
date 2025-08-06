@@ -15,8 +15,12 @@ export const useRegisterStore = defineStore('register', () => {
   const grades = ref<Grade[]>([]);
   const thresholds = ref<GradeThreshold[]>([]);
   const settings = ref<Settings>();
+  const isLoading = ref(false);
 
   const loadData = async () => {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
     await db.initSettings();
     await db.initGradeThresholds();
     
@@ -25,6 +29,8 @@ export const useRegisterStore = defineStore('register', () => {
     students.value = await db.getAllStudents();
     tests.value = await db.getAllTests();
     grades.value = await db.getAllGrades();
+
+    isLoading.value = false;
   };
 
   // ========== Students ==========
@@ -138,14 +144,14 @@ export const useRegisterStore = defineStore('register', () => {
     })
   );
 
-  loadData();
-
   return {
-    students, tests, grades,
+    students, tests, grades, thresholds, settings,
+    isLoading,
     testColumns, studentGrades,
     loadData,
     addStudent, updateStudent, deleteStudent, getStudent,
     addTest, updateTest, deleteTest, getTest,
-    updateGrade, deleteGrade, getGrade
+    updateGrade, deleteGrade, getGrade,
+    updateSettings
   };
 });

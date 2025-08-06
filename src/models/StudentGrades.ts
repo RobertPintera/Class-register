@@ -1,5 +1,5 @@
 export interface StudentGrades {
-    studentId: string
-    fullName: string;
-    [testId: string]: number | string;
+  studentId: string
+  fullName: string;
+  [testId: string]: number | string;
 }
