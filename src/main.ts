@@ -5,7 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Menu, Menubar, Message, ProgressSpinner, Ripple, Select, ToggleSwitch, Toolbar } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, ProgressSpinner, Ripple, Select, ToggleSwitch, Toolbar } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
@@ -62,7 +62,8 @@ app.component("Knob", Knob);
 app.component("Chart", Chart);
 app.component("Select", Select);
 app.component("ToggleSwitch",ToggleSwitch);
-app.component("ProgressSpinner", ProgressSpinner)
+app.component("ProgressSpinner", ProgressSpinner);
+app.component("Listbox", Listbox);
 
 const pinia = createPinia();
 app.use(pinia);

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import GradingScaleDatatable from '@/components/settings/GradingScaleDatatable.vue';
+  import SelectSystemDialog from '@/components/settings/SelectSystemDialog.vue';
   import { useRegisterStore } from '@/stores/useRegisterStore';
   import { onMounted, ref, watch } from 'vue';
 
@@ -10,6 +11,8 @@
     { name: 'With dialog', code: 'D' },
     { name: 'With input', code: 'I' },
   ]);
+  const showSelectSystemDialog = ref<boolean>(false);
+
 
   onMounted(() => {
     if(registerStore.settings?.editWithDialog){
@@ -26,17 +29,26 @@
       registerStore.updateSettings({editWithDialog: false});
     }
   }, { deep: true });
+
+  
 </script>
 
 <template>
   <h2 class="m-4">Settings</h2>
-    <div class="card">
-      <h3>General</h3>
-      <div class="flex items-center gap-4">
-        <h5>Editing grade:</h5>
-        <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select" class="w-full md:w-56" />
-      </div>
-      <h3>Scoring Thresholds</h3>
-      <GradingScaleDatatable/>
+  <div class="card">
+    <h3>General</h3>
+    <div class="flex items-center gap-4 mt-2">
+      <h5>Editing grade:</h5>
+      <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select" class="w-full md:w-56" />
     </div>
+    </div>
+  <div class="card">
+    <h3>Grading thresholds</h3>
+    <div class="m-2 flex justify-between">
+      <Button label="New" icon="pi pi-plus"/>
+      <Button label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true"/>
+    </div>
+    <GradingScaleDatatable class="mt-2"/>
+  </div>
+  <SelectSystemDialog v-model:visible="showSelectSystemDialog"/>
 </template>

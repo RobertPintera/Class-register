@@ -95,12 +95,12 @@ export class Database extends Dexie {
         const count = await this.thresholds.count();
         if (count === 0) {
             const defaultThresholds: GradeThreshold[] = [
-            { id: uuidv4(), grade: 5, minPercentage: 90 },
-            { id: uuidv4(), grade: 4.5, minPercentage: 80 },
-            { id: uuidv4(), grade: 4, minPercentage: 70 },
-            { id: uuidv4(), grade: 3.5, minPercentage: 60 },
-            { id: uuidv4(), grade: 3, minPercentage: 50 },
-            { id: uuidv4(), grade: 2, minPercentage: 0 },
+            { id: uuidv4(), grade: "5", minPercentage: 90 },
+            { id: uuidv4(), grade: "4.5", minPercentage: 80 },
+            { id: uuidv4(), grade: "4", minPercentage: 70 },
+            { id: uuidv4(), grade: "3.5", minPercentage: 60 },
+            { id: uuidv4(), grade: "3", minPercentage: 50 },
+            { id: uuidv4(), grade: "2", minPercentage: 0 },
             ];
             await this.thresholds.bulkAdd(defaultThresholds);
         }

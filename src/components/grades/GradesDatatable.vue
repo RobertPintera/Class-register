@@ -125,6 +125,31 @@
     @apply border-t border-[var(--p-datatable-border-color)];
   }
 
+  :deep(.p-datatable-header){
+    @apply border border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-header-cell){
+    @apply border-r border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-header-cell:last-child) {
+    @apply border-r-0;
+  }
+
+  :deep(.p-datatable-paginator-bottom) {
+    @apply border border-t-0 border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-tbody > tr > td) {
+    @apply border-r border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-tbody > tr > td:last-child) {
+    @apply border-r-0;
+  }
+
+
   :deep(.p-datatable-table-container)	{
     @apply min-h-[500px] h-[60vh] border-l border-r border-[var(--p-datatable-border-color)];
   }

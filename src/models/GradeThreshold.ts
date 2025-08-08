@@ -1,5 +1,5 @@
 export interface GradeThreshold {
   id: string;
-  grade: number;
+  grade: string;
   minPercentage: number;
 }

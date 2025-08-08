@@ -29,7 +29,7 @@
 </script>
 
 <template>
-  <DataTable :value="registerStore.students" showGridlines class="custom-table"
+  <DataTable :value="registerStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     :filters="filters" filterDisplay="menu"
     :selection="selectedStudent" @rowSelect="onRowSelect" selectionMode="single">
@@ -80,6 +80,30 @@
 
   :deep(.p-paginator){
     @apply border-t border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-header){
+    @apply border border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-header-cell){
+    @apply border-r border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-header-cell:last-child) {
+    @apply border-r-0;
+  }
+
+  :deep(.p-datatable-paginator-bottom) {
+    @apply border border-t-0 border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-tbody > tr > td) {
+    @apply border-r border-[var(--p-datatable-border-color)];
+  }
+
+  :deep(.p-datatable-tbody > tr > td:last-child) {
+    @apply border-r-0;
   }
 
   :deep(.p-datatable-table-container)	{
