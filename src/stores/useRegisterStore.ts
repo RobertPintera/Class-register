@@ -111,12 +111,38 @@ export const useRegisterStore = defineStore('register', () => {
     );
   };
 
-  // ====== Grade Thresholds =======
+  // ========== Settings ============
 
   const updateSettings = async (data: Partial<Omit<Settings, 'id'>>) => {
     await db.updateSettings(data);
     settings.value = await db.getSettings();
   };
+
+  // ====== Grade Thresholds ========
+
+  const addGradeThreshold = async(gradeThreshold: Omit<GradeThreshold, 'id'>) => {
+    const newGradeThreshold: GradeThreshold = { id: uuidv4(), ...gradeThreshold };
+    await db.addGradeThreshold(newGradeThreshold);
+    thresholds.value.push(newGradeThreshold);
+  };
+
+  const updateGradeThreshold = async(id: string, updated: Partial<Omit<GradeThreshold, 'id'>>) => {
+    await db.updateGradeThreshold(id, updated);
+    const index = thresholds.value.findIndex(t => t.id === id);
+    if (index !== -1) {
+      thresholds.value[index] = { ...thresholds.value[index], ...updated };
+    }
+  };
+
+  const deleteGradeThreshold = async(gradeThresholdId: string) => {
+    await db.deleteGradeThreshold(gradeThresholdId);
+    tests.value = tests.value.filter(t => t.id !== gradeThresholdId);
+  };
+
+  const replaceGradeThresholds = async(newThresholds: GradeThreshold[]) => {
+    await db.replaceGradeThresholds(newThresholds);
+  };
+
 
   // ========== Computed ============
   const testColumns = computed(() =>
@@ -152,6 +178,7 @@ export const useRegisterStore = defineStore('register', () => {
     addStudent, updateStudent, deleteStudent, getStudent,
     addTest, updateTest, deleteTest, getTest,
     updateGrade, deleteGrade, getGrade,
-    updateSettings
+    updateSettings,
+    addGradeThreshold, updateGradeThreshold, deleteGradeThreshold, replaceGradeThresholds
   };
 });

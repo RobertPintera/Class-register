@@ -122,6 +122,12 @@ export class Database extends Dexie {
         return this.thresholds.delete(id);
     }
 
+    async replaceGradeThresholds(newThresholds: GradeThreshold[]): Promise<void> {
+        await this.transaction('rw', this.thresholds, async () => {
+            await this.thresholds.clear();
+            await this.thresholds.bulkAdd(newThresholds);
+        });
+    }
     // ========= Settings ==========
 
     async initSettings(): Promise<void> {

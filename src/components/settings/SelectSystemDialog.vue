@@ -1,12 +1,17 @@
 <script setup lang="ts">
    import { computed, ref } from 'vue';
    import { useGradingSystems } from '@/utility/gradingSystemsData';
-   import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
+   import type { FormSubmitEvent } from '@primevue/forms';
+   import { zodResolver } from '@primevue/forms/resolvers/zod';
+   import { z } from 'zod';
+   import { useRegisterStore } from '@/stores/useRegisterStore';
 
    const props = defineProps<{ visible: boolean }>();
    const emit = defineEmits<{
       (e: 'update:visible', value: boolean): void
    }>();
+
+   const registerStore = useRegisterStore();
 
    const gradingSystems = useGradingSystems();
    const items = gradingSystems.map(system => ({
@@ -23,20 +28,20 @@
       system: null
    });
 
-   const resolver = (e: FormResolverOptions) => {
-      const errors: Record<string, { message: string }[]> = {};
-      console.log(e);
-
-      if (!e.values.system) {
-         errors.system = [{ message: 'You must select a grading system.' }];
-      }
-
-      return { errors };
-   };
+   const resolver = ref(zodResolver(
+      z.object({
+         system: z.union([
+            z.object({
+               name: z.string().min(1, 'System is required.')
+            }),
+            z.any().refine((val) => false, { message: 'System is required.' })
+         ])
+      })
+   ));
 
    const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       if (event.valid) {
-         console.log(event)
+         
          emit('update:visible', false);
       }
    };
