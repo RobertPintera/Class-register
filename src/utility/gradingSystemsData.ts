@@ -10,8 +10,7 @@ import type { GradingSystem } from "@/models/GradingSystem";
  */
 export function useGradingSystems(): GradingSystem[] {
   const gradingSystems = [
-    { name: 'Polish University', grades: [
-      { grade: '6.0', minPercentage: 100 },
+    { name: 'Polish University', gradethresholds: [
       { grade: '5.0', minPercentage: 91 },
       { grade: '4.5', minPercentage: 81 },
       { grade: '4.0', minPercentage: 71 },
@@ -19,23 +18,22 @@ export function useGradingSystems(): GradingSystem[] {
       { grade: '3.0', minPercentage: 51 },
       { grade: '2.0', minPercentage: 0 },
     ] },
-    { name: 'Polish', grades: [
-      { grade: '5.0', minPercentage: 100 },
-      { grade: '4.5', minPercentage: 90 },
-      { grade: '4.0', minPercentage: 80 },
-      { grade: '3.5', minPercentage: 70 },
-      { grade: '3.0', minPercentage: 50 },
-      { grade: '2.0', minPercentage: 30 },
-      { grade: '1.0', minPercentage: 0 },  
+    { name: 'Polish', gradethresholds: [
+      { grade: '6', minPercentage: 98 },
+      { grade: '5', minPercentage: 90 },
+      { grade: '4', minPercentage: 75 },
+      { grade: '3', minPercentage: 50 },
+      { grade: '2', minPercentage: 30 },
+      { grade: '1', minPercentage: 0 },
     ] },
-    { name: 'Japanese University', grades: [
+    { name: 'Japanese University', gradethresholds: [
       { grade: '優', minPercentage: 80 },
       { grade: '良', minPercentage: 70 },
       { grade: '可', minPercentage: 60 },
       { grade: '認', minPercentage: 50 },
       { grade: '不可', minPercentage: 0 }
     ] },
-    { name: 'Japanese', grades: [
+    { name: 'Japanese', gradethresholds: [
       { grade: '秀', minPercentage: 90 },
       { grade: '優', minPercentage: 80 },
       { grade: '良', minPercentage: 70 },
@@ -43,7 +41,7 @@ export function useGradingSystems(): GradingSystem[] {
       { grade: '認', minPercentage: 50 },
       { grade: '不可', minPercentage: 0 }
     ] },
-    { name: 'UK GCSE/A-Level', grades: [
+    { name: 'UK GCSE/A-Level', gradethresholds: [
       { grade: 'A*', minPercentage: 90 },
       { grade: 'A', minPercentage: 80 },
       { grade: 'B', minPercentage: 70 },

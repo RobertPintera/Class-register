@@ -139,8 +139,13 @@ export const useRegisterStore = defineStore('register', () => {
     tests.value = tests.value.filter(t => t.id !== gradeThresholdId);
   };
 
-  const replaceGradeThresholds = async(newThresholds: GradeThreshold[]) => {
-    await db.replaceGradeThresholds(newThresholds);
+  const replaceGradeThresholds = async(gradeThresholds: Omit<GradeThreshold, 'id'>[]) => {
+      const newGradeThresholds: GradeThreshold[] = gradeThresholds.map(t => ({
+        id: uuidv4(),
+        ...t
+    }));
+    await db.replaceGradeThresholds(newGradeThresholds);
+    thresholds.value = newGradeThresholds;
   };
 
 
