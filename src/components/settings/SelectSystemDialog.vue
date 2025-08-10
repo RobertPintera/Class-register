@@ -21,9 +21,7 @@
       set: (value: boolean) => emit('update:visible', value)
    });
 
-   const initialValues = ref({
-      system: null
-   });
+   const initialValues = ref();
 
    const resolver = ref(zodResolver(
       z.object({
@@ -46,12 +44,10 @@
 
 <template>
    <Dialog header="Select Grading system" v-model:visible="visibleLocal" modal>
-      <Form v-slot="$form" :resolver="resolver" :initialValues="initialValues" @submit="submit" class="flex flex-col gap-4 w-full">
-         <div class="flex flex-col gap-4">
-            <Listbox  name="system" :options="gradingSystems" optionLabel="name" :virtualScrollerOptions="{ itemSize: 20 }" class="w-full" listStyle="height:250px" striped fluid/>
-            <Message v-if="$form.system?.invalid" severity="error" size="small" variant="simple">{{ $form.system.error?.message }}</Message>
-            <Button label="Select" type="submit" autofocus />
-         </div> 
+      <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver"  @submit="submit" class="flex flex-col gap-4 w-full">
+         <Listbox  name="system" :options="gradingSystems" optionLabel="name" :virtualScrollerOptions="{ itemSize: 20 }" class="w-full" listStyle="height:250px" striped fluid/>
+         <Message v-if="$form.system?.invalid" severity="error" size="small" variant="simple">{{ $form.system.error?.message }}</Message>
+         <Button label="Select" type="submit" autofocus />
       </Form>
    </Dialog>
 </template>

@@ -18,7 +18,7 @@
 <template>
   <DataTable :value="sortedThresholds" showGridlines class="custom-table"
     scrollable :selection="selectedGradeThreshold" @rowSelect="onRowSelect" selectionMode="single">
-    <Column field="grade" header="Grade"></Column>
+    <Column field="name" header="Grade"></Column>
     <Column field="minPercentage" header="Percentage"></Column>
   </DataTable>
 </template>

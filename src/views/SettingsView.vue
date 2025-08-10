@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import GradingScaleDatatable from '@/components/settings/GradingScaleDatatable.vue';
+import NewGradeThresholdDialog from '@/components/settings/NewGradeThresholdDialog.vue';
   import SelectSystemDialog from '@/components/settings/SelectSystemDialog.vue';
   import { useRegisterStore } from '@/stores/useRegisterStore';
   import { onMounted, ref, watch } from 'vue';
@@ -12,7 +13,7 @@
     { name: 'With input', code: 'I' },
   ]);
   const showSelectSystemDialog = ref<boolean>(false);
-
+  const showNewGradeThresholdDialog = ref<boolean>(false);
 
   onMounted(() => {
     if(registerStore.settings?.editWithDialog){
@@ -29,8 +30,6 @@
       registerStore.updateSettings({editWithDialog: false});
     }
   }, { deep: true });
-
-  
 </script>
 
 <template>
@@ -45,10 +44,11 @@
   <div class="card">
     <h3>Grading thresholds</h3>
     <div class="m-2 flex justify-between">
-      <Button label="New" icon="pi pi-plus"/>
+      <Button label="New" icon="pi pi-plus" @click="showNewGradeThresholdDialog = true"/>
       <Button label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true"/>
     </div>
     <GradingScaleDatatable class="mt-2"/>
   </div>
   <SelectSystemDialog v-model:visible="showSelectSystemDialog"/>
+  <NewGradeThresholdDialog v-model:visible="showNewGradeThresholdDialog"/>
 </template>

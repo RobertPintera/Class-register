@@ -1,7 +1,7 @@
 import type { GradingSystem } from "@/models/GradingSystem";
 
 /**
- * Returns a list of grading systems with their grades and minimum percentage thresholds.
+ * Returns a list of grading systems with their names and minimum percentage thresholds.
  * These systems can vary between different countries or institutions and may not reflect
  * the exact official grading standards.
  *
@@ -11,46 +11,46 @@ import type { GradingSystem } from "@/models/GradingSystem";
 export function useGradingSystems(): GradingSystem[] {
   const gradingSystems = [
     { name: 'Polish University', gradethresholds: [
-      { grade: '5.0', minPercentage: 91 },
-      { grade: '4.5', minPercentage: 81 },
-      { grade: '4.0', minPercentage: 71 },
-      { grade: '3.5', minPercentage: 61 },
-      { grade: '3.0', minPercentage: 51 },
-      { grade: '2.0', minPercentage: 0 },
+      { name: '5.0', minPercentage: 91 },
+      { name: '4.5', minPercentage: 81 },
+      { name: '4.0', minPercentage: 71 },
+      { name: '3.5', minPercentage: 61 },
+      { name: '3.0', minPercentage: 51 },
+      { name: '2.0', minPercentage: 0 },
     ] },
     { name: 'Polish', gradethresholds: [
-      { grade: '6', minPercentage: 98 },
-      { grade: '5', minPercentage: 90 },
-      { grade: '4', minPercentage: 75 },
-      { grade: '3', minPercentage: 50 },
-      { grade: '2', minPercentage: 30 },
-      { grade: '1', minPercentage: 0 },
+      { name: '6', minPercentage: 98 },
+      { name: '5', minPercentage: 90 },
+      { name: '4', minPercentage: 75 },
+      { name: '3', minPercentage: 50 },
+      { name: '2', minPercentage: 30 },
+      { name: '1', minPercentage: 0 },
     ] },
     { name: 'Japanese University', gradethresholds: [
-      { grade: '優', minPercentage: 80 },
-      { grade: '良', minPercentage: 70 },
-      { grade: '可', minPercentage: 60 },
-      { grade: '認', minPercentage: 50 },
-      { grade: '不可', minPercentage: 0 }
+      { name: '優', minPercentage: 80 },
+      { name: '良', minPercentage: 70 },
+      { name: '可', minPercentage: 60 },
+      { name: '認', minPercentage: 50 },
+      { name: '不可', minPercentage: 0 }
     ] },
     { name: 'Japanese', gradethresholds: [
-      { grade: '秀', minPercentage: 90 },
-      { grade: '優', minPercentage: 80 },
-      { grade: '良', minPercentage: 70 },
-      { grade: '可', minPercentage: 60 },
-      { grade: '認', minPercentage: 50 },
-      { grade: '不可', minPercentage: 0 }
+      { name: '秀', minPercentage: 90 },
+      { name: '優', minPercentage: 80 },
+      { name: '良', minPercentage: 70 },
+      { name: '可', minPercentage: 60 },
+      { name: '認', minPercentage: 50 },
+      { name: '不可', minPercentage: 0 }
     ] },
     { name: 'UK GCSE/A-Level', gradethresholds: [
-      { grade: 'A*', minPercentage: 90 },
-      { grade: 'A', minPercentage: 80 },
-      { grade: 'B', minPercentage: 70 },
-      { grade: 'C', minPercentage: 60 },
-      { grade: 'D', minPercentage: 50 },
-      { grade: 'E', minPercentage: 40 },
-      { grade: 'F', minPercentage: 30 },
-      { grade: 'G', minPercentage: 20 },
-      { grade: 'U', minPercentage: 0 },
+      { name: 'A*', minPercentage: 90 },
+      { name: 'A', minPercentage: 80 },
+      { name: 'B', minPercentage: 70 },
+      { name: 'C', minPercentage: 60 },
+      { name: 'D', minPercentage: 50 },
+      { name: 'E', minPercentage: 40 },
+      { name: 'F', minPercentage: 30 },
+      { name: 'G', minPercentage: 20 },
+      { name: 'U', minPercentage: 0 },
     ] },
   ];
   return gradingSystems;
