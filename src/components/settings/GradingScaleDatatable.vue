@@ -27,3 +27,9 @@ const onRowSelect = (event: any) => {
   </DataTable>
   <EditGradeThresholdDialog :id="editingGradeId" v-model:visible="showEditGradeThresholdDialog" />
 </template>
+
+<style scoped>
+  :deep(.p-datatable-table-container)	{
+    @apply max-h-[400px];
+  }
+</style>
