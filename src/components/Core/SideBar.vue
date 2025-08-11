@@ -23,9 +23,9 @@ const items = ref([
 
 <template>
   <nav class="card fixed top-16 h-[calc(100vh-6rem)] w-64 flex flex-col overflow-auto">
-    <div v-for="section in items" :key="section.label">
+    <div v-for="section in items" :key="section.label" class="space-y-1">
       <h3>{{ section.label }}</h3>
-      <ul class="space-y-1">
+      <ul>
         <SideBarItem
           v-for="item in section.items" :key="item.route"
           :label="item.label" :icon="item.icon"

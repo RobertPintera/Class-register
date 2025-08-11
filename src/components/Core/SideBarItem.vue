@@ -8,10 +8,13 @@ const props =  defineProps({
 </script>
 
 <template>
-  <li class="ml-4 mt-2">
-    <router-link :to="to" class="space-x-1">
-      <i :class="icon" />
-      <span>{{ label }}</span>
+  <li>
+    <router-link :to="to">
+      <div class="px-4 py-1 rounded-lg hover:bg-blue-100 transition duration-75" :class="{ 'bg-blue-200': props.active}">
+         <i :class="icon" />
+        <span>{{ label }}</span>
+      </div>
     </router-link>
+    
   </li>
 </template>
