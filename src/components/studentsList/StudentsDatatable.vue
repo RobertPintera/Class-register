@@ -1,31 +1,32 @@
 <script setup lang="ts">
-  import type { AdvancedFilter } from '@/models/AdvancedFilter';
-  import router from '@/router';
-  import { useRegisterStore } from '@/stores/useRegisterStore';
-  import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
-  import { ref } from 'vue';
+import type { AdvancedFilter } from '@/models/AdvancedFilter';
+import type { Student } from '@/models/Student';
+import router from '@/router';
+import { useRegisterStore } from '@/stores/useRegisterStore';
+import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import { ref } from 'vue';
 
-  const registerStore = useRegisterStore();
+const registerStore = useRegisterStore();
 
-  const selectedStudent = ref();
-  const filters = ref<Record<string,AdvancedFilter>>({});
+const selectedStudent = ref<Student>();
+const filters = ref<Record<string,AdvancedFilter>>({});
 
-  const initFilters = () => {
-    filters.value = {
-      name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
-      surname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
-    };
+const initFilters = () => {
+  filters.value = {
+    name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
+    surname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
   };
+};
 
+initFilters();
+
+const clearFilter = () => {
   initFilters();
+};
 
-  const clearFilter = () => {
-    initFilters();
-  };
-  
-  const onRowSelect = (event: any) => {
-    router.push(`/student/${event.data.id}`);
-  };
+const onRowSelect = (event: any) => {
+  router.push(`/student/${event.data.id}`);
+};
 </script>
 
 <template>
@@ -74,10 +75,6 @@
     @apply w-[100%];
   }
 
-  .p-datatable {
-    @apply m-1;
-  }
-
   :deep(.p-paginator){
     @apply border-t border-[var(--p-datatable-border-color)];
   }
@@ -107,6 +104,6 @@
   }
 
   :deep(.p-datatable-table-container)	{
-    @apply min-h-[500px] h-[60vh] border-l border-r border-[var(--p-datatable-border-color)];
+    @apply min-h-[500px] h-[56vh] border-l border-r border-[var(--p-datatable-border-color)];
   }
 </style>

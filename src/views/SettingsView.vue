@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Card from '@/components/core/Card.vue';
 import GradingScaleDatatable from '@/components/settings/GradingScaleDatatable.vue';
 import NewGradeThresholdDialog from '@/components/settings/NewGradeThresholdDialog.vue';
 import SelectSystemDialog from '@/components/settings/SelectSystemDialog.vue';
@@ -34,22 +35,22 @@ watch(selectedEditGrade, () => {
 
 <template>
   <h2 class="m-4">Settings</h2>
-  <div class="card">
+  <Card>
     <h3>General</h3>
     <div class="flex items-center gap-4 mt-2">
       <h5>Editing grade:</h5>
       <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
         class="w-full md:w-56" />
     </div>
-  </div>
-  <div class="card">
+  </Card>
+  <Card>
     <h3>Grading thresholds</h3>
     <div class="mt-2 mb-4 flex justify-between">
       <Button label="New" icon="pi pi-plus" @click="showNewGradeThresholdDialog = true" />
       <Button label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true" />
     </div>
     <GradingScaleDatatable />
-  </div>
+  </Card>
   <SelectSystemDialog v-model:visible="showSelectSystemDialog" />
   <NewGradeThresholdDialog v-model:visible="showNewGradeThresholdDialog" />
 </template>

@@ -11,11 +11,11 @@ import type { GradingSystem } from "@/models/GradingSystem";
 export function useGradingSystems(): GradingSystem[] {
   const gradingSystems = [
     { name: 'Polish University', gradethresholds: [
-      { name: '5.0', minPercentage: 91 },
-      { name: '4.5', minPercentage: 81 },
-      { name: '4.0', minPercentage: 71 },
-      { name: '3.5', minPercentage: 61 },
-      { name: '3.0', minPercentage: 51 },
+      { name: '5.0', minPercentage: 90 },
+      { name: '4.5', minPercentage: 80 },
+      { name: '4.0', minPercentage: 70 },
+      { name: '3.5', minPercentage: 60 },
+      { name: '3.0', minPercentage: 50 },
       { name: '2.0', minPercentage: 0 },
     ] },
     { name: 'Polish', gradethresholds: [

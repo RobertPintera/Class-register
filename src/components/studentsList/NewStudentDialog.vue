@@ -1,65 +1,46 @@
 <script setup lang="ts">
-  import type { Student } from '@/models/Student';
-  import { useRegisterStore } from '@/stores/useRegisterStore';
-  import { isStudentData } from '@/utility/typeGuards';
-  import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
-  import { computed, reactive } from 'vue';
+import { useRegisterStore } from '@/stores/useRegisterStore';
+import { isStudentData } from '@/utility/typeGuards';
+import type { FormSubmitEvent } from '@primevue/forms';
+import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { ref } from 'vue';
+import z from 'zod';
 
-  const props = defineProps<{ visible: boolean }>();
-  const emit = defineEmits<{
-    (e: 'update:visible', value: boolean): void
-  }>();
+const registerStore = useRegisterStore();
 
-  const visibleLocal = computed({
-    get: () => props.visible,
-    set: (value: boolean) => emit('update:visible', value)
-  });
+const visible = defineModel<boolean>('visible',{default: false});
 
-  const registerStore = useRegisterStore();
+const resolver = ref(zodResolver(
+  z.object({
+    name: z.string("Name is required").min(1,"Name is required"),
+    surname: z.string("Surname is required").min(1,"Surname is required")
+  })
+));
 
-  const initialValues = reactive<Omit<Student, 'id'>>({
-    name: '',
-    surname: ''
-  });
+const cancel = () => {
+  visible.value = false;
+};
 
-  const cancel = () => {
-    emit('update:visible', false);
-  };
+const submit = (event: FormSubmitEvent<Record<string, any>>) => {
+  if (event.valid) {
+    const values = {
+      name: event.states.name.value,
+      surname: event.states.surname.value
+    };
 
-  const resolver = (e: FormResolverOptions) => {
-    const errors: Record<string, { message: string }[]> = {};
-
-    if (!e.values.name || e.values.name.trim() === '') {
-        errors.name = [{ message: 'Name is required.' }];
+    if(isStudentData(values)){
+      registerStore.addStudent(values);
+      cancel();
+    } else {
+      console.error("Wrong data from form!");
     }
-
-    if (!e.values.surname || e.values.surname.trim() === '') {
-      errors.surname = [{ message: "Surname is required."}];
-    }
-
-    return { errors };
-  };
-
-  const submit = (event: FormSubmitEvent<Record<string, any>>) => {
-    if (event.valid) {
-      const values = {
-        name: event.states.name.value,
-        surname: event.states.surname.value
-      };
-
-      if(isStudentData(values)){
-        registerStore.addStudent(values);
-        emit('update:visible', false);
-      } else {
-        console.error("Wrong data from form!");
-      }
-    }
-  };
+  }
+};
 </script>
 
 <template>
-  <Dialog header="Add Student" v-model:visible="visibleLocal" modal>
-    <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-3">
+  <Dialog header="Add Student" v-model:visible="visible" modal>
+    <Form v-slot="$form" :resolver @submit="submit" class="flex flex-col gap-3 mt-3">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="in">
           <InputText id="name" name="name" variant="filled" class="w-60" />
