@@ -23,6 +23,7 @@ export default defineConfigWithVueTs(
     files: ['**/*.{ts,vue}'],
     rules: {
       'semi': ['warn', 'always'],
+      indent: ['warn', 2, { SwitchCase: 1 }],
       "vue/no-reserved-component-names": 'off',
       'vue/multi-word-component-names': 'off',
       'vue/html-self-closing': ['warn', {

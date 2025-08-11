@@ -1,12 +1,10 @@
 <script setup lang="ts">
-
-  const props =  defineProps({
-    to: { type: String, required: true },
-    label: { type: String, required: true },
-    icon: String,
-    active: { type: Boolean, default: false },
-  });
-
+const props =  defineProps({
+  to: { type: String, required: true },
+  label: { type: String, required: true },
+  icon: String,
+  active: { type: Boolean, default: false },
+});
 </script>
 
 <template>
@@ -16,5 +14,4 @@
       <span>{{ label }}</span>
     </router-link>
   </li>
-  
 </template>

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
-  import SideBarItem from './SideBarItem.vue';
+import { ref } from 'vue';
+import SideBarItem from './SideBarItem.vue';
 
-  const items = ref([
-    {
-      label: "Home",
-      items: [
-       { label: 'Dashboard', icon: 'pi pi-home', route: '/' },
-      ]
-    },
-    {
-      label: "Register",
-      items: [
-        { label: 'Grades', icon: 'pi pi-objects-column', route: '/grades' },
-        { label: 'Tests', icon: 'pi pi-book', route: '/tests'},
-        { label: 'Students', icon: 'pi pi-users', route: '/students'},
-        { label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
-      ]
-    },
-  ]);
+const items = ref([
+  {
+    label: "Home",
+    items: [
+      { label: 'Dashboard', icon: 'pi pi-home', route: '/' },
+    ]
+  },
+  {
+    label: "Register",
+    items: [
+      { label: 'Grades', icon: 'pi pi-objects-column', route: '/grades' },
+      { label: 'Tests', icon: 'pi pi-book', route: '/tests'},
+      { label: 'Students', icon: 'pi pi-users', route: '/students'},
+      { label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
+    ]
+  },
+]);
 </script>
 
 <template>
