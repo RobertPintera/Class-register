@@ -49,11 +49,6 @@
     }
   };
 
-  onMounted(() => {
-    const visible = props.visible;
-    updateDataForm(visible);
-  });
-
   watch(() => props.visible, (visible) => {
     updateDataForm(visible);
   });

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-   import { computed, ref } from 'vue';
+   import { ref } from 'vue';
    import { useGradingSystems } from '@/utility/gradingSystemsData';
    import type { FormSubmitEvent } from '@primevue/forms';
    import { zodResolver } from '@primevue/forms/resolvers/zod';
@@ -7,20 +7,10 @@
    import { useRegisterStore } from '@/stores/useRegisterStore';
    import type { GradingSystem } from '@/models/GradingSystem';
 
-   const props = defineProps<{ visible: boolean }>();
-   const emit = defineEmits<{
-      (e: 'update:visible', value: boolean): void
-   }>();
-
    const registerStore = useRegisterStore();
 
+   const visible = defineModel<boolean>('visible', {default: false});
    const gradingSystems: GradingSystem[] = useGradingSystems();
-
-   const visibleLocal = computed({
-      get: () => props.visible,
-      set: (value: boolean) => emit('update:visible', value)
-   });
-
    const initialValues = ref();
 
    const resolver = ref(zodResolver(
@@ -37,13 +27,13 @@
    const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       if (event.valid && event.states.system) {
          registerStore.replaceGradeThresholds(event.states.system.value.gradethresholds);
-         emit('update:visible', false);
+         visible.value = false;
       }
    };
 </script>
 
 <template>
-   <Dialog header="Select Grading system" v-model:visible="visibleLocal" modal>
+   <Dialog header="Select Grading system" v-model:visible="visible" modal>
       <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver"  @submit="submit" class="flex flex-col gap-4 w-full">
          <Listbox  name="system" :options="gradingSystems" optionLabel="name" :virtualScrollerOptions="{ itemSize: 20 }" class="w-full" listStyle="height:250px" striped fluid/>
          <Message v-if="$form.system?.invalid" severity="error" size="small" variant="simple">{{ $form.system.error?.message }}</Message>

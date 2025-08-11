@@ -148,6 +148,9 @@ export const useRegisterStore = defineStore('register', () => {
     thresholds.value = newGradeThresholds;
   };
 
+  const getGradeThreshold = (id: string): GradeThreshold | undefined => {
+    return thresholds.value.find(t => t.id === id);
+  };
 
   // ========== Computed ============
   const testColumns = computed(() =>
@@ -184,6 +187,6 @@ export const useRegisterStore = defineStore('register', () => {
     addTest, updateTest, deleteTest, getTest,
     updateGrade, deleteGrade, getGrade,
     updateSettings,
-    addGradeThreshold, updateGradeThreshold, deleteGradeThreshold, replaceGradeThresholds
+    addGradeThreshold, updateGradeThreshold, deleteGradeThreshold, replaceGradeThresholds, getGradeThreshold
   };
 });
