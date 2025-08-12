@@ -2,6 +2,6 @@ export interface Student{
   id: string;
   name: string;
   surname: string;
-  gender: 'man' | 'woman';
+  gender: 'Male' | 'Female';
   weightedAverage: number;
 }

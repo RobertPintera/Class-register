@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import GradesDatatable from '@/components/grades/GradesDatatable.vue';
+import GradesDatatable from '@/components/grades/GradesDatatable.vue';
 </script>
 
 <template>

@@ -38,7 +38,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 <template>
   <Dialog header="Select Grading system" v-model:visible="visible" modal>
     <Form v-slot="$form" :resolver="resolver" @submit="submit"
-      class="flex flex-col gap-4 w-full">
+      class="flex flex-col gap-3 mt-2 w-full">
       <Listbox name="system" :options="gradingSystems" optionLabel="name" :virtualScrollerOptions="{ itemSize: 20 }"
         class="w-full" listStyle="height:250px" striped fluid />
       <Message v-if="$form.system?.invalid" severity="error" size="small" variant="simple">{{ $form.system.error?.message }}</Message>

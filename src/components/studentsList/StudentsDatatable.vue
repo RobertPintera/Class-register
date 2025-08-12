@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
+import type { SimpleFilter } from '@/models/SimpleFilter';
 import type { Student } from '@/models/Student';
 import router from '@/router';
 import { useRegisterStore } from '@/stores/useRegisterStore';
@@ -9,10 +10,11 @@ import { ref } from 'vue';
 const registerStore = useRegisterStore();
 
 const selectedStudent = ref<Student>();
-const filters = ref<Record<string,AdvancedFilter>>({});
+const filters = ref<Record<string,AdvancedFilter | SimpleFilter>>({});
 
 const initFilters = () => {
   filters.value = {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
     surname: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
   };
@@ -32,11 +34,17 @@ const onRowSelect = (event: any) => {
 <template>
   <DataTable :value="registerStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-    :filters="filters" filterDisplay="menu"
+    :filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
     :selection="selectedStudent" @rowSelect="onRowSelect" selectionMode="single">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
+        <IconField>
+          <InputIcon>
+              <i class="pi pi-search" />
+          </InputIcon>
+          <InputText v-model="(filters.global as SimpleFilter).value" placeholder="Keyword Search" />
+        </IconField>
       </div>
     </template>
     <template #empty>

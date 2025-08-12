@@ -36,6 +36,8 @@ export const useRegisterStore = defineStore('register', () => {
   // ========== Students ==========
   const addStudent = async (student: Omit<Student, 'id'>) => {
     const newStudent: Student = { id: uuidv4(), ...student};
+    console.log(newStudent)
+    console.log(student)
     await db.addStudent(newStudent);
     students.value.push(newStudent);
   };

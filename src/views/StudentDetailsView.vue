@@ -52,13 +52,14 @@ function loadStudentData() {
 
 onMounted(() => {
   loadStudentData();
+  console.log(student)
 });
 </script>
 
 <template>
   <h2 class="m-4">Student Details</h2>
   <div class="grid grid-cols-4 auto-rows-auto w-full">
-    <PersonalData :name="student?.name ?? ''" :surname="student?.surname ?? ''" class="col-span-2"/>
+    <PersonalData :name="student?.name ?? ''" :surname="student?.surname ?? ''" :gender="student?.gender ?? ''" class="col-span-2"/>
     <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="col-start-3"/>
     <TestsTaken :studentId="student?.id ?? ''" class="col-start-4"/>
     <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-2"/>

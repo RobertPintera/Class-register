@@ -14,16 +14,33 @@ const bestGrade = computed(() => {
     .sort((a, b) => b.minPercentage - a.minPercentage)[0]?.name ?? '—';
 });
 
+const stats = computed(() => {
+  const students = registerStore.students ?? [];
+  const total = students.length || 1;
 
+  const higher = (students.filter(s => s.weightedAverage > props.weightedAverage).length / total) * 100;
+  const lower = (students.filter(s => s.weightedAverage <= props.weightedAverage).length / total) * 100;
+
+  return [
+    { label: 'Higher', color: "#fbbf24", value: parseFloat(higher.toFixed(1)) },
+    { label: 'Lower or equal', color: '#60a5fa', value: parseFloat(lower.toFixed(1)) }
+  ];
+});
 
 </script>
 
 <template>
-  <Card>
+  <Card class="flex flex-col">
     <h3>Final Grade</h3>
-    <div class="flex justify-center items-center h-full">
-      <h4 class="text-[clamp(1rem,5vw,4rem)]">{{ bestGrade }}</h4>
+    <div class="flex-1 flex justify-center items-center">
+      <h4 class="text-[clamp(1rem,5vw,4rem)] leading-none">
+        {{ bestGrade }}
+      </h4>
     </div>
-    <MeterGroup :value="stats"/>
+    <div class="mt-auto">
+      <p class="text-center my-2">Compared to other students' averages</p>
+      <MeterGroup :value="stats" />
+      
+    </div>
   </Card>
 </template>
