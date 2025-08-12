@@ -4,14 +4,15 @@ import FinalGradeResult from '@/components/studentDetails/FinalGradeResult.vue';
 import Performance from '@/components/studentDetails/Performance/Performance.vue';
 import PersonalData from '@/components/studentDetails/PersonalData.vue';
 import TestResults from '@/components/studentDetails/TestResults.vue';
+import TestResultsDatatable from '@/components/studentDetails/TestResultsDatatable.vue';
 import TestsTaken from '@/components/studentDetails/TestsTaken.vue';
 import type { Student } from '@/models/Student';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
 import { onMounted, ref } from 'vue';
 
-const props = defineProps<{ studentId: string }>();
 const registerStore = useRegisterStore();
+const props = defineProps<{ studentId: string }>();
 const student = ref<Student>();
 
 const individualPerformace = ref<{weightedAverage: number; median: number; standardDeviation: number; min: number; max: number}>({
@@ -58,10 +59,11 @@ onMounted(() => {
   <h2 class="m-4">Student Details</h2>
   <div class="grid grid-cols-4 auto-rows-auto w-full">
     <PersonalData :name="student?.name ?? ''" :surname="student?.surname ?? ''" class="col-span-2"/>
-    <FinalGradeResult class="col-start-3"/>
-    <!-- <TestsTaken class="col-start-4"/> -->
+    <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="col-start-3"/>
+    <TestsTaken :studentId="student?.id ?? ''" class="col-start-4"/>
     <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-2"/>
     <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-2"/>
-    <TestResults :grades="registerStore.grades" :tests="registerStore.tests" class="col-span-2 row-start-3"/>
+    <TestResults :studentId="student?.id ?? ''" class="col-span-2 row-start-3"/>
+    <TestResultsDatatable class="col-span-2 col-start-3 row-start-3"/>
   </div>
 </template>

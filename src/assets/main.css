@@ -11,13 +11,13 @@
   --color-primary-background: #fafcff;
   --color-topbar-background: #ffffff; 
   --color-sidebar-background: #ced9ff;
-  --color-primary-border: #a4a7aa;
+  --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
   --color-primary-select: var(--color-sky-100);
 }
 
 @layer base {
-  .lol{
+  .testColor{
     color: #a4a7aa;
   }
   h1 {

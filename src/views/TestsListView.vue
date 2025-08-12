@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import NewTestDialog from '@/components/testsList/NewTestDialog.vue';
-  import TestsDatatable from '@/components/testsList/TestsDatatable.vue';
-  import { Button } from 'primevue';
-  import { ref } from 'vue';
+import NewTestDialog from '@/components/testsList/NewTestDialog.vue';
+import TestsDatatable from '@/components/testsList/TestsDatatable.vue';
+import { Button } from 'primevue';
+import { ref } from 'vue';
 
-  const showNewTestDialog = ref<boolean>(false);
+const showNewTestDialog = ref<boolean>(false);
 </script>
 
 <template>

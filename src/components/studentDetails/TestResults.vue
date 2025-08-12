@@ -1,69 +1,65 @@
 <script setup lang="ts">
-  import type { Grade } from '@/models/Grade';
-  import type { Test } from '@/models/Test';
-  import { computed, onMounted, ref } from 'vue';
+import { useRegisterStore } from '@/stores/useRegisterStore';
+import { computed, onMounted, ref } from 'vue';
 
-  const props = defineProps<{
-    grades: Grade[];
-    tests: Test[];
-  }>();
+const registerStore = useRegisterStore();
 
-  const chartData = ref();
-  const chartOptions = ref();
+const chartData = ref();
+const chartOptions = ref();
 
-  const studentScores = computed(() => {
-    return props.grades
-      .map(grade => {
-        const test = props.tests.find(t => t.id === grade.testId);
-        if (!test) return null;
-        return { testName: test.name, score: grade.score };
-      })
-      .filter((item): item is { testName: string; score: number } => item !== null);
-  });
+const studentScores = computed(() => {
+  return registerStore.grades
+    .map(grade => {
+      const test = registerStore.tests.find(t => t.id === grade.testId);
+      if (!test) return null;
+      return { testName: test.name, score: grade.score };
+    })
+    .filter((item): item is { testName: string; score: number } => item !== null);
+});
 
-  const setChartData = () => {
-    const labels = studentScores.value.map(t => t.testName);
-    const data = studentScores.value.map(t => t.score);
+const setChartData = () => {
+  const labels = studentScores.value.map(t => t.testName);
+  const data = studentScores.value.map(t => t.score);
 
-    return {
-      labels,
-      datasets: [
-        {
-          label: 'Score',
-          data: data,
-          backgroundColor: 'rgba(34, 197, 94, 0.6)',
-          borderColor: 'rgb(34, 197, 94)',
-          borderWidth: 1,
-        },
-      ],
-    };
-  };
-
-  const setChartOptions = () => {
-    return {
-      indexAxis: 'y',
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
+  return {
+    labels,
+    datasets: [
+      {
+        label: 'Score',
+        data: data,
+        backgroundColor: 'rgba(34, 197, 94, 0.6)',
+        borderColor: 'rgb(34, 197, 94)',
+        borderWidth: 1,
       },
-      scales: {
-        y: {
-          min: 0,
-          max: 100,
-        },
+    ],
+  };
+};
+
+const setChartOptions = () => {
+  return {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
       },
-    };
+    },
+    scales: {
+      y: {
+        min: 0,
+        max: 100,
+      },
+    },
   };
+};
 
-  const updateChart = () => {
-    chartData.value = setChartData();
-    chartOptions.value = setChartOptions();
-  };
+const updateChart = () => {
+  chartData.value = setChartData();
+  chartOptions.value = setChartOptions();
+};
 
-  onMounted(updateChart);
+onMounted(updateChart);
 </script>
 
 <template>
