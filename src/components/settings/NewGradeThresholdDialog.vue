@@ -3,7 +3,7 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { isGradeThreshold } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import z from 'zod';
 
 const registerStore = useRegisterStore();
