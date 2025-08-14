@@ -37,17 +37,19 @@ watch(selectedEditGrade, () => {
   <h2 class="m-4">Settings</h2>
   <Card>
     <h3>General</h3>
-    <div class="flex items-center gap-4 mt-2">
-      <h5>Editing grade:</h5>
-      <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
-        class="w-full md:w-56" />
+    <div class="flex flex-col gap-4 mt-2">
+      <div class="flex items-center gap-4">
+        <h5>Editing grade:</h5>
+        <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
+          class="w-full md:w-56" />
+      </div>
     </div>
   </Card>
   <Card>
     <h3>Grading thresholds</h3>
     <div class="mt-2 mb-4 flex justify-between">
       <Button label="New" icon="pi pi-plus" @click="showNewGradeThresholdDialog = true" />
-      <Button label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true" />
+      <Button variant="outlined" label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true" />
     </div>
     <GradingScaleDatatable />
   </Card>

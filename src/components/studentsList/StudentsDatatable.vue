@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { SimpleFilter } from '@/models/SimpleFilter';
-import type { Student } from '@/models/Student';
 import router from '@/router';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
@@ -9,7 +8,6 @@ import { ref } from 'vue';
 
 const registerStore = useRegisterStore();
 
-const selectedStudent = ref<Student>();
 const filters = ref<Record<string,AdvancedFilter | SimpleFilter>>({});
 
 const initFilters = () => {
@@ -35,7 +33,7 @@ const onRowSelect = (event: any) => {
   <DataTable :value="registerStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     :filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
-    :selection="selectedStudent" @rowSelect="onRowSelect" selectionMode="single">
+    @rowSelect="onRowSelect" selectionMode="single">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />

@@ -1,59 +1,59 @@
 <script setup lang="ts">
-  import { useRegisterStore } from '@/stores/useRegisterStore';
-  import EditGradeView from '@/components/grades/EditGradeView.vue';
-  import { onMounted, ref, watch } from 'vue';
-  import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
-  import type { Grade } from '@/models/Grade';
-  import type { AdvancedFilter } from '@/models/AdvancedFilter';
-  
-  const registerStore = useRegisterStore();
+import { useRegisterStore } from '@/stores/useRegisterStore';
+import EditGradeView from '@/components/grades/EditGradeView.vue';
+import { onMounted, ref, watch } from 'vue';
+import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import type { Grade } from '@/models/Grade';
+import type { AdvancedFilter } from '@/models/AdvancedFilter';
 
-  const dialogVisible = ref(false);
-  const filters = ref<Record<string, AdvancedFilter>>({});
+const registerStore = useRegisterStore();
 
-  const initFilters = () =>  {
-    filters.value = {
-      fullName: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
-    };
+const dialogVisible = ref(false);
+const filters = ref<Record<string, AdvancedFilter>>({});
 
-    for (const col of registerStore.testColumns) {
-      if (!filters.value[col.field]) {
-        filters.value[col.field] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] };
-      }
-    }
+const initFilters = () =>  {
+  filters.value = {
+    fullName: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
   };
 
+  for (const col of registerStore.testColumns) {
+    if (!filters.value[col.field]) {
+      filters.value[col.field] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] };
+    }
+  }
+};
+
+initFilters();
+
+watch(() => registerStore.testColumns, (columns) => {
+  const columnFields = columns.map(c => c.field);
+
+  for (const col of columns) {
+    if (!filters.value[col.field]) {
+      filters.value[col.field] = {
+        operator: FilterOperator.AND,
+        constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
+      };
+    }
+  }
+
+  for (const key in filters.value) {
+    if (key !== 'fullName' && !columnFields.includes(key)) {
+      delete filters.value[key];
+    }
+  }
+}, { immediate: true });
+
+const clearFilter = () => {
   initFilters();
+};
 
-  watch(() => registerStore.testColumns, (columns) => {
-    const columnFields = columns.map(c => c.field);
+const editingGrade = ref<Pick<Grade, 'studentId' | 'testId'> | null>(null);
 
-    for (const col of columns) {
-      if (!filters.value[col.field]) {
-        filters.value[col.field] = {
-          operator: FilterOperator.AND,
-          constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]
-          };
-      }
-    }
-
-    for (const key in filters.value) {
-      if (key !== 'fullName' && !columnFields.includes(key)) {
-        delete filters.value[key];
-      }
-    }
-  }, { immediate: true });
-
-  const clearFilter = () => {
-    initFilters();
-  };
-
-  const editingGrade = ref<Pick<Grade, 'studentId' | 'testId'> | null>(null);
-
-  const onCellClick = (studentId: string, testId: string) => {
-    editingGrade.value = { studentId, testId };
-    dialogVisible.value = true;
-  };    
+const onCellClick = (studentId: string, testId: string) => {
+  editingGrade.value = { studentId, testId };
+  dialogVisible.value = true;
+};    
 </script>
     
 <template>
