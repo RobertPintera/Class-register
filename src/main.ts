@@ -5,7 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, ProgressSpinner, Ripple, Select, SelectButton, ToggleSwitch, Toolbar } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, Paginator, ProgressSpinner, Ripple, Select, SelectButton, ToggleSwitch, Toolbar } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
@@ -66,7 +66,8 @@ app.component("ProgressSpinner", ProgressSpinner);
 app.component("Listbox", Listbox);
 app.component("MeterGroup",MeterGroup);
 app.component("SelectButton",SelectButton);
-app.component("Checkbox",Checkbox)
+app.component("Checkbox",Checkbox);
+app.component("Paginator",Paginator);
 
 const pinia = createPinia();
 app.use(pinia);

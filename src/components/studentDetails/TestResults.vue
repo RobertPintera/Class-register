@@ -7,10 +7,15 @@ import type { DatasetTestResults } from '@/models/DatasetTestResults';
 const registerStore = useRegisterStore();
 const props = defineProps<{ studentId: string }>();
 
-const chartData = ref();
+const chartData = ref<{ labels: string[]; datasets: DatasetTestResults[] }>();
 const chartOptions = ref();
 
-const setChartData = () : { labels: string[]; datasets: DatasetTestResults[] } => {
+const currentPage = ref(0);
+const rowsPerPage = 4;
+const totalRecords = ref(0);
+
+
+const setChartData = () => {
   const studentScores = registerStore.grades
     .filter(g => g.studentId === props.studentId)
     .map(g => {
@@ -24,14 +29,20 @@ const setChartData = () : { labels: string[]; datasets: DatasetTestResults[] } =
       };
     });
 
-  return {
-    labels: studentScores.map(t => t.testName),
+  totalRecords.value = studentScores.length;
+
+  const start = currentPage.value * rowsPerPage;
+  const end = start + rowsPerPage;
+  const pageScores = studentScores.slice(start, end);
+
+  chartData.value = {
+    labels: pageScores.map(t => t.testName),
     datasets: [
       {
         label: 'Score',
-        data: studentScores.map(t => t.percentage),
-        originalScores: studentScores.map(t => t.score),
-        maxScores: studentScores.map(t => t.maxScore),
+        data: pageScores.map(t => t.percentage),
+        originalScores: pageScores.map(t => t.score),
+        maxScores: pageScores.map(t => t.maxScore),
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgb(34, 197, 94)',
         borderWidth: 1,
@@ -41,39 +52,41 @@ const setChartData = () : { labels: string[]; datasets: DatasetTestResults[] } =
 };
 
 const setChartOptions = () => {
-  return {
+  chartOptions.value = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        position: 'top',
-      },
+      legend: { position: 'top' },
       tooltip: {
         callbacks: {
           label: (ctx: TooltipItem<'bar'>) => {
             const dataset = ctx.dataset as DatasetTestResults;
             const index = ctx.dataIndex;
             return `${dataset.originalScores[index]} / ${dataset.maxScores[index]} points (${ctx.formattedValue}%)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
-      x: {
-        min: 0,
-        max: 100,
-      },
+      x: { min: 0, max: 100 },
     },
   };
 };
 
 const updateChart = () => {
-  chartData.value = setChartData();
-  chartOptions.value = setChartOptions();
+  setChartData();
+  setChartOptions();
 };
 
-onMounted(updateChart);
+onMounted(() => {
+  updateChart();
+});
+
+const onPageChange = (event: { page: number }) => {
+  currentPage.value = event.page;
+  setChartData();
+};
 </script>
 
 <template>
@@ -82,5 +95,6 @@ onMounted(updateChart);
     <div class="relative w-full h-[400px]">
       <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-full"/>
     </div>
+    <Paginator :rows="rowsPerPage" :totalRecords="totalRecords" :page="currentPage" @page="onPageChange"/>
   </div>
 </template>

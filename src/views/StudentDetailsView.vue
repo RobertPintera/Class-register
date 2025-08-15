@@ -40,7 +40,6 @@ function loadStudentData() {
     min: round2(getStudentMin(registerStore.grades, props.studentId, studentTests)),
     max: round2(getStudentMax(registerStore.grades, props.studentId, studentTests))
   };
-  console.log(individualPerformace)
 
   classPerformace.value = {
     weightedAverage: round2(getClassWeightedAverage(registerStore.grades, studentTests)),
