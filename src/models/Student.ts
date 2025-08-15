@@ -3,5 +3,4 @@ export interface Student{
   name: string;
   surname: string;
   gender: 'Male' | 'Female';
-  weightedAverage: number;
 }

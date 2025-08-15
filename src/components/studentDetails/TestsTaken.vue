@@ -17,10 +17,11 @@ const setChartData = () => {
 
   registerStore.tests.forEach(test => {
     const grade = registerStore.getGrade(props.studentId, test.id);
+    
 
     if (!grade) {
       notTaken++;
-    } else if (test.requiredScore && grade.score >= test.requiredScore) {
+    } else if (!test.requiredScore || grade.score >= test.requiredScore) {
       passed++;
     } else {
       failed++;
@@ -55,14 +56,19 @@ const setChartOptions = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        align: 'center',
+        position: 'bottom',
+        labels: {
+          usePointStyle: true,
+        },
       },
     },
+    layout: {
+      padding: 10,
+    },
     scales: {
-      y: {
-        min: 0,
-        max: 100,
-      },
+      x: { display: false },
+      y: { display: false },
     },
   };
 };

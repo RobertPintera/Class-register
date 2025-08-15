@@ -11,10 +11,10 @@ const registerStore = useRegisterStore();
 
 const visible = defineModel<boolean>('visible',{default: false});
 
-const initialValues  = reactive<Omit<Test, 'id'> & { isRequired: boolean }>({
+const initialValues  = reactive({
   name: '',
-  maxScore: 0,
-  weight: 1,
+  maxScore: null,
+  weight: null,
   isRequired: false,
   requiredScore: null,
 });
@@ -69,7 +69,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="maxScore" name="maxScore" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.1" :allowEmpty="true"/>
+          <InputNumber id="maxScore" name="maxScore" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.1"/>
           <label for="maxScore">Max score</label>
         </FloatLabel>
         <Message v-if="$form.maxScore?.invalid" severity="error" size="small" variant="simple">{{ $form.maxScore.error?.message }}</Message>
@@ -90,7 +90,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
           <InputNumber id="requiredScore" name="requiredScore" class="w-60" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
           <label for="requiredScore">Min score</label>
         </FloatLabel>
-        <Message v-if="$form.weight?.invalid" severity="error" size="small" variant="simple">{{ $form.weight.error?.message }}</Message>
+        <Message v-if="$form.requiredScore?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredScore.error?.message }}</Message>
       </div>
 
       <div class="flex justify-end gap-2 mt-4">

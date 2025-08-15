@@ -63,7 +63,7 @@ const onRowSelect = (event: any) => {
     <Column field="weight" header="Weight">
       <template #body="{ data }">
         <div class="w-full h-full cursor-pointer px-3 py-4">
-          {{ data.name }}
+          {{ data.weight }}
         </div>
       </template>
       <template #filter="{ filterModel }">

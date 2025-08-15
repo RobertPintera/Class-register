@@ -1,32 +1,37 @@
 <script setup lang="ts">
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, onMounted, ref } from 'vue';
+import type { TooltipItem } from 'chart.js';
+import type { DatasetTestResults } from '@/models/DatasetTestResults';
 
 const registerStore = useRegisterStore();
+const props = defineProps<{ studentId: string }>();
 
 const chartData = ref();
 const chartOptions = ref();
 
-const studentScores = computed(() => {
-  return registerStore.grades
-    .map(grade => {
-      const test = registerStore.tests.find(t => t.id === grade.testId);
-      if (!test) return null;
-      return { testName: test.name, score: grade.score };
-    })
-    .filter((item): item is { testName: string; score: number } => item !== null);
-});
-
-const setChartData = () => {
-  const labels = studentScores.value.map(t => t.testName);
-  const data = studentScores.value.map(t => t.score);
+const setChartData = () : { labels: string[]; datasets: DatasetTestResults[] } => {
+  const studentScores = registerStore.grades
+    .filter(g => g.studentId === props.studentId)
+    .map(g => {
+      const test = registerStore.tests.find(t => t.id === g.testId);
+      const max = test?.maxScore ?? 100;
+      return {
+        testName: test?.name ?? 'Unknown Test',
+        score: g.score,
+        maxScore: max,
+        percentage: (g.score / max) * 100
+      };
+    });
 
   return {
-    labels,
+    labels: studentScores.map(t => t.testName),
     datasets: [
       {
         label: 'Score',
-        data: data,
+        data: studentScores.map(t => t.percentage),
+        originalScores: studentScores.map(t => t.score),
+        maxScores: studentScores.map(t => t.maxScore),
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgb(34, 197, 94)',
         borderWidth: 1,
@@ -44,9 +49,18 @@ const setChartOptions = () => {
       legend: {
         position: 'top',
       },
+      tooltip: {
+        callbacks: {
+          label: (ctx: TooltipItem<'bar'>) => {
+            const dataset = ctx.dataset as DatasetTestResults;
+            const index = ctx.dataIndex;
+            return `${dataset.originalScores[index]} / ${dataset.maxScores[index]} points (${ctx.formattedValue}%)`;
+          }
+        }
+      }
     },
     scales: {
-      y: {
+      x: {
         min: 0,
         max: 100,
       },

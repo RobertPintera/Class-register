@@ -6,5 +6,8 @@ import Card from '../core/Card.vue';
 <template>
   <Card>
     <h3>Test Results - Data Table</h3>
+    <DataTable>
+      
+    </DataTable>
   </Card>  
 </template>
