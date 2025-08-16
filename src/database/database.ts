@@ -82,7 +82,7 @@ export class Database extends Dexie {
         { studentId: students[4].id, testId: tests[2].id, points: 21 },
 
         { studentId: students[5].id, testId: tests[2].id, points: 22 },
-        { studentId: students[5].id, testId: tests[4].id, points: 15 },
+        { studentId: students[5].id, testId: tests[4].id, points: 10 },
 
         { studentId: students[6].id, testId: tests[3].id, points: 28 },
         { studentId: students[6].id, testId: tests[6].id, points: 35 },

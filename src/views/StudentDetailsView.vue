@@ -61,11 +61,11 @@ onMounted(() => {
     <div v-if="student" class="grid grid-cols-4 auto-rows-auto w-full">
       <PersonalData :name="student?.name" :surname="student?.surname" :gender="student?.gender" class="col-span-2"/>
       <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="col-start-3"/>
-      <TestsTaken :studentId="student?.id" class="col-start-4"/>
+      <TestsTaken :student-id="student?.id" class="col-start-4"/>
       <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-2"/>
       <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-2"/>
-      <TestResults :studentId="student?.id" class="col-span-2 row-start-3"/>
-      <TestResultsDatatable class="col-span-2 col-start-3 row-start-3"/>
+      <TestResults :student-id="student?.id" class="col-span-2 row-start-3"/>
+      <TestResultsDatatable :student-id="student?.id" class="col-span-2 col-start-3 row-start-3"/>
     </div>
   </div>
   
