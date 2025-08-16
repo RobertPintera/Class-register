@@ -13,7 +13,7 @@
   --color-sidebar-background: #ced9ff;
   --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
-  --color-primary-select: var(--color-sky-100);
+  --color-primary-select: #f1f5f9;
 }
 
 @layer base {
@@ -44,5 +44,42 @@
   .card {
     @apply bg-white shadow m-4 p-4 rounded-lg border-2 border-primary-border;
   }
-}
 
+    /* ----- Datatable from PrimeVue ----- */
+  .custom-table{
+    --p-datatable-body-cell-padding: 0rem 0rem;
+    @apply w-[100%];
+  }
+
+  .p-datatable .p-paginator{
+    @apply border-t border-[var(--p-datatable-border-color)];
+  }
+
+  .p-datatable-header{
+    @apply border border-b-0 border-[var(--p-datatable-border-color)];
+  }
+
+  .p-datatable-header-cell{
+    @apply border-r border-t border-[var(--p-datatable-border-color)];
+  }
+
+  .p-datatable-header-cell:last-child {
+    @apply border-r-0;
+  }
+
+  .p-datatable-paginator-bottom {
+    @apply border border-t-0 border-[var(--p-datatable-border-color)];
+  }
+
+  .p-datatable-tbody > tr > td {
+    @apply border-r border-[var(--p-datatable-border-color)];
+  }
+
+  .p-datatable-tbody > tr > td:last-child {
+    @apply border-r-0;
+  }
+
+  .p-datatable-table-container {
+    @apply border-l border-r border-[var(--p-datatable-border-color)];
+  }
+}

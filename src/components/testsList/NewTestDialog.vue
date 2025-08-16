@@ -13,10 +13,10 @@ const visible = defineModel<boolean>('visible',{default: false});
 
 const initialValues  = reactive({
   name: '',
-  maxScore: null,
+  maxPoints: null,
   weight: null,
   isRequired: false,
-  requiredScore: null,
+  requiredPoints: null,
 });
 
 const cancel = () => {
@@ -26,12 +26,12 @@ const cancel = () => {
 const resolver = ref(zodResolver(
   z.object({
     name: z.string("Name is required").min(1, "Name is required"),
-    maxScore: z.number({ message: "Max Score is required" })
+    maxPoints: z.number({ message: "Max Score is required" })
       .min(1, "Max Score must be at least 1"),
     weight: z.number({ message: "Weight is required" })
       .min(0, "Weight must be at least 0"),
     isRequired: z.boolean(),
-    requiredScore: z.number("Required Score must be at least 0")
+    requiredPoints: z.number("Required Score must be at least 0")
       .min(0, "Required Score must be at least 0")
       .nullable()
   })
@@ -41,9 +41,9 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
   if (event.valid) {
     const values = {
       name: event.states.name.value,
-      maxScore: event.states.maxScore.value,
+      maxPoints: event.states.maxPoints.value,
       weight: event.states.weight.value,
-      requiredScore: event.states.isRequired.value ? event.states.requiredScore.value : null
+      requiredPoints: event.states.isRequired.value ? event.states.requiredPoints.value : null
     };
 
     if(isTestData(values)){
@@ -69,10 +69,10 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="maxScore" name="maxScore" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.1"/>
-          <label for="maxScore">Max score</label>
+          <InputNumber id="maxPoints" name="maxPoints" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.1"/>
+          <label for="maxPoints">Max score</label>
         </FloatLabel>
-        <Message v-if="$form.maxScore?.invalid" severity="error" size="small" variant="simple">{{ $form.maxScore.error?.message }}</Message>
+        <Message v-if="$form.maxPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.maxPoints.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
@@ -87,10 +87,10 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="requiredScore" name="requiredScore" class="w-60" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
-          <label for="requiredScore">Min score</label>
+          <InputNumber id="requiredPoints" name="requiredPoints" class="w-60" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
+          <label for="requiredPoints">Min score</label>
         </FloatLabel>
-        <Message v-if="$form.requiredScore?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredScore.error?.message }}</Message>
+        <Message v-if="$form.requiredPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredPoints.error?.message }}</Message>
       </div>
 
       <div class="flex justify-end gap-2 mt-4">

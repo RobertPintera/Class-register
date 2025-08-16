@@ -11,8 +11,8 @@ export function round2(num: number) {
 
 export function getTestAverage(grades: Grade[], testId: string): number {
   const scores: number[] = grades
-    .filter(g => g.testId === testId && g.score !== undefined)
-    .map(g => g.score);
+    .filter(g => g.testId === testId && g.points !== undefined)
+    .map(g => g.points);
 
   if (!scores.length) return 0;
   return scores.reduce((a, b) => a + b, 0) / scores.length;
@@ -21,7 +21,7 @@ export function getTestAverage(grades: Grade[], testId: string): number {
 export function getTestMedian(grades: Grade[], testId: string): number {
   const scores: number[] = grades
     .filter(g => g.testId === testId)
-    .map(g => g.score)
+    .map(g => g.points)
     .sort((a, b) => a - b);
 
   if (!scores.length) return 0;
@@ -35,7 +35,7 @@ export function getTestMedian(grades: Grade[], testId: string): number {
 export function getTestStandardDeviation(grades: Grade[], testId: string) {
   const scores = grades
     .filter(g => g.testId === testId)
-    .map(g => g.score);
+    .map(g => g.points);
 
   if (!scores.length) return 0;
 
@@ -58,7 +58,7 @@ export function getStudentWeightedAverage(grades: Grade[], tests: Test[], studen
   for (const g of studentGrades) {
     const test = tests.find(t => t.id === g.testId);
     if (test && test.weight > 0) {
-      weightedSum += (g.score / test.maxScore) * test.weight;
+      weightedSum += (g.points / test.maxPoints) * test.weight;
       totalWeight += test.weight;
     }
   }
@@ -68,12 +68,12 @@ export function getStudentWeightedAverage(grades: Grade[], tests: Test[], studen
 
 export function getStudentMedian(grades: Grade[], tests: Test[], studentId: string): number{
   const scores = grades
-      .filter(g => g.studentId === studentId)
-      .map(g => {
-        const test = tests.find(t => t.id === g.testId);
-        return test && test.maxScore > 0 ? (g.score / test.maxScore) * 100 : 0;
-      })
-      .sort((a, b) => a - b);
+    .filter(g => g.studentId === studentId)
+    .map(g => {
+      const test = tests.find(t => t.id === g.testId);
+      return test && test.maxPoints > 0 ? (g.points / test.maxPoints) * 100 : 0;
+    })
+    .sort((a, b) => a - b);
 
   if (!scores.length) return 0;
 
@@ -88,7 +88,7 @@ export function getStudentStandardDeviation(grades: Grade[], tests: Test[], stud
     .filter(g => g.studentId === studentId)
     .map(g => {
       const test = tests.find(t => t.id === g.testId);
-      return test && test.maxScore > 0 ? (g.score / test.maxScore) * 100 : 0;
+      return test && test.maxPoints > 0 ? (g.points / test.maxPoints) * 100 : 0;
     });
 
   if (!scores.length) return 0;
@@ -105,8 +105,8 @@ export function getStudentMin(grades: Grade[], studentId: string, tests: Test[])
     .filter(g => g.studentId === studentId)
     .map(g => {
       const test = tests.find(t => t.id === g.testId);
-      if (!test || test.maxScore === 0) return 0;
-      return (g.score / test.maxScore) * 100;
+      if (!test || test.maxPoints === 0) return 0;
+      return (g.points / test.maxPoints) * 100;
     });
 
   return studentGrades.length ? Math.min(...studentGrades) : 0;
@@ -117,8 +117,8 @@ export function getStudentMax(grades: Grade[], studentId: string, tests: Test[])
     .filter(g => g.studentId === studentId)
     .map(g => {
       const test = tests.find(t => t.id === g.testId);
-      if (!test || test.maxScore === 0) return 0;
-      return (g.score / test.maxScore) * 100;
+      if (!test || test.maxPoints === 0) return 0;
+      return (g.points / test.maxPoints) * 100;
     });
 
   return studentGrades.length ? Math.max(...studentGrades) : 0;
@@ -139,7 +139,7 @@ export function getClassWeightedAverage(
     if (testGrades.length === 0) continue;
 
     // Wynik procentowy dla całej klasy w danym teście
-    const avgPercentage = testGrades.reduce((sum, g) => sum + (g.score / test.maxScore) * 100, 0) / testGrades.length;
+    const avgPercentage = testGrades.reduce((sum, g) => sum + (g.points / test.maxPoints) * 100, 0) / testGrades.length;
 
     totalWeightedScore += avgPercentage * test.weight;
     totalWeight += test.weight;
@@ -153,8 +153,8 @@ export function getClassMedian(grades: Grade[], tests: Test[]): number {
 
   const scores = grades.map(g => {
     const test = tests.find(t => t.id === g.testId);
-    if (!test || test.maxScore === 0) return 0;
-    return (g.score / test.maxScore) * 100;
+    if (!test || test.maxPoints === 0) return 0;
+    return (g.points / test.maxPoints) * 100;
   }).sort((a, b) => a - b);
 
   const mid = Math.floor(scores.length / 2);
@@ -169,8 +169,8 @@ export function getClassStandardDeviation(grades: Grade[], tests: Test[]): numbe
 
   const normalizedScores = grades.map(g => {
     const test = tests.find(t => t.id === g.testId);
-    if (!test || test.maxScore === 0) return 0;
-    return (g.score / test.maxScore) * 100;
+    if (!test || test.maxPoints === 0) return 0;
+    return (g.points / test.maxPoints) * 100;
   });
 
   const mean = normalizedScores.reduce((sum, s) => sum + s, 0) / normalizedScores.length;
@@ -184,8 +184,8 @@ export function getClassMin(grades: Grade[], tests: Test[]): number {
     .filter(g => tests.some(t => t.id === g.testId))
     .map(g => {
       const test = tests.find(t => t.id === g.testId);
-      if (!test || test.maxScore === 0) return 0;
-      return (g.score / test.maxScore) * 100;
+      if (!test || test.maxPoints === 0) return 0;
+      return (g.points / test.maxPoints) * 100;
     });
 
   return relevantGrades.length ? Math.min(...relevantGrades) : 0;
@@ -196,8 +196,8 @@ export function getClassMax(grades: Grade[], tests: Test[]): number {
     .filter(g => tests.some(t => t.id === g.testId))
     .map(g => {
       const test = tests.find(t => t.id === g.testId);
-      if (!test || test.maxScore === 0) return 0;
-      return (g.score / test.maxScore) * 100;
+      if (!test || test.maxPoints === 0) return 0;
+      return (g.points / test.maxPoints) * 100;
     });
 
   return relevantGrades.length ? Math.max(...relevantGrades) : 0;

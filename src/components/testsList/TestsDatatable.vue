@@ -76,40 +76,7 @@ const onRowSelect = (event: any) => {
 <style scoped>
   @reference "@/assets/main.css";
 
-  .custom-table{
-  	--p-datatable-body-cell-padding: 0rem 0rem;
-    @apply w-[100%];
-  }
-
-  :deep(.p-paginator){
-    @apply border-t border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header){
-    @apply border border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header-cell){
-    @apply border-r border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header-cell:last-child) {
-    @apply border-r-0;
-  }
-
-  :deep(.p-datatable-paginator-bottom) {
-    @apply border border-t-0 border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-tbody > tr > td) {
-    @apply border-r border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-tbody > tr > td:last-child) {
-    @apply border-r-0;
-  }
-
   :deep(.p-datatable-table-container)	{
-    @apply min-h-[500px] h-[56vh] border-l border-r border-[var(--p-datatable-border-color)];
+    @apply min-h-[500px] h-[56vh];
   }
 </style>

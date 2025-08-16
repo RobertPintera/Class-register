@@ -1,7 +1,7 @@
 export interface Test {
   id: string;
   name: string;
-  maxScore: number;
+  maxPoints: number;
   weight: number;
-  requiredScore: number | null;
+  requiredPoints: number | null;
 }

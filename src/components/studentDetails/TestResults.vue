@@ -20,12 +20,12 @@ const setChartData = () => {
     .filter(g => g.studentId === props.studentId)
     .map(g => {
       const test = registerStore.tests.find(t => t.id === g.testId);
-      const max = test?.maxScore ?? 100;
+      const max = test?.maxPoints ?? 100;
       return {
         testName: test?.name ?? 'Unknown Test',
-        score: g.score,
+        score: g.points,
         maxScore: max,
-        percentage: (g.score / max) * 100
+        percentage: (g.points / max) * 100
       };
     });
 

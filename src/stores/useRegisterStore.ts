@@ -92,8 +92,8 @@ export const useRegisterStore = defineStore('register', () => {
     const updatedGrade: Grade = { ...grade };
     const existingGrade = grades.value.find(g => g.studentId === updatedGrade.studentId && g.testId === updatedGrade.testId);
     if (existingGrade) {
-      existingGrade.score = updatedGrade.score;
-      await db.updateGrade(existingGrade.testId, existingGrade.studentId, {score: existingGrade.score});
+      existingGrade.points = updatedGrade.points;
+      await db.updateGrade(existingGrade.testId, existingGrade.studentId, {points: existingGrade.points});
     } else {
       grades.value.push(updatedGrade);
       await db.addGrade(updatedGrade);
@@ -173,7 +173,7 @@ export const useRegisterStore = defineStore('register', () => {
         const grade = grades.value.find(
           g => g.studentId === student.id && g.testId === test.id
         );
-        row[test.id] = grade ? grade.score : -1;
+        row[test.id] = grade ? grade.points : -1;
       }
 
       return row;

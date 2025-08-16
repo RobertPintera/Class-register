@@ -35,6 +35,12 @@ const CustomPreset = definePreset(Aura, {
 app.use(PrimeVue, {
   theme: {
     preset: CustomPreset,
+    options: {
+      cssLayer: {
+        name: 'primevue',
+        order: 'theme, base, primevue'
+      }
+    }
   }
 });
 

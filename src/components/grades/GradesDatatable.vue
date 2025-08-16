@@ -57,7 +57,7 @@ const onCellClick = (studentId: string, testId: string) => {
 </script>
     
 <template>
-  <DataTable :value="registerStore.studentGrades" editMode="cell" showGridlines class="custom-table" 
+  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" 
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     :filters="filters" filterDisplay="menu">
     <template #header>
@@ -93,7 +93,7 @@ const onCellClick = (studentId: string, testId: string) => {
          <div
           class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition"
           @click="onCellClick(data.studentId, col.field)">
-          {{ registerStore.getGrade(data.studentId, col.field)?.score ?? '-' }}
+          {{ registerStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
         </div>
       </template>
       <template #filter="{ filterModel }">
@@ -112,45 +112,7 @@ const onCellClick = (studentId: string, testId: string) => {
 <style scoped>
   @reference "@/assets/main.css";
 
-  .custom-table{
-  	--p-datatable-body-cell-padding: 0rem 0rem;
-    @apply w-[100%];
-  }
-
-  .p-datatable {
-    @apply m-1;
-  }
-
-  :deep(.p-paginator){
-    @apply border-t border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header){
-    @apply border border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header-cell){
-    @apply border-r border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-header-cell:last-child) {
-    @apply border-r-0;
-  }
-
-  :deep(.p-datatable-paginator-bottom) {
-    @apply border border-t-0 border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-tbody > tr > td) {
-    @apply border-r border-[var(--p-datatable-border-color)];
-  }
-
-  :deep(.p-datatable-tbody > tr > td:last-child) {
-    @apply border-r-0;
-  }
-
-
   :deep(.p-datatable-table-container)	{
-    @apply min-h-[500px] h-[60vh] border-l border-r border-[var(--p-datatable-border-color)];
+    @apply min-h-[500px] h-[60vh];
   }
 </style>

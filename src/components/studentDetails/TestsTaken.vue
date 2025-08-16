@@ -21,7 +21,7 @@ const setChartData = () => {
 
     if (!grade) {
       notTaken++;
-    } else if (!test.requiredScore || grade.score >= test.requiredScore) {
+    } else if (!test.requiredPoints || grade.points >= test.requiredPoints) {
       passed++;
     } else {
       failed++;
