@@ -6,7 +6,7 @@ import { onMounted, ref } from 'vue';
 
 const store = useRegisterStore();
 
-const sidebarVisible = ref(false);
+const sidebarVisible = ref(true);
 const isLargeScreen = ref(window.innerWidth >= 1280);
 
 const updateScreen = () => {

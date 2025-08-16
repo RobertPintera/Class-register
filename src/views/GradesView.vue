@@ -4,15 +4,13 @@ import GradesDatatable from '@/components/grades/GradesDatatable.vue';
 </script>
 
 <template>
-  <h2 class="m-4">Grades</h2>
-  <Card>
-    <h3>List of grades</h3>
-    <div class="flex justify-center">
-      <GradesDatatable />
-    </div>
-  </Card>
+  <h2 class="title-section">Grades</h2>
+  <div class="cards-section">
+    <Card>
+      <h3>List of grades</h3>
+      <div class="flex justify-center">
+        <GradesDatatable />
+      </div>
+    </Card>
+  </div>
 </template>
-
-<style scoped>
-
-</style>

@@ -26,7 +26,7 @@ const items = ref([
 <template>
   <nav class="fixed w-64 flex flex-col overflow-auto transition-all duration-500 ease-in-out z-30"
       :class="{
-        'card h-[calc(100vh-6rem)] top-16': isLargeScreen,
+        'card m-4 h-[calc(100vh-6rem)] top-16': isLargeScreen,
         'bg-white h-full top-0 p-4': !isLargeScreen,
         'left-[-18rem]': !visible,
         'left-0': visible

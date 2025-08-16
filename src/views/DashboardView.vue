@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h2 class="m-4">Dashboard</h2>
+  <h2 class="title-section">Dashboard</h2>
   <div class="card">
     <h3>Performance</h3>
     <h4>Weighted Average:</h4>
