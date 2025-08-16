@@ -7,8 +7,9 @@ export function isTestData(obj: any): obj is Omit<Test, 'id'> {
     typeof obj === 'object' &&
     obj !== null &&
     typeof obj.name === 'string' &&
-    typeof obj.maxScore === 'number' &&
-    typeof obj.weight === 'number'
+    typeof obj.maxPoints === 'number' &&
+    typeof obj.weight === 'number' &&
+    (typeof obj.requiredPoints === 'number' || obj.requiredPoints === null)
   );
 }
 

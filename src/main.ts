@@ -5,7 +5,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, Paginator, ProgressSpinner, Ripple, Select, SelectButton, ToggleSwitch, Toolbar } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, ConfirmationService, ConfirmDialog, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, Paginator, ProgressSpinner, Ripple, Select, SelectButton, Toast, ToastService, ToggleSwitch, Toolbar } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
@@ -45,6 +45,8 @@ app.use(PrimeVue, {
 });
 
 app.directive('ripple', Ripple);
+app.use(ConfirmationService);
+app.use(ToastService);
 app.component('Menubar', Menubar);
 app.component('Button', Button);
 app.component('DataTable', DataTable);
@@ -74,6 +76,8 @@ app.component("MeterGroup",MeterGroup);
 app.component("SelectButton",SelectButton);
 app.component("Checkbox",Checkbox);
 app.component("Paginator",Paginator);
+app.component('ConfirmDialog', ConfirmDialog)
+app.component('Toast',Toast);
 
 const pinia = createPinia();
 app.use(pinia);

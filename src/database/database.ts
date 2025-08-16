@@ -32,6 +32,71 @@ export class Database extends Dexie {
     this.settings = this.table("settings");
   }
 
+  async createDemoData(){
+    await this.transaction("rw", this.students, this.tests, this.grades, async () => {
+      await this.students.clear();
+      await this.tests.clear();
+      await this.grades.clear();
+
+      const students: Student[] = [
+        { id: uuidv4(), name: "Jan", surname: "Kowalski", gender: "Male" },
+        { id: uuidv4(), name: "John", surname: "Smith", gender: "Male" },
+        { id: uuidv4(), name: "William", surname: "Brown", gender: "Male" },
+        { id: uuidv4(), name: "Daniel", surname: "Novak", gender: "Male" },
+        { id: uuidv4(), name: "Katarzyna", surname: "Wiśniewska", gender: "Female" },
+        { id: uuidv4(), name: "Emily", surname: "Johnson", gender: "Female" },
+        { id: uuidv4(), name: "Sofia", surname: "Rossi", gender: "Female" },
+        { id: uuidv4(), name: "Maria", surname: "Silva", gender: "Female" },
+      ];
+
+      const tests: Test[] = [
+        { id: uuidv4(), name: "Math - Algebra", maxPoints: 20, weight: 2, requiredPoints: 10 },
+        { id: uuidv4(), name: "English - Grammar", maxPoints: 15, weight: 1, requiredPoints: 8 },
+        { id: uuidv4(), name: "History - Ancient Rome", maxPoints: 25, weight: 3, requiredPoints: null },
+        { id: uuidv4(), name: "Science - Physics Basics", maxPoints: 30, weight: 2, requiredPoints: 15 },
+        { id: uuidv4(), name: "Geography - Europe", maxPoints: 20, weight: 1, requiredPoints: 12 },
+        { id: uuidv4(), name: "Biology - Human Body", maxPoints: 25, weight: 2, requiredPoints: 14 },
+        { id: uuidv4(), name: "Computer Science - Basics", maxPoints: 40, weight: 3, requiredPoints: 20 },
+      ];
+
+      const grades: Grade[] = [
+        { studentId: students[0].id, testId: tests[0].id, points: 15 },
+        { studentId: students[0].id, testId: tests[1].id, points: 10 },
+        { studentId: students[0].id, testId: tests[2].id, points: 20 },
+        { studentId: students[0].id, testId: tests[3].id, points: 16 },
+        { studentId: students[0].id, testId: tests[4].id, points: 16 },
+        { studentId: students[0].id, testId: tests[5].id, points: 17 },
+        { studentId: students[0].id, testId: tests[6].id, points: 32 },
+
+        { studentId: students[1].id, testId: tests[0].id, points: 18 },
+        { studentId: students[1].id, testId: tests[2].id, points: 20 },
+        { studentId: students[1].id, testId: tests[5].id, points: 19 },
+
+        { studentId: students[2].id, testId: tests[3].id, points: 25 },
+        { studentId: students[2].id, testId: tests[6].id, points: 30 },
+
+        { studentId: students[3].id, testId: tests[0].id, points: 12 },
+        { studentId: students[3].id, testId: tests[1].id, points: 14 },
+
+        { studentId: students[4].id, testId: tests[1].id, points: 14 },
+        { studentId: students[4].id, testId: tests[2].id, points: 21 },
+
+        { studentId: students[5].id, testId: tests[2].id, points: 22 },
+        { studentId: students[5].id, testId: tests[4].id, points: 15 },
+
+        { studentId: students[6].id, testId: tests[3].id, points: 28 },
+        { studentId: students[6].id, testId: tests[6].id, points: 35 },
+
+        { studentId: students[7].id, testId: tests[0].id, points: 16 },
+        { studentId: students[7].id, testId: tests[5].id, points: 20 },
+      ];
+
+      await db.students.bulkAdd(students);
+      await db.tests.bulkAdd(tests);
+      await db.grades.bulkAdd(grades);
+    });
+  }
+
   // ========== Students ==========
   async getAllStudents(): Promise<Student[]> {
     return this.students.toArray();

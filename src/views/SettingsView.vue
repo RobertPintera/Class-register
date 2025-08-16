@@ -4,9 +4,12 @@ import GradingScaleDatatable from '@/components/settings/GradingScaleDatatable.v
 import NewGradeThresholdDialog from '@/components/settings/NewGradeThresholdDialog.vue';
 import SelectSystemDialog from '@/components/settings/SelectSystemDialog.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useConfirm, useToast } from 'primevue';
 import { onMounted, ref, watch } from 'vue';
 
 const registerStore = useRegisterStore();
+const confirm = useConfirm();
+const toast = useToast();
 
 const selectedEditGrade = ref<{ name: string, code: string }>();
 const editGradesOption = ref([
@@ -31,6 +34,41 @@ watch(selectedEditGrade, () => {
     registerStore.updateSettings({ editWithDialog: false });
   }
 }, { deep: true });
+
+const loadDemoDataDialog = () => {
+  confirm.require({
+    message: 'Are you sure you want to proceed? Previous data will be deleted.',
+    header: 'Load demo data',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Load'
+    },
+    accept: async () => {
+      try {
+        await registerStore.loadDemoData();
+        toast.add({ 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'Demo data was loaded', 
+          life: 3000 
+        });
+      } catch (err) {
+        toast.add({ 
+          severity: 'danger', 
+          summary: 'Error', 
+          detail: 'Failed to load demo data', 
+          life: 3000 
+        });
+      }
+    },
+  });
+};
+
 </script>
 
 <template>
@@ -54,6 +92,22 @@ watch(selectedEditGrade, () => {
       </div>
       <GradingScaleDatatable />
     </Card>
+    <div class="grid grid-cols-2 grid-rows-1">
+      <Card class="flex flex-col gap-4">
+        <h3>Import</h3>
+        <div class="flex flex-col gap-1">
+          <h4>Load demo data</h4>
+          <Button label="Load" class="w-fit"  @click="loadDemoDataDialog()"/>
+        </div>
+        <div class="flex flex-col gap-1">
+          <h4>Load data from device</h4>
+          <Button label="Load" class="w-fit"/>
+        </div>
+      </Card>
+      <Card>
+        <h3>Export</h3>
+      </Card>
+    </div>
   </div>
   <SelectSystemDialog v-model:visible="showSelectSystemDialog" />
   <NewGradeThresholdDialog v-model:visible="showNewGradeThresholdDialog" />

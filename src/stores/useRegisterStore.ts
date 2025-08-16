@@ -30,6 +30,23 @@ export const useRegisterStore = defineStore('register', () => {
     tests.value = await db.getAllTests();
     grades.value = await db.getAllGrades();
 
+    await new Promise(resolve => setTimeout(resolve, 500));
+    isLoading.value = false;
+  };
+
+  const loadDemoData = async () => {
+    if (isLoading.value) return;
+    isLoading.value = true;
+
+    await db.createDemoData();
+    
+    thresholds.value = await db.getGradeThresholds();
+    settings.value = await db.getSettings();
+    students.value = await db.getAllStudents();
+    tests.value = await db.getAllTests();
+    grades.value = await db.getAllGrades();
+
+    await new Promise(resolve => setTimeout(resolve, 500));
     isLoading.value = false;
   };
 
@@ -184,7 +201,7 @@ export const useRegisterStore = defineStore('register', () => {
     students, tests, grades, thresholds, settings,
     isLoading,
     testColumns, studentGrades,
-    loadData,
+    loadData, loadDemoData,
     addStudent, updateStudent, deleteStudent, getStudent,
     addTest, updateTest, deleteTest, getTest,
     updateGrade, deleteGrade, getGrade,

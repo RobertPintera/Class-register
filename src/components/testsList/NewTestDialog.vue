@@ -47,7 +47,6 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isTestData(values)){
-      console.log(values)
       registerStore.addTest(values);
       cancel();
     } else {

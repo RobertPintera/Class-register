@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useRegisterStore } from '@/stores/useRegisterStore';
 import Card from '../core/Card.vue';
+
+const registerStore = useRegisterStore();
 
 </script>
 

@@ -36,7 +36,6 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       name: event.states.name.value,
       surname: event.states.surname.value,
       gender: event.states.gender.value,
-      weightedAverage: 0
     };
 
     if(isStudentData(values)){

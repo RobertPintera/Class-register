@@ -62,6 +62,8 @@ const toggleSidebar = () => {
       <router-view /> 
     </div>
   </div>
+  <ConfirmDialog />
+  <Toast />
 </template>
 
 <style scoped>
