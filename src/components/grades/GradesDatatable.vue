@@ -14,9 +14,7 @@ const dialogVisible = ref(false);
 const filters = ref<Record<string, AdvancedFilter>>({});
 
 const initFilters = () =>  {
-  filters.value = {
-    fullName: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
-  };
+  filters.value['fullName'] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]};
 
   for (const col of registerStore.testColumns) {
     if (!filters.value[col.field]) {
@@ -87,12 +85,16 @@ const checkPointsRangeOfTest = (points: number, maxPoints: number): boolean => {
   return points >= 0 && points <= maxPoints;
 };
 
+const getTooltip = (testId: string) => {
+  const test = registerStore.getTest(testId);
+  return test ? `Number must be between 0 and ${test.maxPoints}` : 'No test info';
+};
 </script>
     
 <template>
   <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" 
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-    :filters="filters" filterDisplay="menu"
+    v-model:filters="filters" filterDisplay="menu"
     @cell-edit-complete="onCellEditComplete">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -127,7 +129,8 @@ const checkPointsRangeOfTest = (points: number, maxPoints: number): boolean => {
         </div>
       </template>
       <template v-if="!editWithDialog" #editor="{ data, field }">
-        <InputNumber v-model="data[field]" :min="0" autofocus fluid :allowEmpty="true" :defaultValue="data[field] === -1 ? null : data[field]"/>
+        <InputNumber v-model="data[field]" :min="0" autofocus fluid :allowEmpty="true" 
+        :defaultValue="data[field] === -1 ? null : data[field]" v-tooltip.focus.top="getTooltip(field)"/>
       </template>
       <template #filter="{ filterModel }">
         <InputNumber v-model="filterModel.value"/>

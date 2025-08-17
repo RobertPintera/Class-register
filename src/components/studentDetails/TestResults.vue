@@ -3,6 +3,7 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
+import Card from '../core/Card.vue';
 
 const registerStore = useRegisterStore();
 const props = defineProps<{ studentId: string }>();
@@ -90,11 +91,17 @@ const onPageChange = (event: { page: number }) => {
 </script>
 
 <template>
-   <div class="card flex-1 min-w-64 h-fit">
-    <h3>Test Results</h3>
-    <div class="relative w-full h-[400px]">
-      <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-full"/>
-    </div>
-    <Paginator :rows="rowsPerPage" :totalRecords="totalRecords" :page="currentPage" @page="onPageChange"/>
-  </div>
+  <Card>
+    <template #header>
+      <h3>Test Results</h3>
+    </template>
+    <template #body>
+      <div class="flex-1 min-w-64 h-fit">
+        <div class="relative w-full h-[400px]">
+          <Chart type="bar" :data="chartData" :options="chartOptions" class="w-full h-full"/>
+        </div>
+        <Paginator :rows="rowsPerPage" :totalRecords="totalRecords" :page="currentPage" @page="onPageChange"/>
+      </div>
+    </template>
+  </Card>
 </template>

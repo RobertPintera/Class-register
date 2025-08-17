@@ -75,37 +75,53 @@ const loadDemoDataDialog = () => {
   <h2 class="title-section">Settings</h2>
   <div class="cards-section">
     <Card>
-      <h3>General</h3>
-      <div class="flex flex-col gap-4 mt-2">
-        <div class="flex items-center gap-4">
-          <h5>Editing grade:</h5>
-          <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
-            class="w-full md:w-56" />
+      <template #header>
+        <h3>General</h3>
+      </template>
+      <template #body>
+        <div class="flex flex-col gap-4 mt-2">
+          <div class="flex items-center gap-4">
+            <h5>Editing grade:</h5>
+            <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
+              class="w-full md:w-56" />
+          </div>
         </div>
-      </div>
+      </template>
     </Card>
     <Card>
-      <h3>Grading thresholds</h3>
-      <div class="mt-2 mb-4 flex justify-between">
-        <Button label="New" icon="pi pi-plus" @click="showNewGradeThresholdDialog = true" />
-        <Button variant="outlined" label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true" />
-      </div>
-      <GradingScaleDatatable />
+      <template #header>
+        <h3>Grading thresholds</h3>
+      </template>
+      <template #body>
+        <div class="mt-2 mb-4 flex justify-between">
+          <Button label="New" icon="pi pi-plus" @click="showNewGradeThresholdDialog = true" />
+          <Button variant="outlined" label="Select System" icon="pi pi-graduation-cap" @click="showSelectSystemDialog = true" />
+        </div>
+        <GradingScaleDatatable />
+      </template>
     </Card>
     <div class="grid grid-cols-2 grid-rows-1">
-      <Card class="flex flex-col gap-4">
-        <h3>Import</h3>
-        <div class="flex flex-col gap-1">
-          <h4>Load demo data</h4>
-          <Button label="Load" class="w-fit"  @click="loadDemoDataDialog()"/>
-        </div>
-        <div class="flex flex-col gap-1">
-          <h4>Load data from device</h4>
-          <Button label="Load" class="w-fit"/>
-        </div>
+      <Card>
+        <template #header>
+          <h3>Import</h3>
+        </template>
+        <template #body>
+          <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-1">
+              <h4>Load demo data</h4>
+              <Button label="Load" class="w-fit"  @click="loadDemoDataDialog()"/>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h4>Load data from device</h4>
+              <Button label="Load" class="w-fit"/>
+            </div>
+          </div>
+        </template>
       </Card>
       <Card>
-        <h3>Export</h3>
+        <template #header>
+          <h3>Export</h3>
+        </template>
       </Card>
     </div>
   </div>

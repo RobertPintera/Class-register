@@ -32,7 +32,7 @@ const onRowSelect = (event: any) => {
 <template>
   <DataTable :value="registerStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-    :filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
+    v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
     @rowSelect="onRowSelect" selectionMode="single">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">

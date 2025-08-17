@@ -36,21 +36,25 @@ const getSeverity = (status: boolean): string => {
 
 <template>
   <Card>
-    <h3>Test Results - Data Table</h3>
-    <DataTable :value="tableData">
-      <Column field="testName" header="Test">
-      </Column>
-      <Column field="points" header="Score">
-      </Column>
-      <Column field="percentage" header="Normalized Score (%)">
-      </Column>
-      <Column field="maxPoints" header="Max Points">
-      </Column>
-      <Column field="status" header="Status">
-        <template #body="{ data }">
-            <Tag :value="data.status ? 'pass' : 'failed'" :severity="getSeverity(data.status)" />
-        </template>
-      </Column>
-    </DataTable>
+    <template #header>
+      <h3>Test Results - Data Table</h3>
+    </template>
+    <template #body>
+      <DataTable :value="tableData">
+        <Column field="testName" header="Test">
+        </Column>
+        <Column field="points" header="Score">
+        </Column>
+        <Column field="percentage" header="Normalized Score (%)">
+        </Column>
+        <Column field="maxPoints" header="Max Points">
+        </Column>
+        <Column field="status" header="Status">
+          <template #body="{ data }">
+              <Tag :value="data.status ? 'pass' : 'failed'" :severity="getSeverity(data.status)" />
+          </template>
+        </Column>
+      </DataTable>
+    </template>
   </Card>  
 </template>
