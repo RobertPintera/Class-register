@@ -17,6 +17,7 @@ const initialValues  = reactive({
   weight: null,
   isRequired: false,
   requiredPoints: null,
+  isMandatory: false
 });
 
 const cancel = () => {
@@ -33,7 +34,8 @@ const resolver = ref(zodResolver(
     isRequired: z.boolean(),
     requiredPoints: z.number("Required Score must be at least 0")
       .min(0, "Required Score must be at least 0")
-      .nullable()
+      .nullable(),
+    isMandatory: z.boolean()
   })
 ));
 
@@ -43,7 +45,8 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       name: event.states.name.value,
       maxPoints: event.states.maxPoints.value,
       weight: event.states.weight.value,
-      requiredPoints: event.states.isRequired.value ? event.states.requiredPoints.value : null
+      requiredPoints: event.states.isRequired.value ? event.states.requiredPoints.value : null,
+      isMandatory: event.states.isRequired.value ? event.states.isMandatory.value : false
     };
 
     if(isTestData(values)){
@@ -90,6 +93,10 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
           <label for="requiredPoints">Min score</label>
         </FloatLabel>
         <Message v-if="$form.requiredPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredPoints.error?.message }}</Message>
+      </div>
+      <div class="flex items-center gap-2">
+        <Checkbox id="isMandatory" name="isMandatory" binary :disabled="!$form.isRequired?.value"/>
+        <label for="isMandatory">Required</label>
       </div>
 
       <div class="flex justify-end gap-2 mt-4">

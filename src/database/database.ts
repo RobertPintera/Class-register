@@ -50,13 +50,13 @@ export class Database extends Dexie {
       ];
 
       const tests: Test[] = [
-        { id: uuidv4(), name: "Math - Algebra", maxPoints: 20, weight: 2, requiredPoints: 10 },
-        { id: uuidv4(), name: "English - Grammar", maxPoints: 15, weight: 1, requiredPoints: 8 },
-        { id: uuidv4(), name: "History - Ancient Rome", maxPoints: 25, weight: 3, requiredPoints: null },
-        { id: uuidv4(), name: "Science - Physics Basics", maxPoints: 30, weight: 2, requiredPoints: 15 },
-        { id: uuidv4(), name: "Geography - Europe", maxPoints: 20, weight: 1, requiredPoints: 12 },
-        { id: uuidv4(), name: "Biology - Human Body", maxPoints: 25, weight: 2, requiredPoints: 14 },
-        { id: uuidv4(), name: "Computer Science - Basics", maxPoints: 40, weight: 3, requiredPoints: 20 },
+        { id: uuidv4(), name: "Math - Algebra", maxPoints: 20, weight: 2, requiredPoints: 10, isMandatory: true },
+        { id: uuidv4(), name: "English - Grammar", maxPoints: 15, weight: 1, requiredPoints: 8, isMandatory: true },
+        { id: uuidv4(), name: "History - Ancient Rome", maxPoints: 25, weight: 3, requiredPoints: null, isMandatory: true },
+        { id: uuidv4(), name: "Science - Physics Basics", maxPoints: 30, weight: 2, requiredPoints: 15, isMandatory: true },
+        { id: uuidv4(), name: "Geography - Europe", maxPoints: 20, weight: 1, requiredPoints: 12, isMandatory: true },
+        { id: uuidv4(), name: "Biology - Human Body", maxPoints: 25, weight: 2, requiredPoints: 14, isMandatory: true },
+        { id: uuidv4(), name: "Computer Science - Basics", maxPoints: 40, weight: 3, requiredPoints: 20, isMandatory: false },
       ];
 
       const grades: Grade[] = [

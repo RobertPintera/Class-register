@@ -5,8 +5,10 @@ import { onMounted, ref, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
+import type { Test } from '@/models/Test';
 
 const registerStore = useRegisterStore();
+const editWithDialog = ref<boolean>();
 
 const dialogVisible = ref(false);
 const filters = ref<Record<string, AdvancedFilter>>({});
@@ -24,6 +26,10 @@ const initFilters = () =>  {
 };
 
 initFilters();
+
+onMounted(() => {
+  editWithDialog.value = registerStore.settings?.editWithDialog;
+});
 
 watch(() => registerStore.testColumns, (columns) => {
   const columnFields = columns.map(c => c.field);
@@ -51,22 +57,46 @@ const clearFilter = () => {
 const editingGrade = ref<Pick<Grade, 'studentId' | 'testId'> | null>(null);
 
 const onCellClick = (studentId: string, testId: string) => {
+  if (!editWithDialog.value) return;
+  
   editingGrade.value = { studentId, testId };
   dialogVisible.value = true;
-};    
+};
+
+const onCellEditComplete = (event: any) => {
+  const { data, newValue, field } = event;
+
+  const grade: Grade = {
+    studentId: data.studentId,
+    testId: field,
+    points: newValue
+  };
+
+  const test: Test | undefined = registerStore.getTest(grade.testId);
+  if(!test) return;
+
+  if (newValue !== null && newValue !== undefined) {
+    if(!checkPointsRangeOfTest(grade.points,test.maxPoints)) return;
+    registerStore.updateGrade(grade);
+  } else {
+    registerStore.deleteGrade(grade.studentId, grade.testId);
+  }
+};
+
+const checkPointsRangeOfTest = (points: number, maxPoints: number): boolean => {
+  return points >= 0 && points <= maxPoints;
+};
+
 </script>
     
 <template>
   <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" 
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-    :filters="filters" filterDisplay="menu">
+    :filters="filters" filterDisplay="menu"
+    @cell-edit-complete="onCellEditComplete">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
-        <ButtonGroup>
-          <Button label="Export" icon="pi pi-file-export" />
-          <Button label="Import" icon="pi pi-file-import" />
-        </ButtonGroup>
       </div>
     </template>
     <template #empty>
@@ -95,6 +125,9 @@ const onCellClick = (studentId: string, testId: string) => {
           @click="onCellClick(data.studentId, col.field)">
           {{ registerStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
         </div>
+      </template>
+      <template v-if="!editWithDialog" #editor="{ data, field }">
+        <InputNumber v-model="data[field]" :min="0" autofocus fluid :allowEmpty="true" :defaultValue="data[field] === -1 ? null : data[field]"/>
       </template>
       <template #filter="{ filterModel }">
         <InputNumber v-model="filterModel.value"/>

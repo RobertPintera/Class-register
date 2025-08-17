@@ -4,4 +4,5 @@ export interface Test {
   maxPoints: number;
   weight: number;
   requiredPoints: number | null;
+  isMandatory: boolean;
 }
