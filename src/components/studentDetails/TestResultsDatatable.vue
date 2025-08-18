@@ -2,6 +2,7 @@
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import Card from '../core/Card.vue';
 import { computed } from 'vue';
+import { round2 } from '@/utility/mathUtils';
 
 const registerStore = useRegisterStore();
 const props = defineProps<{ studentId: string }>();
@@ -14,7 +15,7 @@ const tableData = computed(() => {
       if (!test) return null;
       const maxPoints = test.maxPoints;
       const requiredPoints = test.requiredPoints ?? 0;
-      const percentage = (g.points / maxPoints) * 100;
+      const percentage = round2((g.points / maxPoints) * 100);
       const status = g.points >= requiredPoints;
       return {
         testName: test?.name ?? 'Unknown Test',
@@ -58,3 +59,9 @@ const getSeverity = (status: boolean): string => {
     </template>
   </Card>  
 </template>
+
+<style scoped>
+  :deep(.p-datatable-table-container)	{
+    @apply max-h-[450px];
+  }
+</style>
