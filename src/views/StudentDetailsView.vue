@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ActionsStudent from '@/components/studentDetails/ActionsStudent.vue';
 import ComparisionClass from '@/components/studentDetails/ComparisionClass.vue';
 import FinalGradeResult from '@/components/studentDetails/FinalGradeResult.vue';
 import Performance from '@/components/studentDetails/Performance/Performance.vue';
@@ -9,7 +10,7 @@ import TestsTaken from '@/components/studentDetails/TestsTaken.vue';
 import type { Student } from '@/models/Student';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const registerStore = useRegisterStore();
 const props = defineProps<{ studentId: string }>();
@@ -22,7 +23,6 @@ const individualPerformace = ref<{weightedAverage: number; median: number; stand
 const classPerformace = ref<{weightedAverage: number; median: number; standardDeviation: number; min: number; max: number}>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
-
 
 function loadStudentData() {
   const s = registerStore.getStudent(props.studentId);
@@ -53,19 +53,27 @@ function loadStudentData() {
 onMounted(() => {
   loadStudentData();
 });
+
+watch(() => registerStore.students,() => {
+  const s = registerStore.getStudent(props.studentId);
+  if (!s) return;
+
+  student.value = s;
+}, { deep: true } );
 </script>
 
 <template>
   <h2 class="title-section">Student Details</h2>
   <div class="cards-section">
     <div v-if="student" class="grid grid-cols-4 auto-rows-auto w-full">
-      <PersonalData :name="student?.name" :surname="student?.surname" :gender="student?.gender" class="col-span-2"/>
-      <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="col-start-3"/>
-      <TestsTaken :student-id="student?.id" class="col-start-4"/>
-      <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-2"/>
-      <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-2"/>
-      <TestResults :student-id="student?.id" class="col-span-2 row-start-3"/>
-      <TestResultsDatatable :student-id="student?.id" class="col-span-2 col-start-3 row-start-3"/>
+      <PersonalData :name="student.name" :surname="student.surname" :gender="student.gender" class="col-span-2"/>
+      <ActionsStudent :student-id="studentId" class="col-span-2 col-start-1 row-start-2"/>
+      <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="row-span-2 col-start-3 row-start-1"/>
+      <TestsTaken :student-id="student.id" class="row-span-2 col-start-4 row-start-1"/>
+      <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-3"/>
+      <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-3"/>
+      <TestResults :student-id="student.id" class="col-span-2 row-start-4"/>
+      <TestResultsDatatable :student-id="student.id" class="col-span-2 col-start-3 row-start-4"/>
     </div>
   </div>
   

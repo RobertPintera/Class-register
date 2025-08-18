@@ -99,7 +99,6 @@ export function getStudentStandardDeviation(grades: Grade[], tests: Test[], stud
   return Math.sqrt(variance);
 }
 
-
 export function getStudentMin(grades: Grade[], studentId: string, tests: Test[]): number {
   const studentGrades = grades
     .filter(g => g.studentId === studentId)
@@ -124,6 +123,13 @@ export function getStudentMax(grades: Grade[], studentId: string, tests: Test[])
   return studentGrades.length ? Math.max(...studentGrades) : 0;
 }
 
+export function getStudentFinalGrade( average: number, thresholds: { name: string; minPercentage: number }[]): string {
+  const grade = thresholds
+    .filter(t => average >= t.minPercentage)
+    .sort((a, b) => b.minPercentage - a.minPercentage)[0];
+
+  return grade ? grade.name : '—';
+}
 
 // Functions for class
 
