@@ -65,15 +65,37 @@ watch(() => registerStore.students,() => {
 <template>
   <h2 class="title-section">Student Details</h2>
   <div class="cards-section">
-    <div v-if="student" class="grid grid-cols-4 auto-rows-auto w-full">
-      <PersonalData :name="student.name" :surname="student.surname" :gender="student.gender" class="col-span-2"/>
-      <ActionsStudent :student-id="studentId" class="col-span-2 col-start-1 row-start-2"/>
-      <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  class="row-span-2 col-start-3 row-start-1"/>
-      <TestsTaken :student-id="student.id" class="row-span-2 col-start-4 row-start-1"/>
-      <Performance :individual-performance="individualPerformace" class="col-span-2 row-start-3"/>
-      <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" class="col-span-2 col-start-3 row-start-3"/>
-      <TestResults :student-id="student.id" class="col-span-2 row-start-4"/>
-      <TestResultsDatatable :student-id="student.id" class="col-span-2 col-start-3 row-start-4"/>
+    <div v-if="student" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto w-full">
+      <PersonalData :name="student.name" :surname="student.surname" :gender="student.gender" 
+      class="
+      sm:col-span-2
+      lg:col-span-2"/>
+      <ActionsStudent :student-id="studentId" 
+      class="
+      sm:col-span-2
+      lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
+      <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  
+      class="
+      lg:row-span-2 lg:col-start-3 lg:row-start-1"/>
+      <TestsTaken :student-id="student.id" 
+      class="
+      lg:row-span-2 lg:col-start-4 lg:row-start-1"/>
+      <Performance :individual-performance="individualPerformace" 
+      class="
+      sm:col-span-2
+      lg:col-span-2 lg:row-start-3"/>
+      <ComparisionClass :individual-data="individualPerformace" :class-data="classPerformace" 
+      class="
+      sm:col-span-2
+      lg:col-span-2 lg:col-start-3 lg:row-start-3"/>
+      <TestResults :student-id="student.id" 
+      class="
+      sm:col-span-2
+      lg:col-span-2 lg:row-start-4"/>
+      <TestResultsDatatable :student-id="student.id" 
+      class="
+      sm:col-span-2
+      lg:col-span-2 lg:col-start-3 lg:row-start-4"/>
     </div>
   </div>
   

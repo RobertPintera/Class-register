@@ -143,8 +143,6 @@ export class Database extends Dexie {
         { studentId: students[7].id, testId: tests[9].id, points: 42 }, // Chemistry
       ];
 
-
-
       await db.students.bulkAdd(students);
       await db.tests.bulkAdd(tests);
       await db.grades.bulkAdd(grades);
