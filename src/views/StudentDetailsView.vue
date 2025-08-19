@@ -74,7 +74,7 @@ watch(() => registerStore.students,() => {
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
-      <FinalGradeResult :weighted-average="individualPerformace.weightedAverage"  
+      <FinalGradeResult :student-id="studentId"
       class="
       lg:row-span-2 lg:col-start-3 lg:row-start-1"/>
       <TestsTaken :student-id="student.id" 

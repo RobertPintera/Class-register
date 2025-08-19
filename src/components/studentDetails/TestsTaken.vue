@@ -13,14 +13,18 @@ const chartOptions = ref();
 const setChartData = () => {
   let passed = 0;
   let failed = 0;
-  let notTaken = 0;
+  let notTakenMandatory = 0;
+  let notTakenOptional = 0;
 
   registerStore.tests.forEach(test => {
     const grade = registerStore.getGrade(props.studentId, test.id);
-    
 
     if (!grade) {
-      notTaken++;
+      if (test.isMandatory) {
+        notTakenMandatory++;
+      } else {
+        notTakenOptional++;
+      }
     } else if (!test.requiredPoints || grade.points >= test.requiredPoints) {
       passed++;
     } else {
@@ -29,18 +33,20 @@ const setChartData = () => {
   });
 
   return {
-    labels: ['Passed', 'Failed', 'Not Taken'],
+    labels: ['Passed', 'Failed', 'Not Taken - Mandatory', 'Not Taken'],
     datasets: [
       {
-        data: [passed, failed, notTaken],
+        data: [passed, failed, notTakenMandatory, notTakenOptional],
         backgroundColor: [
-          'rgba(34, 197, 94, 0.6)',
+          'rgba(34, 197, 94, 0.6)',  
           'rgba(239, 68, 68, 0.6)',
+          'rgba(234, 179, 8, 0.6)',
           'rgba(156, 163, 175, 0.6)',
         ],
         borderColor: [
           'rgb(34, 197, 94)',
           'rgb(239, 68, 68)',
+          'rgb(234, 179, 8)',
           'rgb(156, 163, 175)',
         ],
         borderWidth: 1,
@@ -89,9 +95,13 @@ onMounted(updateChart);
     </template>
     <template #body>
       <div class="relative w-full h-[90%]">
-        <Chart type="doughnut" :data="chartData" :options="chartOptions" class="w-full h-full"/>
+        <Chart
+          type="doughnut"
+          :data="chartData"
+          :options="chartOptions"
+          class="w-full h-full"
+        />
       </div>
     </template>
-    
   </Card>
 </template>
