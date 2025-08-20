@@ -6,6 +6,7 @@ import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { Test } from '@/models/Test';
+import type { DataTableCellEditInitEvent } from 'primevue';
 
 const registerStore = useRegisterStore();
 const editWithDialog = ref<boolean>();
@@ -89,10 +90,15 @@ const getTooltip = (testId: string) => {
   const test = registerStore.getTest(testId);
   return test ? `Number must be between 0 and ${test.maxPoints}` : 'No test info';
 };
+
+const lol = (event: DataTableCellEditInitEvent<any>) => {
+  console.log(event);
+  event.originalEvent.stopPropagation();
+}
 </script>
     
-<template>
-  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" 
+<template> 
+  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" @cell-edit-init="lol"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     v-model:filters="filters" filterDisplay="menu"
     @cell-edit-complete="onCellEditComplete">
@@ -108,7 +114,7 @@ const getTooltip = (testId: string) => {
     </template>
     <Column sortable field="fullName" header="Student" filterField="fullName" frozen>
       <template #body="{ data }">
-        <div class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition">
+        <div class="w-full cursor-pointer px-3 py-4">
           {{ data.fullName }}
         </div>
       </template>
@@ -123,7 +129,7 @@ const getTooltip = (testId: string) => {
       :header="col.header" :filterField="col.field" dataType="numeric">
       <template #body="{ data }">
          <div
-          class="w-full h-full cursor-pointer px-3 py-4 hover:bg-primary-select transition"
+          class="w-full min-h-1 cursor-pointer px-3 py-4"
           @click="onCellClick(data.studentId, col.field)">
           {{ registerStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
         </div>
@@ -150,5 +156,21 @@ const getTooltip = (testId: string) => {
 
   :deep(.p-datatable-table-container)	{
     @apply min-h-[500px] h-[60vh];
+  }
+
+  :deep(.p-datatable-tbody > tr > td[data-p-cell-editing="false"]:hover) {
+    @apply bg-primary-select;
+  }
+
+  :deep(.p-datatable-tbody > tr > td) {
+    @apply h-full  transition duration-200;
+  }
+
+  :deep(.p-datatable-tbody > tr > td > div) {
+    @apply flex items-center h-full;
+  }
+
+  :deep(table){
+    @apply h-1;
   }
 </style>

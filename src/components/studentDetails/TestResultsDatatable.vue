@@ -41,7 +41,9 @@ const getSeverity = (status: boolean): string => {
       <h3>Test Results - Data Table</h3>
     </template>
     <template #body>
-      <DataTable :value="tableData">
+      <DataTable :value="tableData"  class="custom-table" 
+        scrollable removableSort paginator paginatorPosition="bottom" :rows=10
+        v-model:filters="filters" filterDisplay="menu">
         <Column field="testName" header="Test">
         </Column>
         <Column field="points" header="Score">
