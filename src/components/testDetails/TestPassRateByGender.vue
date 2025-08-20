@@ -1,0 +1,101 @@
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import Card from '../core/Card.vue';
+import { useRegisterStore } from '@/stores/useRegisterStore';
+
+const registerStore = useRegisterStore();
+
+const props = defineProps<{testId: string, requiredPoints: number | null}>();
+const chartData = ref();
+const chartOptions = ref();
+
+const setChartData = () => {
+  const genders = ['Male', 'Female'];
+
+  const stats: Record<string, { passed: number; failed: number; notTaken: number }> = {};
+  genders.forEach(g => (stats[g] = { passed: 0, failed: 0, notTaken: 0 }));
+
+  registerStore.students.forEach(student => {
+    const grade = registerStore.getGrade(student.id, props.testId);
+    const gender = student.gender;
+
+    if (!grade) {
+      stats[gender].notTaken++;
+    } else if (props.requiredPoints === null || grade.points >= props.requiredPoints) {
+      stats[gender].passed++;
+    } else {
+      stats[gender].failed++;
+    }
+    
+  });
+
+  return {
+    labels: ["Passed","Failed","Not taken"],
+    datasets: [
+      {
+        label: 'Male',
+        data: [
+          stats['Male'].passed,
+          stats['Male'].failed,
+          stats['Male'].notTaken,
+        ],
+        backgroundColor: 'rgba(34, 197, 94, 0.6)',
+        borderColor: 'rgb(34, 197, 94)',
+        borderWidth: 1,
+      },
+      {
+        label: 'Female',
+        data: [
+          stats['Female'].passed,
+          stats['Female'].failed,
+          stats['Female'].notTaken,
+        ],
+        backgroundColor: 'rgba(6, 182, 212, 0.6)',
+        borderColor: 'rgb(6, 182, 212)',
+        borderWidth: 1,
+      },
+    ],
+  };
+};
+
+const setChartOptions = () => {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+    },
+  };
+};
+
+const updateChart = () => {
+  chartData.value = setChartData();
+  chartOptions.value = setChartOptions();
+};
+
+onMounted(() => {
+  updateChart();
+});
+
+
+</script>
+
+<template>
+  <Card>
+    <template #header>
+      <h3>List of students</h3>
+    </template>
+    <template #body>
+      <div class="relative w-full h-[90%]">
+        <Chart
+          type="bar"
+          :data="chartData"
+          :options="chartOptions"
+          class="w-full h-full"
+        />
+      </div>
+    </template>
+  </Card>
+</template>
