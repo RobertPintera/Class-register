@@ -136,7 +136,7 @@ const lol = (event: DataTableCellEditInitEvent<any>) => {
       </template>
       <template v-if="!editWithDialog" #editor="{ data, field }">
         <InputNumber v-model="data[field]" :min="0" autofocus fluid :allowEmpty="true" 
-        :defaultValue="data[field] === -1 ? null : data[field]" v-tooltip.focus.top="getTooltip(field)"/>
+        :defaultValue="data[field] === -1 ? null : data[field]" v-tooltip.top="getTooltip(field)"/>
       </template>
       <template #filter="{ filterModel }">
         <InputNumber v-model="filterModel.value"/>
