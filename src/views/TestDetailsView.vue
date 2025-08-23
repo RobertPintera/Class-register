@@ -2,6 +2,8 @@
 import ActionsTest from '@/components/testDetails/ActionsTest.vue';
 import InfoData from '@/components/testDetails/InfoData.vue';
 import TestPerformance from '@/components/testDetails/Performance/TestPerformance.vue';
+import StudentResults from '@/components/testDetails/StudentResults.vue';
+import StudentResultsDatatable from '@/components/testDetails/StudentResultsDatatable.vue';
 import TestPassRate from '@/components/testDetails/TestPassRate.vue';
 import TestPassRateByGender from '@/components/testDetails/TestPassRateByGender.vue';
 import TestPerformanceByGender from '@/components/testDetails/TestPerformanceByGender.vue';
@@ -71,6 +73,8 @@ onMounted(() => {
       <TestPassRateByGender :test-id="test.id" :required-points="test.requiredPoints" class="row-span-2 col-start-4 row-start-1"/>
       <TestPerformance :class-performance="classPerformace" class="col-span-2 col-start-1 row-start-3"/>
       <TestPerformanceByGender :male-data="classPerformacebyMale" :female-data="classPerformacebyFemale" class="col-span-2 col-start-3 row-start-3"/>
+      <StudentResults :test-id="test.id" :max-score="test.maxPoints" class="col-span-2 col-start-1 row-start-4"/>
+      <StudentResultsDatatable :test-id="test.id" :required-points="test.requiredPoints" :max-points="test.maxPoints" class="col-span-2 col-start-3 row-start-4"/>
     </div>
   </div>
 </template>

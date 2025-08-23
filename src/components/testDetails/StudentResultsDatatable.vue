@@ -5,28 +5,26 @@ import { computed } from 'vue';
 import { round2 } from '@/utility/mathUtils';
 
 const registerStore = useRegisterStore();
-const props = defineProps<{ studentId: string }>();
+const props = defineProps<{ testId: string, requiredPoints: number | null, maxPoints: number }>();
 
 const tableData = computed(() => {
   return registerStore.grades
-    .filter(g => g.studentId === props.studentId)
+    .filter(g => g.testId === props.testId)
     .map(g => {
-      const test = registerStore.tests.find(t => t.id === g.testId);
-      if (!test) return null;
-      const maxPoints = test.maxPoints;
-      const requiredPoints = test.requiredPoints ?? 0;
-      const percentage = round2((g.points / maxPoints) * 100);
-      const status = g.points >= requiredPoints;
+      const student = registerStore.students.find(s => s.id === g.studentId);
+      if (!student) return null;
+
+      const percentage = round2((g.points / props.maxPoints) * 100);
+      const status = props.requiredPoints !== null ? g.points >= props.requiredPoints : false;
       return {
-        testName: test?.name ?? 'Unknown Test',
+        name: student.name,
+        surname: student.surname,
         points: g.points,
-        percentage,
-        maxPoints,
-        status
+        percentage: percentage,
+        status: status
       };
     });
 });
-
 
 const getSeverity = (status: boolean): string => {
   if(status)
@@ -43,13 +41,13 @@ const getSeverity = (status: boolean): string => {
     <template #body>
       <DataTable :value="tableData"
         scrollable removableSort paginator paginatorPosition="bottom" :rows=10>
-        <Column field="testName" header="Test">
+        <Column field="name" header="Name">
+        </Column>
+        <Column field="surname" header="Surname">
         </Column>
         <Column field="points" header="Score">
         </Column>
         <Column field="percentage" header="Normalized Score (%)">
-        </Column>
-        <Column field="maxPoints" header="Max Points">
         </Column>
         <Column field="status" header="Status">
           <template #body="{ data }">
