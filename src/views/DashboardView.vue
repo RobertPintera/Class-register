@@ -4,10 +4,8 @@
 
 <template>
   <h2 class="title-section">Dashboard</h2>
-  <div class="card">
-    <h3>Performance</h3>
-    <h4>Weighted Average:</h4>
-    <h4>Standard Deviation:</h4>
+  <div class="cards-section">
+    
   </div>
 </template>
 

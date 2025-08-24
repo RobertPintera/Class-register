@@ -3,11 +3,11 @@ import { reactive, ref, watch } from 'vue';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import z from 'zod';
 import type { GradeThreshold } from '@/models/GradeThreshold';
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import { isGradeThreshold } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 
-const registerStore = useRegisterStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
 
 const props = defineProps<{ id: string; }>();
 const visible = defineModel<boolean>('visible', { default: false });
@@ -25,7 +25,7 @@ const resolver = ref(zodResolver(
 
 const updateDataForm = (visible: boolean) => {
   if (visible) {
-    const existingGradeThreshold = registerStore.getGradeThreshold(props.id);
+    const existingGradeThreshold = gradeThresholdsStore.getGradeThreshold(props.id);
     if (existingGradeThreshold) {
       Object.assign(initialValues, existingGradeThreshold);
     }
@@ -48,7 +48,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if (isGradeThreshold(values)) {
-      registerStore.updateGradeThreshold(props.id, values);
+      gradeThresholdsStore.updateGradeThreshold(props.id, values);
       visible.value = false;
     } else {
       console.error("Wrong data from form");

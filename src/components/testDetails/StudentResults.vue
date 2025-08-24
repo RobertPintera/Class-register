@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
+import { useGradesStore } from '@/stores/useGradesStore';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const gradesStore = useGradesStore();
+
 const props = defineProps<{ testId: string, maxScore: number }>();
 
 const chartData = ref();
@@ -15,10 +18,10 @@ const totalRecords = ref(0);
 
 
 const setChartData = () => {
-  const testScores = registerStore.grades
+  const testScores = gradesStore.grades
     .filter(g => g.testId === props.testId)
     .map(g => {
-      const student = registerStore.students.find(t => t.id === g.studentId);
+      const student = studentsStore.students.find(t => t.id === g.studentId);
       return {
         name: student?.name,
         surname: student?.surname,

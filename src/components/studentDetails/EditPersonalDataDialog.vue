@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Student } from '@/models/Student';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 import { isStudentData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { reactive, ref, watch } from 'vue';
 import z from 'zod';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
 
 const props = defineProps<{studentId: string}>();
 const visible = defineModel<boolean>('visible',{default: false});
@@ -39,7 +39,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isStudentData(values)){
-      registerStore.updateStudent(props.studentId,values);
+      studentsStore.updateStudent(props.studentId,values);
       cancel();
     } else {
       console.error("Wrong data from form!");
@@ -49,7 +49,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
 const updateDataForm = (visible: boolean) => {
   if (visible) {
-    const existingStudent = registerStore.getStudent(props.studentId);
+    const existingStudent = studentsStore.getStudent(props.studentId);
     if (existingStudent) {
       Object.assign(initialValues, existingStudent);
     }

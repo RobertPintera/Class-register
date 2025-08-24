@@ -3,15 +3,19 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import Card from '../core/Card.vue';
 import { computed } from 'vue';
 import { round2 } from '@/utility/mathUtils';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const gradesStore = useGradesStore();
+
 const props = defineProps<{ testId: string, requiredPoints: number | null, maxPoints: number }>();
 
 const tableData = computed(() => {
-  return registerStore.grades
+  return gradesStore.grades
     .filter(g => g.testId === props.testId)
     .map(g => {
-      const student = registerStore.students.find(s => s.id === g.studentId);
+      const student = studentsStore.students.find(s => s.id === g.studentId);
       if (!student) return null;
 
       const percentage = round2((g.points / props.maxPoints) * 100);

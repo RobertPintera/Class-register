@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 import { isGradeThreshold } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { ref } from 'vue';
 import z from 'zod';
 
-const registerStore = useRegisterStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
+
 const visible = defineModel<boolean>('visible', {default: false});
 
 const resolver = ref(zodResolver(
@@ -30,7 +31,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if (isGradeThreshold(values)) {
-      registerStore.addGradeThreshold(values);
+      gradeThresholdsStore.addGradeThreshold(values);
       cancel();
     } else {
       console.error("Wrong data from form!");

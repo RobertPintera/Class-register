@@ -4,8 +4,12 @@ import { computed, onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
 import Card from '../core/Card.vue';
+import { useTestsStore } from '@/stores/useTestsStore';
+import { useGradesStore } from '@/stores/useGradesStore';
 
-const registerStore = useRegisterStore();
+const testsStore = useTestsStore();
+const gradesStore = useGradesStore();
+
 const props = defineProps<{ studentId: string }>();
 
 const chartData = ref<{ labels: string[]; datasets: DatasetTestResults[] }>();
@@ -17,10 +21,10 @@ const totalRecords = ref(0);
 
 
 const setChartData = () => {
-  const studentScores = registerStore.grades
+  const studentScores = gradesStore.grades
     .filter(g => g.studentId === props.studentId)
     .map(g => {
-      const test = registerStore.tests.find(t => t.id === g.testId);
+      const test = testsStore.tests.find(t => t.id === g.testId);
       const max = test?.maxPoints ?? 100;
       return {
         testName: test?.name ?? 'Unknown Test',

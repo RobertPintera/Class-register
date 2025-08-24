@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { Grade } from '@/models/Grade';
 import type { Test } from '@/models/Test';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useTestsStore } from '@/stores/useTestsStore';
 import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
-import { computed, onMounted, reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
+
+const testsStore = useTestsStore();
+const gradesStore = useGradesStore();
 
 const props = defineProps<{
   visible: boolean;
@@ -20,8 +24,6 @@ const visibleLocal = computed({
   set: (value: boolean) => emit('update:visible', value)
 });
 
-const registerStore = useRegisterStore();
-
 const test = reactive<Pick<Test, 'name' | 'maxPoints'>>({
   name: "",
   maxPoints: 0
@@ -35,12 +37,12 @@ const initialValues = reactive<Grade>({
 
 const updateDataForm = (visible: boolean) =>{
   if (visible) {
-    const existingTest = registerStore.getTest(props.testId);
+    const existingTest = testsStore.getTest(props.testId);
     if (existingTest) {
       Object.assign(test, { name: existingTest.name, maxScore: existingTest.maxPoints});
     }
 
-    const existingGrade = registerStore.getGrade(props.studentId, props.testId);
+    const existingGrade = gradesStore.getGrade(props.studentId, props.testId);
     if (existingGrade) {
       Object.assign(initialValues, existingGrade);
     } else {
@@ -79,10 +81,10 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       };
 
       if(score !== undefined) {
-        registerStore.updateGrade(grade);
+        gradesStore.updateGrade(grade);
       }
       else{
-        registerStore.deleteGrade(props.studentId, props.testId);
+        gradesStore.deleteGrade(props.studentId, props.testId);
       }
       
       emit('update:visible', false);

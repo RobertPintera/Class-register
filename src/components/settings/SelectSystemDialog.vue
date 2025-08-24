@@ -6,8 +6,9 @@ import { z } from 'zod';
 import { useGradingSystems } from '@/utility/gradingSystemsData';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import type { GradingSystem } from '@/models/GradingSystem';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 
-const registerStore = useRegisterStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
 
 const visible = defineModel<boolean>('visible', { default: false });
 const gradingSystems = reactive<GradingSystem[]>(useGradingSystems());
@@ -29,7 +30,7 @@ const cancel = () => {
 
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
   if (event.valid && event.states.system) {
-    registerStore.replaceGradeThresholds(event.states.system.value.gradethresholds);
+    gradeThresholdsStore.replaceGradeThresholds(event.states.system.value.gradethresholds);
     cancel();
   }
 };

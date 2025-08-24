@@ -8,11 +8,16 @@ import TestResults from '@/components/studentDetails/TestResults.vue';
 import TestResultsDatatable from '@/components/studentDetails/TestResultsDatatable.vue';
 import TestsTaken from '@/components/studentDetails/TestsTaken.vue';
 import type { Student } from '@/models/Student';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
+import { useTestsStore } from '@/stores/useTestsStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
 import { onMounted, ref, watch } from 'vue';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const testsStore = useTestsStore();
+const gradesStore = useGradesStore();
+
 const props = defineProps<{ studentId: string }>();
 const student = ref<Student>();
 
@@ -25,28 +30,29 @@ const classPerformace = ref<{weightedAverage: number; median: number; standardDe
 });
 
 function loadStudentData() {
-  const s = registerStore.getStudent(props.studentId);
+  const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
+  const grades = gradesStore.grades;
   student.value = s;
-  const studentTests = registerStore.tests.filter(test =>
-    registerStore.grades.some(g => g.studentId === props.studentId && g.testId === test.id)
+  const studentTests = testsStore.tests.filter(test =>
+    gradesStore.grades.some(g => g.studentId === props.studentId && g.testId === test.id)
   );
 
   individualPerformace.value = {
-    weightedAverage: round2(getStudentWeightedAverage(registerStore.grades, studentTests, props.studentId)),
-    median: round2(getStudentMedian(registerStore.grades, studentTests, props.studentId)),
-    standardDeviation: round2(getStudentStandardDeviation(registerStore.grades, studentTests, props.studentId)),
-    min: round2(getStudentMin(registerStore.grades, props.studentId, studentTests)),
-    max: round2(getStudentMax(registerStore.grades, props.studentId, studentTests))
+    weightedAverage: round2(getStudentWeightedAverage(grades, studentTests, props.studentId)),
+    median: round2(getStudentMedian(grades, studentTests, props.studentId)),
+    standardDeviation: round2(getStudentStandardDeviation(grades, studentTests, props.studentId)),
+    min: round2(getStudentMin(grades, props.studentId, studentTests)),
+    max: round2(getStudentMax(grades, props.studentId, studentTests))
   };
 
   classPerformace.value = {
-    weightedAverage: round2(getClassWeightedAverage(registerStore.grades, studentTests)),
-    median: round2(getClassMedian(registerStore.grades, studentTests)),
-    standardDeviation: round2(getClassStandardDeviation(registerStore.grades, studentTests)),
-    min: round2(getClassMin(registerStore.grades, studentTests)),
-    max: round2(getClassMax(registerStore.grades, studentTests))
+    weightedAverage: round2(getClassWeightedAverage(grades, studentTests)),
+    median: round2(getClassMedian(grades, studentTests)),
+    standardDeviation: round2(getClassStandardDeviation(grades, studentTests)),
+    min: round2(getClassMin(grades, studentTests)),
+    max: round2(getClassMax(grades, studentTests))
   };
 }
 
@@ -54,8 +60,8 @@ onMounted(() => {
   loadStudentData();
 });
 
-watch(() => registerStore.students,() => {
-  const s = registerStore.getStudent(props.studentId);
+watch(() => studentsStore.students,() => {
+  const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
   student.value = s;

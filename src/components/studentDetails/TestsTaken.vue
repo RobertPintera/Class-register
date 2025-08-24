@@ -4,8 +4,12 @@ import type { Test } from '@/models/Test';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useTestsStore } from '@/stores/useTestsStore';
 
-const registerStore = useRegisterStore();
+const testsStore = useTestsStore();
+const gradesStore = useGradesStore();
+
 const props = defineProps<{ studentId: string }>();
 const chartData = ref();
 const chartOptions = ref();
@@ -16,8 +20,8 @@ const setChartData = () => {
   let notTakenMandatory = 0;
   let notTakenOptional = 0;
 
-  registerStore.tests.forEach(test => {
-    const grade = registerStore.getGrade(props.studentId, test.id);
+  testsStore.tests.forEach(test => {
+    const grade = gradesStore.getGrade(props.studentId, test.id);
 
     if (!grade) {
       if (test.isMandatory) {

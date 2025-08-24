@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Test } from '@/models/Test';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useTestsStore } from '@/stores/useTestsStore';
 import { isTestData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { reactive, ref } from 'vue';
 import z from 'zod';
 
-const registerStore = useRegisterStore();
+const testsStore = useTestsStore();
 
 const visible = defineModel<boolean>('visible',{default: false});
 
@@ -50,7 +50,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isTestData(values)){
-      registerStore.addTest(values);
+      testsStore.addTest(values);
       cancel();
     } else {
       console.error("Wrong data from form!");

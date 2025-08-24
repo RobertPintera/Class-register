@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type { Student } from '@/models/Student';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 import { isStudentData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { reactive, ref } from 'vue';
 import z from 'zod';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
 
 const visible = defineModel<boolean>('visible',{default: false});
 const genderOptions = ref(['Male','Female']);
@@ -39,7 +39,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isStudentData(values)){
-      registerStore.addStudent(values);
+      studentsStore.addStudent(values);
       cancel();
     } else {
       console.error("Wrong data from form!");

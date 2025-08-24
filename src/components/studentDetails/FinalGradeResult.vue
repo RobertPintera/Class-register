@@ -4,18 +4,26 @@ import Card from '../core/Card.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { getStudentWeightedAverage } from '@/utility/mathUtils';
 import { getStudentFinalGrade } from '@/utility/gradeUtils';
+import { useTestsStore } from '@/stores/useTestsStore';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const testsStore = useTestsStore();
+const gradesStore = useGradesStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
+
 const props = defineProps<{studentId: string}>();
 
-const bestGrade = ref<string>(getStudentFinalGrade(registerStore.grades, registerStore.tests, registerStore.thresholds, props.studentId));
+const bestGrade = ref<string>(getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, props.studentId));
 
 const stats = computed(() => {
-  const students = registerStore.students;
+  const students = studentsStore.students;
   const total = students.length || 1;
   
   const higher = (students.filter(s => {
-    const grade = getStudentFinalGrade(registerStore.grades, registerStore.tests, registerStore.thresholds, s.id);
+    const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, s.id);
     return grade > bestGrade.value; 
   }).length / total) * 100;
   const lower = 100 - higher;

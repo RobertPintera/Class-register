@@ -7,8 +7,15 @@ import type { Grade } from '@/models/Grade';
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { Test } from '@/models/Test';
 import type { DataTableCellEditInitEvent } from 'primevue';
+import { useSettingsStore } from '@/stores/useSettingsStore';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useTestsStore } from '@/stores/useTestsStore';
 
 const registerStore = useRegisterStore();
+const testsStore = useTestsStore();
+const settingsStore = useSettingsStore();
+const gradesStore = useGradesStore();
+
 const editWithDialog = ref<boolean>();
 
 const dialogVisible = ref(false);
@@ -27,7 +34,7 @@ const initFilters = () =>  {
 initFilters();
 
 onMounted(() => {
-  editWithDialog.value = registerStore.settings?.editWithDialog;
+  editWithDialog.value = settingsStore.settings?.editWithDialog;
 });
 
 watch(() => registerStore.testColumns, (columns) => {
@@ -71,14 +78,14 @@ const onCellEditComplete = (event: any) => {
     points: newValue
   };
 
-  const test: Test | undefined = registerStore.getTest(grade.testId);
+  const test: Test | undefined = testsStore.getTest(grade.testId);
   if(!test) return;
 
   if (newValue !== null && newValue !== undefined) {
     if(!checkPointsRangeOfTest(grade.points,test.maxPoints)) return;
-    registerStore.updateGrade(grade);
+    gradesStore.updateGrade(grade);
   } else {
-    registerStore.deleteGrade(grade.studentId, grade.testId);
+    gradesStore.deleteGrade(grade.studentId, grade.testId);
   }
 };
 
@@ -87,7 +94,7 @@ const checkPointsRangeOfTest = (points: number, maxPoints: number): boolean => {
 };
 
 const getTooltip = (testId: string) => {
-  const test = registerStore.getTest(testId);
+  const test = testsStore.getTest(testId);
   return test ? `Number must be between 0 and ${test.maxPoints}` : 'No test info';
 };
 
@@ -131,7 +138,7 @@ const lol = (event: DataTableCellEditInitEvent<any>) => {
          <div
           class="w-full min-h-1 cursor-pointer px-3 py-4"
           @click="onCellClick(data.studentId, col.field)">
-          {{ registerStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
+          {{ gradesStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
         </div>
       </template>
       <template v-if="!editWithDialog" #editor="{ data, field }">

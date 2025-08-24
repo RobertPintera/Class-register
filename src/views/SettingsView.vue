@@ -4,10 +4,12 @@ import GradingScaleDatatable from '@/components/settings/GradingScaleDatatable.v
 import NewGradeThresholdDialog from '@/components/settings/NewGradeThresholdDialog.vue';
 import SelectSystemDialog from '@/components/settings/SelectSystemDialog.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 import { useConfirm, useToast } from 'primevue';
 import { onMounted, ref, watch } from 'vue';
 
 const registerStore = useRegisterStore();
+const settingsStore = useSettingsStore();
 const confirm = useConfirm();
 const toast = useToast();
 
@@ -20,7 +22,7 @@ const showSelectSystemDialog = ref<boolean>(false);
 const showNewGradeThresholdDialog = ref<boolean>(false);
 
 onMounted(() => {
-  if (registerStore.settings?.editWithDialog) {
+  if (settingsStore.settings?.editWithDialog) {
     selectedEditGrade.value = { name: 'With dialog', code: 'D' };
   } else {
     selectedEditGrade.value = { name: 'With input', code: 'I' };
@@ -29,9 +31,9 @@ onMounted(() => {
 
 watch(selectedEditGrade, () => {
   if (selectedEditGrade.value?.code === 'D') {
-    registerStore.updateSettings({ editWithDialog: true });
+    settingsStore.updateSettings({ editWithDialog: true });
   } else {
-    registerStore.updateSettings({ editWithDialog: false });
+    settingsStore.updateSettings({ editWithDialog: false });
   }
 }, { deep: true });
 

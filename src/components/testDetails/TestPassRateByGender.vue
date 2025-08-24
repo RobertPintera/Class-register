@@ -2,8 +2,11 @@
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useGradesStore } from '@/stores/useGradesStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const gradesStore = useGradesStore();
 
 const props = defineProps<{testId: string, requiredPoints: number | null}>();
 const chartData = ref();
@@ -15,8 +18,8 @@ const setChartData = () => {
   const stats: Record<string, { passed: number; failed: number; notTaken: number }> = {};
   genders.forEach(g => (stats[g] = { passed: 0, failed: 0, notTaken: 0 }));
 
-  registerStore.students.forEach(student => {
-    const grade = registerStore.getGrade(student.id, props.testId);
+  studentsStore.students.forEach(student => {
+    const grade = gradesStore.getGrade(student.id, props.testId);
     const gender = student.gender;
 
     if (!grade) {

@@ -2,11 +2,11 @@
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { SimpleFilter } from '@/models/SimpleFilter';
 import router from '@/router';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { ref } from 'vue';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
 
 const filters = ref<Record<string,AdvancedFilter | SimpleFilter>>({});
 
@@ -30,7 +30,7 @@ const onRowSelect = (event: any) => {
 </script>
 
 <template>
-  <DataTable :value="registerStore.students" class="custom-table"
+  <DataTable :value="studentsStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
     @rowSelect="onRowSelect" selectionMode="single">

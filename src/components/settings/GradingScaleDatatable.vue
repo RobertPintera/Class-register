@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, ref } from 'vue';
 import EditGradeThresholdDialog from './EditGradeThresholdDialog.vue';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 
-const registerStore = useRegisterStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
 
 const selectedGradeThreshold = ref();
 const editingGradeId = ref<string>("");
 const showEditGradeThresholdDialog = ref<boolean>(false);
 
 const sortedThresholds = computed(() => {
-  return [...registerStore.thresholds].sort((a, b) => b.minPercentage - a.minPercentage);
+  return [...gradeThresholdsStore.gradeThresholds].sort((a, b) => b.minPercentage - a.minPercentage);
 });
 
 const onRowSelect = (event: any) => {

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
-import { useRegisterStore } from '@/stores/useRegisterStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
+import { useGradesStore } from '@/stores/useGradesStore';
 
-const registerStore = useRegisterStore();
+const studentsStore = useStudentsStore();
+const gradesStore = useGradesStore();
 
 const props = defineProps<{testId: string, requiredPoints: number | null}>();
 const chartData = ref();
@@ -14,8 +16,8 @@ const setChartData = () => {
   let failed = 0;
   let notTaken = 0;
 
-  registerStore.students.filter(student => {
-    const grade = registerStore.getGrade(student.id, props.testId);
+  studentsStore.students.filter(student => {
+    const grade = gradesStore.getGrade(student.id, props.testId);
 
     if (!grade) {
       notTaken++;
