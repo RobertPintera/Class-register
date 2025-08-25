@@ -2,7 +2,7 @@
 import ActionsStudent from '@/components/studentDetails/ActionsStudent.vue';
 import ComparisionClass from '@/components/studentDetails/ComparisionClass.vue';
 import FinalGradeResult from '@/components/studentDetails/FinalGradeResult.vue';
-import Performance from '@/components/studentDetails/Performance/Performance.vue';
+import Performance from '@/components/studentDetails/Performance.vue';
 import PersonalData from '@/components/studentDetails/PersonalData.vue';
 import TestResults from '@/components/studentDetails/TestResults.vue';
 import TestResultsDatatable from '@/components/studentDetails/TestResultsDatatable.vue';
@@ -29,7 +29,7 @@ const classPerformace = ref<{weightedAverage: number; median: number; standardDe
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
 
-function loadStudentData() {
+const loadStudentData = () => {
   const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
@@ -54,7 +54,7 @@ function loadStudentData() {
     min: round2(getClassMin(grades, studentTests)),
     max: round2(getClassMax(grades, studentTests))
   };
-}
+};
 
 onMounted(() => {
   loadStudentData();

@@ -4,7 +4,6 @@ import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { z } from 'zod';
 import { useGradingSystems } from '@/utility/gradingSystemsData';
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import type { GradingSystem } from '@/models/GradingSystem';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 

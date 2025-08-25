@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ActionsTest from '@/components/testDetails/ActionsTest.vue';
 import InfoData from '@/components/testDetails/InfoData.vue';
-import TestPerformance from '@/components/testDetails/Performance/TestPerformance.vue';
+import TestPerformance from '@/components/testDetails/TestPerformance.vue';
 import StudentResults from '@/components/testDetails/StudentResults.vue';
 import StudentResultsDatatable from '@/components/testDetails/StudentResultsDatatable.vue';
 import TestPassRate from '@/components/testDetails/TestPassRate.vue';
@@ -33,7 +33,7 @@ const classPerformacebyFemale = ref<{weightedAverage: number; median: number; st
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
 
-function loadTestData(){
+const loadTestData = () => {
   const t = testsStore.getTest(props.testId);
   if (!t) return;
 
@@ -64,7 +64,7 @@ function loadTestData(){
     min: round2(getTestMinByGender(grades, students, props.testId, "Female")),
     max: round2(getTestMaxByGender(grades, students, props.testId, "Female"))
   };
-}
+};
 
 onMounted(() => {
   loadTestData();

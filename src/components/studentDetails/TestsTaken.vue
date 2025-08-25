@@ -36,7 +36,7 @@ const setChartData = () => {
     }
   });
 
-  return {
+  chartData.value = {
     labels: ['Passed', 'Failed', 'Not Taken - Mandatory', 'Not Taken'],
     datasets: [
       {
@@ -60,7 +60,7 @@ const setChartData = () => {
 };
 
 const setChartOptions = () => {
-  return {
+  chartOptions.value = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
@@ -84,8 +84,8 @@ const setChartOptions = () => {
 };
 
 const updateChart = () => {
-  chartData.value = setChartData();
-  chartOptions.value = setChartOptions();
+  setChartData();
+  setChartOptions();
 };
 
 onMounted(updateChart);

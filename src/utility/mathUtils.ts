@@ -240,14 +240,13 @@ export function getClassWeightedAverage(
     const testGrades = grades.filter(g => g.testId === test.id);
     if (testGrades.length === 0) continue;
 
-    // Wynik procentowy dla całej klasy w danym teście
     const avgPercentage = testGrades.reduce((sum, g) => sum + (g.points / test.maxPoints) * 100, 0) / testGrades.length;
 
     totalWeightedScore += avgPercentage * test.weight;
     totalWeight += test.weight;
   }
 
-  return totalWeight > 0 ? +(totalWeightedScore / totalWeight).toFixed(2) : 0;
+  return totalWeight > 0 ? (totalWeightedScore / totalWeight) : 0;
 }
 
 export function getClassMedian(grades: Grade[], tests: Test[]): number {
@@ -263,7 +262,7 @@ export function getClassMedian(grades: Grade[], tests: Test[]): number {
 
   return scores.length % 2 !== 0
     ? scores[mid]
-    : +((scores[mid - 1] + scores[mid]) / 2).toFixed(2);
+    : ((scores[mid - 1] + scores[mid]) / 2);
 }
 
 export function getClassStandardDeviation(grades: Grade[], tests: Test[]): number {
@@ -278,7 +277,7 @@ export function getClassStandardDeviation(grades: Grade[], tests: Test[]): numbe
   const mean = normalizedScores.reduce((sum, s) => sum + s, 0) / normalizedScores.length;
   const variance = normalizedScores.reduce((sum, s) => sum + Math.pow(s - mean, 2), 0) / normalizedScores.length;
 
-  return +Math.sqrt(variance).toFixed(2);
+  return Math.sqrt(variance);
 }
 
 export function getClassMin(grades: Grade[], tests: Test[]): number {

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 
@@ -32,7 +31,7 @@ const setChartData = () => {
     
   });
 
-  return {
+  chartData.value = {
     labels: ["Passed","Failed","Not taken"],
     datasets: [
       {
@@ -62,7 +61,7 @@ const setChartData = () => {
 };
 
 const setChartOptions = () => {
-  return {
+  chartOptions.value = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -74,8 +73,8 @@ const setChartOptions = () => {
 };
 
 const updateChart = () => {
-  chartData.value = setChartData();
-  chartOptions.value = setChartOptions();
+  setChartData();
+  setChartOptions();
 };
 
 onMounted(() => {

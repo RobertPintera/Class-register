@@ -10,7 +10,6 @@ const props = defineProps<{
     max: number;
     min: number;
   };
-
 }>();
 
 </script>
