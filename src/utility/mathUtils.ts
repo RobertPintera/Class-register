@@ -79,6 +79,25 @@ export function getTestAverageByGender(
   return scores.reduce((a, b) => a + b, 0) / scores.length;
 }
 
+export function getTestNormalizedAverageByGender(
+  grades: Grade[],
+  students: Student[],
+  test: Test,
+  gender: "Male" | "Female"
+): number {
+  const scores: number[] = grades
+    .filter(g => g.testId === test.id && g.points !== undefined)
+    .filter(g => students.find(s => s.id === g.studentId)?.gender === gender)
+    .map(g => g.points);
+
+  if (!scores.length) return 0;
+
+  const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+
+  return (avg / test.maxPoints) * 100;
+}
+
+
 export function getTestMedianByGender(
   grades: Grade[],
   students: Student[],

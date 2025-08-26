@@ -7,6 +7,12 @@ import { useGradeThresholdsStore } from "./useGradeThresholdsStore";
 import { useSettingsStore } from "./useSettingsStore";
 import { useStudentsStore } from "./useStudentsStore";
 import { useTestsStore } from "./useTestsStore";
+import { getSettingsDb, initSettingsDb } from "@/database/settingsDb";
+import { getGradeThresholdsDb, initGradeThresholdsDb } from "@/database/gradeThresholdsDb";
+import { getAllStudentsDb } from "@/database/studentsDb";
+import { getAllTestsDb } from "@/database/testsDb";
+import { getAllGradesDb } from "@/database/gradesDb";
+import { createDemoDataDb } from "@/database/globalDb";
 
 export const useRegisterStore = defineStore('register', () => {
   const _isLoading = ref(false);
@@ -22,14 +28,14 @@ export const useRegisterStore = defineStore('register', () => {
     if (_isLoading.value) return;
     _isLoading.value = true;
 
-    await db.initSettings();
-    await db.initGradeThresholds();
+    await initSettingsDb();
+    await initGradeThresholdsDb();
     
-    gradeThresholdsStore.setGradeThresholds(await db.getGradeThresholds());
-    settingsStore.setSettings(await db.getSettings() ?? {id: 'global', editWithDialog: true});
-    studentsStore.setStudents(await db.getAllStudents());
-    testsStore.setTests(await db.getAllTests());
-    gradesStore.setGrades(await db.getAllGrades());
+    gradeThresholdsStore.setGradeThresholds(await getGradeThresholdsDb());
+    settingsStore.setSettings(await getSettingsDb() ?? {id: 'global', editWithDialog: true});
+    studentsStore.setStudents(await getAllStudentsDb());
+    testsStore.setTests(await getAllTestsDb());
+    gradesStore.setGrades(await getAllGradesDb());
 
     await new Promise(resolve => setTimeout(resolve, 500));
     _isLoading.value = false;
@@ -39,13 +45,13 @@ export const useRegisterStore = defineStore('register', () => {
     if (isLoading.value) return;
     _isLoading.value = true;
 
-    await db.createDemoData();
+    await createDemoDataDb();
     
-    gradeThresholdsStore.setGradeThresholds(await db.getGradeThresholds());
-    settingsStore.setSettings(await db.getSettings() ?? {id: 'global', editWithDialog: true});
-    studentsStore.setStudents(await db.getAllStudents());
-    testsStore.setTests(await db.getAllTests());
-    gradesStore.setGrades(await db.getAllGrades());
+    gradeThresholdsStore.setGradeThresholds(await getGradeThresholdsDb());
+    settingsStore.setSettings(await getSettingsDb() ?? {id: 'global', editWithDialog: true});
+    studentsStore.setStudents(await getAllStudentsDb());
+    testsStore.setTests(await getAllTestsDb());
+    gradesStore.setGrades(await getAllGradesDb());
 
     await new Promise(resolve => setTimeout(resolve, 500));
     _isLoading.value = false;

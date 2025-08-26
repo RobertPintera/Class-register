@@ -4,6 +4,7 @@ import { computed, ref } from "vue";
 import { useGradesStore } from "./useGradesStore";
 import { db } from "@/database/database";
 import { v4 as uuidv4 } from 'uuid';
+import { addStudentDb, deleteStudentAndGradesDb, updateStudentDb } from "@/database/studentsDb";
 
 export const useStudentsStore = defineStore('students', () => {
   const gradesStore = useGradesStore();
@@ -12,12 +13,12 @@ export const useStudentsStore = defineStore('students', () => {
 
   const addStudent = async (student: Omit<Student, 'id'>) => {
     const newStudent: Student = { id: uuidv4(), ...student};
-    await db.addStudent(newStudent);
+    await addStudentDb(newStudent);
     _students.value.push(newStudent);
   };
 
   const updateStudent = async (id: string, updated: Partial<Omit<Student, 'id'>>) => {
-    await db.updateStudent(id, updated);
+    await updateStudentDb(id, updated);
     const index = _students.value.findIndex(s => s.id === id);
     if (index !== -1) {
       _students.value[index] = { ..._students.value[index], ...updated };
@@ -25,7 +26,7 @@ export const useStudentsStore = defineStore('students', () => {
   };
 
   const deleteStudent = async (studentId: string) => {
-    await db.deleteStudentAndGrades(studentId);
+    await deleteStudentAndGradesDb(studentId);
     _students.value = _students.value.filter(s => s.id !== studentId);
     gradesStore.setGrades(gradesStore.grades.filter(g => g.studentId !== studentId));
   };

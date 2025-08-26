@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { v4 as uuidv4 } from 'uuid';
 import { db } from "@/database/database";
+import { addGradeThresholdDb, deleteGradeThresholdDb, replaceGradeThresholdsDb, updateGradeThresholdDb } from "@/database/gradeThresholdsDb";
 
 export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
   const _gradeThresholds = ref<GradeThreshold[]>([]);
@@ -10,12 +11,12 @@ export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
   
   const addGradeThreshold = async(threshold: Omit<GradeThreshold, 'id'>) => {
     const newGradeThreshold: GradeThreshold = { id: uuidv4(), ...threshold };
-    await db.addGradeThreshold(newGradeThreshold);
+    await addGradeThresholdDb(newGradeThreshold);
     _gradeThresholds.value.push(newGradeThreshold);
   };
 
   const updateGradeThreshold = async(id: string, updated: Partial<Omit<GradeThreshold, 'id'>>) => {
-    await db.updateGradeThreshold(id, updated);
+    await updateGradeThresholdDb(id, updated);
     const index = _gradeThresholds.value.findIndex(t => t.id === id);
     if (index !== -1) {
       _gradeThresholds.value[index] = { ..._gradeThresholds.value[index], ...updated };
@@ -23,7 +24,7 @@ export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
   };
 
   const deleteGradeThreshold = async(thresholdId: string) => {
-    await db.deleteGradeThreshold(thresholdId);
+    await deleteGradeThresholdDb(thresholdId);
     _gradeThresholds.value = _gradeThresholds.value.filter(t => t.id !== thresholdId);
   };
 
@@ -32,7 +33,7 @@ export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
       id: uuidv4(),
       ...t
     }));
-    await db.replaceGradeThresholds(newGradeThresholds);
+    await replaceGradeThresholdsDb(newGradeThresholds);
     _gradeThresholds.value = newGradeThresholds;
   };
 
