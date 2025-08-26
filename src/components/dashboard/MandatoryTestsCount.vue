@@ -75,7 +75,7 @@ onMounted(updateChart);
           type="bar"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-full"
+          class="w-full h-full max-h-[360px]"
         />
       </div>
     </template>

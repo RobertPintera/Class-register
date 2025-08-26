@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import Card from '../core/Card.vue';
 import EditPersonalDataDialog from './EditPersonalDataDialog.vue';
-import type { Student } from '@/models/Student';
 
 const props = defineProps<{studentId: string}>();
 const showEditPersonalDataDialog = ref<boolean>(false);

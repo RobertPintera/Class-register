@@ -11,20 +11,20 @@ export function getStudentFinalGrade(grades: Grade[], tests: Test[],thresholds: 
     return { ...test, points: g.points };
   });
 
-  // --- sprawdzamy brakujące obowiązkowe testy ---
-  const missedMandatory = tests.some(
-    t => t.isMandatory && !results.find(r => r.id === t.id)
-  );
+  // checking for missing mandatory tests
+  // const missedMandatory = tests.some(
+  //   t => t.isMandatory && !results.find(r => r.id === t.id)
+  // );
 
-  // --- sprawdzamy niezdane obowiązkowe testy ---
-  const failedMandatory = results.some(
-    r => r.isMandatory && r.requiredPoints !== null && r.points < r.requiredPoints
-  );
+  // checking for failed mandatory tests
+  // const failedMandatory = results.some(
+  //   r => r.isMandatory && r.requiredPoints !== null && r.points < r.requiredPoints
+  // );
 
-  if (missedMandatory || failedMandatory) {
-    const lowestGrade = thresholds.sort((a, b) => a.minPercentage - b.minPercentage)[0];
-    return lowestGrade ? lowestGrade.name : '—';
-  }
+  // if (missedMandatory || failedMandatory) {
+  //   const lowestGrade = thresholds.sort((a, b) => a.minPercentage - b.minPercentage)[0];
+  //   return lowestGrade ? lowestGrade.name : '—';
+  // }
 
   const totalWeight = results.reduce((sum, r) => sum + r.weight, 0);
   const weightedSum = results.reduce(

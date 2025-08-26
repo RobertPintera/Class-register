@@ -19,49 +19,53 @@ const setChartData = () => {
   const students = studentsStore.students;
   const tests = testsStore.tests;
   const grades = gradesStore.grades;
-  const gradeThresholds = gradeThresholdsStore.gradeThresholds;
+  const gradeThresholds = gradeThresholdsStore.gradeThresholds.slice().sort((a, b) => a.minPercentage - b.minPercentage);
 
-  const averages = students.map(s => ({
-    studentId: s.id,
-    avg: getStudentWeightedAverage(grades, tests, s.id),
-  }));
+  const countsMale: Record<string, number> = {};
+  const countsFemale: Record<string, number> = {};
+  gradeThresholds.forEach(th => {
+    countsMale[th.name] = 0;
+    countsFemale[th.name] = 0;
+  });
 
-  const counts: Record<string, number> = {};
-  for (const th of gradeThresholds) {
-    counts[th.name] = 0;
-  }
-
-  for (const a of averages) {
+  for (const s of students) {
+    const average = getStudentWeightedAverage(grades, tests, s.id);
     const th = gradeThresholds.slice()
-      .sort((a, b) => b.minPercentage - a.minPercentage) 
-      .find(th => a.avg >= th.minPercentage);
+      .sort((a, b) => b.minPercentage - a.minPercentage)
+      .find(th => average >= th.minPercentage);
 
-    if (th) counts[th.name]++;
+    if (!th) continue;
+
+    if (s.gender === 'Male')
+      countsMale[th.name]++;
+    else if (s.gender === 'Female') 
+      countsFemale[th.name]++;
   }
 
-  return {
+  chartData.value =  {
     labels: gradeThresholds.map(th => th.name),
     datasets: [
       {
-        label: 'Students',
-        data: gradeThresholds.map(th => counts[th.name]),
+        label: 'Male',
+        data: gradeThresholds.map(th => countsMale[th.name]),
         backgroundColor: '#42A5F5',
+      },
+      {
+        label: 'Female',
+        data: gradeThresholds.map(th => countsFemale[th.name]),
+        backgroundColor: '#FF6384',
       },
     ],
   };
 };
 
 const setChartOptions = () => {
-  return {
+  chartOptions.value =  {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
-      },
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => `${ctx.parsed.y} students`,
-        },
+        display: false
       },
     },
     scales: {
@@ -83,8 +87,8 @@ const setChartOptions = () => {
 };
 
 const updateChart = () => {
-  chartData.value = setChartData();
-  chartOptions.value = setChartOptions();
+  setChartData();
+  setChartOptions();
 };
 
 onMounted(() => {
