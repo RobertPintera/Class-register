@@ -26,16 +26,12 @@ const setChartData = () => {
       {
         data: [mandatory, optional],
         backgroundColor: [
-          'rgba(34, 197, 94, 0.6)',  
-          'rgba(239, 68, 68, 0.6)',
-          'rgba(234, 179, 8, 0.6)',
-          'rgba(156, 163, 175, 0.6)',
+          'rgba(101, 219, 144, 0.6)',
+          'rgba(6, 182, 212, 0.6)',
         ],
         borderColor: [
-          'rgb(34, 197, 94)',
-          'rgb(239, 68, 68)',
-          'rgb(234, 179, 8)',
-          'rgb(156, 163, 175)',
+          'rgb(101, 219, 144)',
+          'rgb(6, 182, 212)',
         ],
         borderWidth: 1,
       },

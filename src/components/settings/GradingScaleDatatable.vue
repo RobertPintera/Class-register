@@ -20,7 +20,7 @@ const onRowSelect = (event: any) => {
 </script>
 
 <template>
-  <DataTable :value="sortedThresholds" showGridlines scrollable :selection="selectedGradeThreshold"
+  <DataTable :value="sortedThresholds" scrollable :selection="selectedGradeThreshold"
     @rowSelect="onRowSelect" selectionMode="single">
     <Column field="name" header="Grade"/>
     <Column field="minPercentage" header="Percentage"/>

@@ -48,12 +48,16 @@ const setChartData = () => {
       {
         label: 'Male',
         data: gradeThresholds.map(th => countsMale[th.name]),
-        backgroundColor: '#42A5F5',
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgb(54, 162, 235)',
+        borderWidth: 1
       },
       {
         label: 'Female',
         data: gradeThresholds.map(th => countsFemale[th.name]),
-        backgroundColor: '#FF6384',
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        borderColor: 'rgb(255, 99, 132)',
+        borderWidth: 1
       },
     ],
   };
@@ -74,6 +78,12 @@ const setChartOptions = () => {
         title: {
           display: true,
           text: 'Students number',
+        },
+        ticks: {
+          stepSize: 1,
+          callback: function(value: number | string) {
+            return Number(value) % 1 === 0 ? value : null;
+          }
         },
       },
       x: {

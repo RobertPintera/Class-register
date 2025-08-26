@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import Card from '../core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
-import { getTestNormalizedAverageByGender } from '@/utility/mathUtils';
+import { getTestNormalizedAverageByGender, round2 } from '@/utility/mathUtils';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 
@@ -22,8 +22,8 @@ const setChartData = () => {
   const femaleScores: number[] = [];
 
   tests.forEach(t => {
-    maleScores.push(getTestNormalizedAverageByGender(grades, students, t, "Male"));
-    femaleScores.push(getTestNormalizedAverageByGender(grades, students, t, "Female"))
+    maleScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Male")));
+    femaleScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Female")));
   });
 
   chartData.value = {
@@ -52,7 +52,6 @@ const setChartOptions = () => {
     scales: {
       r: {
         beginAtZero: true,
-        suggestedMax: 100,
       }
     }
   };
