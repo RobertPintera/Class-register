@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import EditGradeView from '@/components/grades/EditGradeView.vue';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { Test } from '@/models/Test';
-import type { DataTableCellEditInitEvent } from 'primevue';
 import { useSettingsStore } from '@/stores/useSettingsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
@@ -21,7 +20,7 @@ const editWithDialog = ref<boolean>();
 const dialogVisible = ref(false);
 const filters = ref<Record<string, AdvancedFilter>>({});
 
-const initFilters = () =>  {
+const initFilters = () => {
   filters.value['fullName'] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]};
 
   for (const col of registerStore.testColumns) {
@@ -60,12 +59,17 @@ const clearFilter = () => {
   initFilters();
 };
 
-const editingGrade = ref<Pick<Grade, 'studentId' | 'testId'> | null>(null);
+const editingGrade = reactive<Pick<Grade, 'studentId' | 'testId'>>({
+  studentId: "",
+  testId: ""
+});
 
 const onCellClick = (studentId: string, testId: string) => {
   if (!editWithDialog.value) return;
   
-  editingGrade.value = { studentId, testId };
+  editingGrade.studentId = studentId;
+  editingGrade.testId = testId;
+
   dialogVisible.value = true;
 };
 
@@ -98,14 +102,10 @@ const getTooltip = (testId: string) => {
   return test ? `Number must be between 0 and ${test.maxPoints}` : 'No test info';
 };
 
-const lol = (event: DataTableCellEditInitEvent<any>) => {
-  console.log(event);
-  event.originalEvent.stopPropagation();
-}
 </script>
     
 <template> 
-  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table" @cell-edit-init="lol"
+  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     v-model:filters="filters" filterDisplay="menu"
     @cell-edit-complete="onCellEditComplete">
@@ -151,7 +151,7 @@ const lol = (event: DataTableCellEditInitEvent<any>) => {
     </Column>
   </DataTable>
 
-  <EditGradeView v-if="editingGrade && editingGrade.studentId && editingGrade.testId" 
+  <EditGradeView
     v-model:visible="dialogVisible"
     :studentId="editingGrade.studentId"
     :testId="editingGrade.testId"

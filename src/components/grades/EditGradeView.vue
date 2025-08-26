@@ -3,77 +3,62 @@ import type { Grade } from '@/models/Grade';
 import type { Test } from '@/models/Test';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
-import type { FormResolverOptions, FormSubmitEvent } from '@primevue/forms';
-import { computed, reactive, watch } from 'vue';
+import type { Form, FormSubmitEvent } from '@primevue/forms';
+import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { computed, reactive, ref, watch } from 'vue';
+import z from 'zod';
 
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 
-const props = defineProps<{
-  visible: boolean;
-  studentId: string;
-  testId: string;
-}>();
+const visible = defineModel<boolean>('visible', {default: false});
 
-const emit = defineEmits<{
-  (e: 'update:visible', value: boolean): void
-}>();
+const props = defineProps<{ studentId: string, testId: string }>();
 
-const visibleLocal = computed({
-  get: () => props.visible,
-  set: (value: boolean) => emit('update:visible', value)
-});
+const formRef = ref<InstanceType<typeof Form> | null>(null);
+
 
 const test = reactive<Pick<Test, 'name' | 'maxPoints'>>({
   name: "",
   maxPoints: 0
 });
-
-const initialValues = reactive<Grade>({
-  studentId: props.studentId,
-  testId: props.testId,
-  points: 0,
-});
+const score = ref<number | null>(null);
 
 const updateDataForm = (visible: boolean) =>{
   if (visible) {
     const existingTest = testsStore.getTest(props.testId);
     if (existingTest) {
-      Object.assign(test, { name: existingTest.name, maxScore: existingTest.maxPoints});
+      Object.assign(test, { name: existingTest.name, maxPoints: existingTest.maxPoints});
     }
 
     const existingGrade = gradesStore.getGrade(props.studentId, props.testId);
-    if (existingGrade) {
-      Object.assign(initialValues, existingGrade);
-    } else {
-      Object.assign(initialValues, { studentId: props.studentId, testId: props.testId, score: 0 });
-    }
+    score.value = existingGrade?.points ?? null;
   }
 };
 
-watch(() => props.visible, (visible) => {
+watch(() => visible.value, (visible) => {
   updateDataForm(visible);
 });
 
 const cancel = () => {
-  emit('update:visible', false);
+  visible.value = false;
 };  
 
-const resolver = (e: FormResolverOptions) => {
-  const errors: Record<string, { message: string }[]> = {};
-
-  if (e.values.score < 0 || e.values.score > test.maxPoints) {
-    errors.name = [{ message: 'Score is required.' }];
-  };
-
-  return { errors };
-};
+const resolver = computed(() => zodResolver(
+  z.object({
+    score: z.number("Score is required")
+      .min(0,"Score cannot be less than 0")
+      .max(test.maxPoints, `Score cannot be greater than ${test.maxPoints}`)
+      .nullable()
+  })
+));
 
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
+  console.log(event)
   if (event.valid) {
     const score = event.states.score?.value;
 
-    if(typeof score === 'number'){
+    if(typeof score === 'number' || score === null){
       const grade: Grade = {
         studentId: props.studentId,
         testId: props.testId,
@@ -87,7 +72,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
         gradesStore.deleteGrade(props.studentId, props.testId);
       }
       
-      emit('update:visible', false);
+      cancel();
     } else {
       console.error("Wrong data from form!");
     }
@@ -96,18 +81,20 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 </script>
 
 <template>
-  <Dialog header="Edit Grade" v-model:visible="visibleLocal" modal>
-    <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-3">
+  <Dialog header="Edit Grade" v-model:visible="visible" :modal="true" :draggable="false" class="w-60">
+    <Form v-slot="$form" :resolver="resolver" @submit="submit" 
+    class="flex flex-col gap-3 mt-2 w-full">
+      <h5 class="text-center">Number must be between 0 and {{ test.maxPoints }}</h5>
       <div class="flex flex-col gap-1">
-        <h6>Max score of test: {{ test.maxPoints }}</h6>
         <FloatLabel variant="in">
-          <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.01"/>
+          <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1" 
+          v-model="score" :allowEmpty="true" :class="'w-full'"/>
           <label for="score">Score</label>
         </FloatLabel>
-        <Message v-if="$form.maxScore?.invalid" severity="error" size="small" variant="simple">{{ $form.maxScore.error?.message }}</Message>
+        <Message v-if="$form.score?.invalid" severity="error" size="small" variant="simple">{{ $form.score.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Save" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>
