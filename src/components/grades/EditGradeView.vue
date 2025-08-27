@@ -5,7 +5,7 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import type { Form, FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, nextTick, reactive, ref, watch } from 'vue';
 import z from 'zod';
 
 const testsStore = useTestsStore();
@@ -15,16 +15,16 @@ const visible = defineModel<boolean>('visible', {default: false});
 
 const props = defineProps<{ studentId: string, testId: string }>();
 
-const formRef = ref<InstanceType<typeof Form> | null>(null);
-
-
 const test = reactive<Pick<Test, 'name' | 'maxPoints'>>({
   name: "",
   maxPoints: 0
 });
-const score = ref<number | null>(null);
 
-const updateDataForm = (visible: boolean) =>{
+const initialValues = ref<{score: null | number}>(
+  { score: null }
+);
+
+const updateDataForm = async (visible: boolean) =>{
   if (visible) {
     const existingTest = testsStore.getTest(props.testId);
     if (existingTest) {
@@ -32,7 +32,12 @@ const updateDataForm = (visible: boolean) =>{
     }
 
     const existingGrade = gradesStore.getGrade(props.studentId, props.testId);
-    score.value = existingGrade?.points ?? null;
+    const initialScore = existingGrade?.points ?? null;
+
+    // ustawiamy initialValues dla formularza
+    initialValues.value.score = initialScore;
+    await nextTick();
+    initialValues.value.score = null;
   }
 };
 
@@ -54,7 +59,7 @@ const resolver = computed(() => zodResolver(
 ));
 
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
-  console.log(event)
+  console.log(event);
   if (event.valid) {
     const score = event.states.score?.value;
 
@@ -82,13 +87,13 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
 <template>
   <Dialog header="Edit Grade" v-model:visible="visible" :modal="true" :draggable="false" class="w-60">
-    <Form v-slot="$form" :resolver="resolver" @submit="submit" 
+    <Form v-slot="$form" :initial-values="initialValues" :resolver="resolver" @submit="submit" 
     class="flex flex-col gap-3 mt-2 w-full">
       <h5 class="text-center">Number must be between 0 and {{ test.maxPoints }}</h5>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="in">
-          <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1" 
-          v-model="score" :allowEmpty="true" :class="'w-full'"/>
+          <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1"
+          :allowEmpty="true" :class="'w-full'"/>
           <label for="score">Score</label>
         </FloatLabel>
         <Message v-if="$form.score?.invalid" severity="error" size="small" variant="simple">{{ $form.score.error?.message }}</Message>
