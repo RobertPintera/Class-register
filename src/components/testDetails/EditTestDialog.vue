@@ -8,9 +8,10 @@ import z from 'zod';
 
 const testsStore = useTestsStore();
 
+const props = defineProps<{testId: string}>();
 const visible = defineModel<boolean>('visible',{default: false});
 
-const initialValues  = reactive<{
+const initialValues = reactive<{
   name: string,
   maxPoints: null | number,
   weight: null | number,
@@ -25,23 +26,6 @@ const initialValues  = reactive<{
   requiredPoints: null,
   isMandatory: false
 });
-
-const cancel = () => {
-  visible.value = false;
-};
-
-const updateDataForm = async (visible: boolean) =>{
-  if (visible) {
-    initialValues.weight = 1;
-    await nextTick();
-    initialValues.weight = null;
-  }
-};
-
-watch(() => visible.value, (visible) => {
-  updateDataForm(visible);
-});
-
 
 const base = {
   name: z.string().min(1, "Name is required"),
@@ -65,6 +49,10 @@ const schema = z.discriminatedUnion("isRequired", [
 
 const resolver = ref(zodResolver(schema));
 
+const cancel = () => {
+  visible.value = false;
+};
+
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
   if (event.valid) {
     const values = {
@@ -76,17 +64,40 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isTestData(values)){
-      testsStore.addTest(values);
+      testsStore.updateTest(props.testId, values);
       cancel();
     } else {
       console.error("Wrong data from form!");
     };
   }
 };
+
+const updateDataForm = async (visible: boolean) =>{
+  if (visible) {
+    const existingTest = testsStore.getTest(props.testId);
+    if(existingTest){
+      Object.assign(initialValues, existingTest);
+      initialValues.isRequired = initialValues.requiredPoints !== null;
+    }
+    await nextTick();
+    Object.assign(initialValues, {
+      name: '',
+      maxPoints: null,
+      weight: null,
+      isRequired: false,
+      requiredPoints: null,
+      isMandatory: false
+    });
+  }
+};
+
+watch(() => visible.value, (visible) => {
+  updateDataForm(visible);
+});
 </script>
 
 <template>
-  <Dialog header="Add Test" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
+  <Dialog header="Edit Test" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
     <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
@@ -127,7 +138,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
       <div class="flex justify-end gap-2 mt-4">
         <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
-        <Button label="Add" icon="pi pi-check" type="submit" autofocus />
+        <Button label="Edit" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>
   </Dialog>

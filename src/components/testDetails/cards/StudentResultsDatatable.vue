@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
-import Card from '../core/Card.vue';
 import { computed } from 'vue';
 import { round2 } from '@/utility/mathUtils';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
+import Card from '@/components/core/Card.vue';
 
 const studentsStore = useStudentsStore();
 const gradesStore = useGradesStore();
@@ -55,7 +54,7 @@ const getSeverity = (status: boolean): string => {
         </Column>
         <Column field="status" header="Status">
           <template #body="{ data }">
-              <Tag :value="data.status ? 'pass' : 'failed'" :severity="getSeverity(data.status)" />
+              <Tag :value="data.status ? 'passed' : 'failed'" :severity="getSeverity(data.status)" />
           </template>
         </Column>
       </DataTable>

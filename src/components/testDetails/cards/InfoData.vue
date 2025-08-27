@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 
 const props = defineProps<{ name: string, weight: number, requiredPoints: number | null, maxPoints: number, isMandatory: boolean }>();
 </script>

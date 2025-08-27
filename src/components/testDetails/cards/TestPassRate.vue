@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 
@@ -95,7 +95,7 @@ onMounted(() => {
           type="doughnut"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-full"
+          class="w-full h-full max-h-[360px]"
         />
       </div>
     </template>

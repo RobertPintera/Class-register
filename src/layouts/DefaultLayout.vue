@@ -22,8 +22,15 @@ const updateScreen = () => {
 };
 
 window.addEventListener('resize', updateScreen);
+
 onMounted(() => {
-  updateScreen();
+  if (isLargeScreen.value) {
+    sidebarVisible.value = true;
+  }
+
+  if (!isLargeScreen.value) {
+    sidebarVisible.value = false;
+  }
 });
 
 const toggleSidebar = () => {

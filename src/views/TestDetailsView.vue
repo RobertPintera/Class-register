@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import ActionsTest from '@/components/testDetails/ActionsTest.vue';
-import InfoData from '@/components/testDetails/InfoData.vue';
-import TestPerformance from '@/components/testDetails/TestPerformance.vue';
-import StudentResults from '@/components/testDetails/StudentResults.vue';
-import StudentResultsDatatable from '@/components/testDetails/StudentResultsDatatable.vue';
-import TestPassRate from '@/components/testDetails/TestPassRate.vue';
-import TestPassRateByGender from '@/components/testDetails/TestPassRateByGender.vue';
-import TestPerformanceByGender from '@/components/testDetails/TestPerformanceByGender.vue';
+import ActionsTest from '@/components/testDetails/cards/ActionsTest.vue';
+import InfoData from '@/components/testDetails/cards/InfoData.vue';
+import TestPerformance from '@/components/testDetails/cards/TestPerformance.vue';
+import StudentResults from '@/components/testDetails/cards/StudentResults.vue';
+import StudentResultsDatatable from '@/components/testDetails/cards/StudentResultsDatatable.vue';
+import TestPassRate from '@/components/testDetails/cards/TestPassRate.vue';
+import TestPassRateByGender from '@/components/testDetails/cards/TestPassRateByGender.vue';
+import TestPerformanceByGender from '@/components/testDetails/cards/TestPerformanceByGender.vue';
 import type { Test } from '@/models/Test';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
@@ -79,7 +79,7 @@ onMounted(() => {
       class="
       sm:col-span-2
       lg:col-span-2"/>
-      <ActionsTest
+      <ActionsTest :test-id="testId"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
