@@ -99,7 +99,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="maxPoints" name="maxPoints" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="2" :step="0.1"/>
+          <InputNumber id="maxPoints" name="maxPoints" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1"/>
           <label for="maxPoints">Max score</label>
         </FloatLabel>
         <Message v-if="$form.maxPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.maxPoints.error?.message }}</Message>
