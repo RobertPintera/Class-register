@@ -20,7 +20,7 @@ const test = reactive<Pick<Test, 'name' | 'maxPoints'>>({
   maxPoints: 0
 });
 
-const initialValues = ref<{score: null | number}>(
+const initialValues = reactive<{score: null | number}>(
   { score: null }
 );
 
@@ -34,10 +34,9 @@ const updateDataForm = async (visible: boolean) =>{
     const existingGrade = gradesStore.getGrade(props.studentId, props.testId);
     const initialScore = existingGrade?.points ?? null;
 
-    // ustawiamy initialValues dla formularza
-    initialValues.value.score = initialScore;
+    initialValues.score = initialScore;
     await nextTick();
-    initialValues.value.score = null;
+    initialValues.score = null;
   }
 };
 
@@ -59,7 +58,6 @@ const resolver = computed(() => zodResolver(
 ));
 
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
-  console.log(event);
   if (event.valid) {
     const score = event.states.score?.value;
 
@@ -86,14 +84,13 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 </script>
 
 <template>
-  <Dialog header="Edit Grade" v-model:visible="visible" :modal="true" :draggable="false" class="w-60">
+  <Dialog header="Edit Grade" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
     <Form v-slot="$form" :initial-values="initialValues" :resolver="resolver" @submit="submit" 
     class="flex flex-col gap-3 mt-2 w-full">
       <h5 class="text-center">Number must be between 0 and {{ test.maxPoints }}</h5>
       <div class="flex flex-col gap-1">
-        <FloatLabel variant="in">
-          <InputNumber id="score" name="score" class="w-60" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1"
-          :allowEmpty="true" :class="'w-full'"/>
+        <FloatLabel variant="on">
+          <InputNumber id="score" name="score" class="w-full" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1" :allowEmpty="true"/>
           <label for="score">Score</label>
         </FloatLabel>
         <Message v-if="$form.score?.invalid" severity="error" size="small" variant="simple">{{ $form.score.error?.message }}</Message>

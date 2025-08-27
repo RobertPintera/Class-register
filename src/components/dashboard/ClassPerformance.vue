@@ -23,7 +23,7 @@ const props = defineProps<{
       <div class="flex justify-evenly flex-wrap gap-4 mt-2">
         <PerformanceCard title="Weighted Average" :value="props.classPerformance.weightedAverage" />
         <PerformanceCard title="Median" :value="props.classPerformance.median" />
-        <PerformanceCard title="Standard Deviation" :value="props.classPerformance.standardDeviation" />
+        <PerformanceCard title="Standard Deviation" :value="props.classPerformance.standardDeviation" :max="50"/>
         <PerformanceCard title="Max" :value="props.classPerformance.max"/>
         <PerformanceCard title="Min" :value="props.classPerformance.min"/>
       </div>
