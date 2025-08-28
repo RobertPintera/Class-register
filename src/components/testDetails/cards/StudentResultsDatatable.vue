@@ -39,7 +39,7 @@ const getSeverity = (status: boolean): string => {
 <template>
   <Card>
     <template #header>
-      <h3>Test Results - Data Table</h3>
+      <h3>Test results - Details</h3>
     </template>
     <template #body>
       <DataTable :value="tableData"
@@ -64,6 +64,6 @@ const getSeverity = (status: boolean): string => {
 
 <style scoped>
   :deep(.p-datatable-table-container)	{
-    @apply max-h-[450px];
+    @apply min-h-[400px] h-[400px];
   }
 </style>

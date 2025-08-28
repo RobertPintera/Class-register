@@ -89,7 +89,7 @@ onMounted(() => {
       <TestPassRateByGender :test-id="test.id" :required-points="test.requiredPoints"
       class="
       lg:row-span-2 lg:col-start-4 lg:row-start-1"/>
-      <TestPerformance :class-performance="classPerformace"
+      <TestPerformance :class-performance="classPerformace" :max-points="test.maxPoints"
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-3"/>
