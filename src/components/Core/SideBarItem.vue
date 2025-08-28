@@ -10,7 +10,8 @@ const props =  defineProps({
 <template>
   <li>
     <router-link :to="to">
-      <div class="px-4 py-1 rounded-lg hover:bg-blue-100 transition duration-75 space-x-2" :class="{ 'bg-blue-200': props.active}">
+      <div class="px-4 py-1 rounded-md hover:bg-sidebaritem-hover-background
+        transition duration-75 space-x-2" :class="{ 'bg-sidebaritem-active-background': props.active}">
          <i :class="icon" />
         <span>{{ label }}</span>
       </div>

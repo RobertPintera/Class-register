@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 

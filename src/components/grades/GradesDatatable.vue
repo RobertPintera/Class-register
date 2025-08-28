@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRegisterStore } from '@/stores/useRegisterStore';
-import EditGradeView from '@/components/grades/EditGradeView.vue';
 import { onMounted, reactive, ref, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
@@ -9,6 +8,7 @@ import type { Test } from '@/models/Test';
 import { useSettingsStore } from '@/stores/useSettingsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
+import EditGradeDialog from './EditGradeDialog.vue';
 
 const registerStore = useRegisterStore();
 const testsStore = useTestsStore();
@@ -151,7 +151,7 @@ const getTooltip = (testId: string) => {
     </Column>
   </DataTable>
 
-  <EditGradeView
+  <EditGradeDialog
     v-model:visible="dialogVisible"
     :studentId="editingGrade.studentId"
     :testId="editingGrade.testId"

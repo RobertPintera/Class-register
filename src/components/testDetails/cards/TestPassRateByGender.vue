@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 
@@ -87,7 +87,7 @@ onMounted(() => {
 <template>
   <Card>
     <template #header>
-      <h3>List of students</h3>
+      <h3>Test pass rate by gender</h3>
     </template>
     <template #body>
       <div class="relative w-full h-[90%]">
@@ -95,7 +95,7 @@ onMounted(() => {
           type="bar"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-full"
+          class="w-full h-full max-h-[360px]"
         />
       </div>
     </template>

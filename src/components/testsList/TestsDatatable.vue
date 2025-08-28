@@ -16,6 +16,7 @@ const initFilters = () => {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]},
     weight: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }]},
+    isMandatory: { value: null, matchMode: FilterMatchMode.EQUALS }
   };
 };
 
@@ -28,12 +29,18 @@ const clearFilter = () => {
 const onRowSelect = (event: any) => {
   router.push(`/test/${event.data.id}`);
 };
+
+const getSeverity = (isMandatory: boolean): string => {
+  if(isMandatory)
+    return 'success';
+  return 'info';
+};
 </script>
 
 <template>
   <DataTable :value="testsStore.tests" class="custom-table"
   scrollable removableSort paginator paginatorPosition="bottom" :rows=10
-  v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','weight']"
+  v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','weight','isMandatory']"
   @rowSelect="onRowSelect" selectionMode="single">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
@@ -61,7 +68,7 @@ const onRowSelect = (event: any) => {
         <InputText v-model="filterModel.value" type="text" placeholder="Search by Name" />
       </template>
     </Column>
-    <Column field="weight" header="Weight">
+    <Column field="weight" header="Weight" filterField="weight">
       <template #body="{ data }">
         <div class="w-full h-full cursor-pointer px-3 py-4">
           {{ data.weight }}
@@ -71,7 +78,18 @@ const onRowSelect = (event: any) => {
         <InputText v-model="filterModel.value" type="text" placeholder="Search by Weight" />
       </template>
     </Column>
-</DataTable>
+    <Column field="isMandatory" header="Mandatory" dataType="boolean">
+      <template #body="{ data }">
+        <div class="w-full h-full cursor-pointer px-3 py-4">
+            <Tag :value="data.isMandatory ? 'Yes' : 'No'" :severity="getSeverity(data.isMandatory)" />
+        </div>
+      </template>
+      <template #filter="{ filterModel }">
+        <label for="mandatory-filter" class="font-bold"> Mandatory </label>
+        <Checkbox v-model="filterModel.value" :indeterminate="filterModel.value === null" binary inputId="mandatory-filter" />
+      </template>
+    </Column>
+  </DataTable>
 </template>
 
 <style scoped>

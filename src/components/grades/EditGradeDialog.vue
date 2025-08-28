@@ -87,7 +87,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
   <Dialog header="Edit Grade" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
     <Form v-slot="$form" :initial-values="initialValues" :resolver="resolver" @submit="submit" 
     class="flex flex-col gap-3 mt-2 w-full">
-      <h5 class="text-center">Number must be between 0 and {{ test.maxPoints }}</h5>
+      <h5>Number must be between 0 and {{ test.maxPoints }}</h5>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
           <InputNumber id="score" name="score" class="w-full" variant="filled" :min="0" :max="test.maxPoints" :maxFractionDigits="1" :step="0.1" :allowEmpty="true"/>

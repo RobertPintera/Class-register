@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import ActionsTest from '@/components/testDetails/ActionsTest.vue';
-import InfoData from '@/components/testDetails/InfoData.vue';
-import TestPerformance from '@/components/testDetails/TestPerformance.vue';
-import StudentResults from '@/components/testDetails/StudentResults.vue';
-import StudentResultsDatatable from '@/components/testDetails/StudentResultsDatatable.vue';
-import TestPassRate from '@/components/testDetails/TestPassRate.vue';
-import TestPassRateByGender from '@/components/testDetails/TestPassRateByGender.vue';
-import TestPerformanceByGender from '@/components/testDetails/TestPerformanceByGender.vue';
+import ActionsTest from '@/components/testDetails/cards/ActionsTest.vue';
+import InfoData from '@/components/testDetails/cards/InfoData.vue';
+import TestPerformance from '@/components/testDetails/cards/TestPerformance.vue';
+import StudentResults from '@/components/testDetails/cards/TestResults.vue';
+import StudentResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
+import TestPassRate from '@/components/testDetails/cards/TestPassRate.vue';
+import TestPassRateByGender from '@/components/testDetails/cards/TestPassRateByGender.vue';
+import TestPerformanceByGender from '@/components/testDetails/cards/TestPerformanceByGender.vue';
 import type { Test } from '@/models/Test';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestAverage, getTestAverageByGender, getTestMax, getTestMaxByGender, getTestMedian, getTestMedianByGender, getTestMin, getTestMinByGender, getTestStandardDeviation, getTestStandardDeviationByGender, round2 } from '@/utility/mathUtils';
 import { onMounted, ref } from 'vue';
+import TestResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
+import TestResults from '@/components/testDetails/cards/TestResults.vue';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
@@ -79,7 +81,7 @@ onMounted(() => {
       class="
       sm:col-span-2
       lg:col-span-2"/>
-      <ActionsTest
+      <ActionsTest :test-id="testId"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
@@ -89,7 +91,7 @@ onMounted(() => {
       <TestPassRateByGender :test-id="test.id" :required-points="test.requiredPoints"
       class="
       lg:row-span-2 lg:col-start-4 lg:row-start-1"/>
-      <TestPerformance :class-performance="classPerformace"
+      <TestPerformance :class-performance="classPerformace" :max-points="test.maxPoints"
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-3"/>
@@ -97,11 +99,11 @@ onMounted(() => {
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-3"/>
-      <StudentResults :test-id="test.id" :max-score="test.maxPoints"
+      <TestResults :test-id="test.id" :max-score="test.maxPoints"
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-4"/>
-      <StudentResultsDatatable :test-id="test.id" :required-points="test.requiredPoints" :max-points="test.maxPoints"
+      <TestResultsDatatable :test-id="test.id" :required-points="test.requiredPoints" :max-points="test.maxPoints"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-4"/>
