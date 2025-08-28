@@ -87,7 +87,7 @@ onMounted(() => {
 <template>
   <Card>
     <template #header>
-      <h3>Test pass rate by gender</h3>
+      <h3>Pass rate by gender</h3>
     </template>
     <template #body>
       <div class="relative w-full h-[90%]">

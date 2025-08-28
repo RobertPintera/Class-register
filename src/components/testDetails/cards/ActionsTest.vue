@@ -42,7 +42,7 @@ const loadDeleteTestDialog = () => {
         toast.add({ 
           severity: 'danger', 
           summary: 'Error', 
-          detail: 'Failed to load demo data', 
+          detail: 'Failed to delete test', 
           life: 3000 
         });
       }
@@ -60,11 +60,11 @@ const loadDeleteTestDialog = () => {
     <template #body>
       <div class="flex flex-wrap justify-evenly pb-6">
         <div class="flex flex-col justify-center items-center gap-1">
-          <h4>Edit Info Data</h4>
+          <h4>Edit test data</h4>
           <Button label="Edit" class="w-20" @click="showEditTestDialog = true"/>
         </div>
         <div class="flex flex-col justify-center items-center gap-1">
-          <h4>Delete Test</h4>
+          <h4>Delete test</h4>
           <Button label="Delete" severity="danger" class="w-20" @click="loadDeleteTestDialog()"/>
         </div>
       </div>

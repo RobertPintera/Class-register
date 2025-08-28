@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Card from '../core/Card.vue';
-import PerformanceCard from '../core/PerformanceCard.vue';
+import Card from '@/components/core/Card.vue';
+import PerformanceCard from '@/components/core/PerformanceCard.vue';
 
 const props = defineProps<{
   classPerformance: {

@@ -50,7 +50,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 </script>
 
 <template>
-  <Dialog header="Add Student" v-model:visible="visible" modal>
+  <Dialog header="Add Student" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
     <Form v-slot="$form" :resolver @submit="submit" :initial-values="initialValues" :validateOnBlur="true" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
@@ -71,7 +71,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
          <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Add" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

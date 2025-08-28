@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestNormalizedAverageByGender, round2 } from '@/utility/mathUtils';
 import { useStudentsStore } from '@/stores/useStudentsStore';

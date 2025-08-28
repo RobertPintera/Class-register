@@ -95,7 +95,7 @@ onMounted(updateChart);
 <template>
   <Card>
     <template #header>
-      <h3>Tests Taken</h3>
+      <h3>Pass rate</h3>
     </template>
     <template #body>
       <div class="relative w-full h-[90%]">
@@ -103,7 +103,7 @@ onMounted(updateChart);
           type="doughnut"
           :data="chartData"
           :options="chartOptions"
-          class="w-full h-full"
+          class="w-full h-full max-h-[360px]"
         />
       </div>
     </template>

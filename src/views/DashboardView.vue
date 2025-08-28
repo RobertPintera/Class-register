@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ClassPassRate from '@/components/dashboard/ClassPassRate.vue';
-import ClassPerformance from '@/components/dashboard/ClassPerformance.vue';
-import FinalGradeStats from '@/components/dashboard/FinalGradeStats.vue';
-import MandatoryTestsCount from '@/components/dashboard/MandatoryTestsCount.vue';
-import TestGenderComparison from '@/components/dashboard/TestGenderComparison.vue';
+import ClassPassRate from '@/components/dashboard/cards/ClassPassRate.vue';
+import ClassPerformance from '@/components/dashboard/cards/ClassPerformance.vue';
+import FinalGradeStats from '@/components/dashboard/cards/FinalGradeStats.vue';
+import MandatoryTestsCount from '@/components/dashboard/cards/MandatoryTestsCount.vue';
+import TestGenderComparison from '@/components/dashboard/cards/TestGenderComparison.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';

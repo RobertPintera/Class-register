@@ -12,7 +12,7 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestAverage, getTestAverageByGender, getTestMax, getTestMaxByGender, getTestMedian, getTestMedianByGender, getTestMin, getTestMinByGender, getTestStandardDeviation, getTestStandardDeviationByGender, round2 } from '@/utility/mathUtils';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import TestResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
 import TestResults from '@/components/testDetails/cards/TestResults.vue';
 
@@ -71,6 +71,10 @@ const loadTestData = () => {
 onMounted(() => {
   loadTestData();
 });
+
+watch(() => testsStore.tests, () => {
+  loadTestData();
+}, { deep: true } );
 </script>
 
 <template>

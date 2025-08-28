@@ -39,7 +39,7 @@ const getSeverity = (status: boolean): string => {
 <template>
   <Card>
     <template #header>
-      <h3>Test results - Details</h3>
+      <h3>Results - details</h3>
     </template>
     <template #body>
       <DataTable :value="tableData"

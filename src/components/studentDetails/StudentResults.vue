@@ -97,7 +97,7 @@ const onPageChange = (event: { page: number }) => {
 <template>
   <Card>
     <template #header>
-      <h3>Test Results</h3>
+      <h3>Results</h3>
     </template>
     <template #body>
       <div class="flex-1 min-w-64 h-fit">
