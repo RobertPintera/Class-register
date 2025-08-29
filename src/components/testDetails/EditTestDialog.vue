@@ -31,7 +31,7 @@ const initialValues = reactive<{
 
 const base = {
   name: z.string().min(1, "Name is required"),
-  maxPoints: z.number({ message: "Max Score is required" }).min(1, "Max Score must be at least 1"),
+  maxPoints: z.number({ message: "Max points is required" }).min(1, "Max points must be at least 1"),
   weight: z.number({ message: "Weight is required" }).min(0, "Weight must be at least 0"),
   isMandatory: z.boolean(),
 };
@@ -40,14 +40,21 @@ const schema = z.discriminatedUnion("isRequired", [
   z.object({
     ...base,
     isRequired: z.literal(true),
-    requiredPoints: z.number({ message: "Min Score is required" }).min(0, "Min Score must be at least 0"),
-  }),
+    requiredPoints: z.number({ message: "Min points is required" }).min(0, "Min points must be at least 0"),
+  }).refine(
+    (data) => data.requiredPoints <= data.maxPoints,
+    {
+      message: "Min points cannot be greater than max points",
+      path: ["requiredPoints"],
+    }
+  ),
   z.object({
     ...base,
     isRequired: z.literal(false),
     requiredPoints: z.number().nullable().optional(),
   }),
 ]);
+
 
 const resolver = ref(zodResolver(schema));
 
@@ -110,13 +117,13 @@ watch(() => visible.value, (visible) => {
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
           <InputNumber id="maxPoints" name="maxPoints" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1"/>
-          <label for="maxPoints">Max score</label>
+          <label for="maxPoints">Max points</label>
         </FloatLabel>
         <Message v-if="$form.maxPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.maxPoints.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="weight" name="weight" class="w-full" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1"/>
+          <InputNumber id="weight" name="weight" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1"/>
           <label for="weight">Weight</label>
         </FloatLabel>
         <Message v-if="$form.weight?.invalid" severity="error" size="small" variant="simple">{{ $form.weight.error?.message }}</Message>
@@ -128,7 +135,7 @@ watch(() => visible.value, (visible) => {
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
           <InputNumber id="requiredPoints" name="requiredPoints" class="w-full" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
-          <label for="requiredPoints">Min score</label>
+          <label for="requiredPoints">Min points</label>
         </FloatLabel>
         <Message v-if="$form.requiredPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredPoints.error?.message }}</Message>
       </div>
