@@ -63,6 +63,12 @@ const submit = async (event: FormSubmitEvent<Record<string, any>>) => {
     if(isValid){
       await testsStore.updateTest(props.testId, props.editedTest);
       visible.value = false;
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully edited test', 
+        life: 3000 
+      });
     }
   }
 };
@@ -87,7 +93,7 @@ const submit = async (event: FormSubmitEvent<Record<string, any>>) => {
       </RadioButtonGroup>
       <Message v-if="$form.option?.invalid" severity="error" size="small" variant="simple">{{ $form.option.error?.message }}</Message>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Edit" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

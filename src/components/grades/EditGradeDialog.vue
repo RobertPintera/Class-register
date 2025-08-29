@@ -96,7 +96,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
         <Message v-if="$form.score?.invalid" severity="error" size="small" variant="simple">{{ $form.score.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Save" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

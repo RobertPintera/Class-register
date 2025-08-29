@@ -29,15 +29,17 @@ const loadDeleteTestDialog = () => {
   confirm.require({
     message: 'Are you sure you want to proceed? The test will be deleted.',
     header: 'Delete test',
-    icon: 'pi pi-times-circle',
+    icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Cancel',
       severity: 'secondary',
+      label: 'Cancel',
+      icon: 'pi pi-times',
       outlined: true
     },
     acceptProps: {
       severity: 'danger',
-      label: 'Delete'
+      label: 'Delete',
+      icon: 'pi pi-times-circle'
     },
     accept: async () => {
       try {
@@ -69,6 +71,12 @@ const submitEditTestDialog = (data: Omit<Test, 'id'>) => {
     showChangeGradesDialog.value = true;
   } else {
     testsStore.updateTest(props.testId, editedTest);
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Success', 
+      detail: 'Successfully edited test', 
+      life: 3000 
+    });
   }
 };
 
@@ -83,11 +91,11 @@ const submitEditTestDialog = (data: Omit<Test, 'id'>) => {
       <div class="flex flex-wrap justify-evenly pb-6">
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Edit test data</h4>
-          <Button label="Edit" class="w-20" @click="showEditTestDialog = true"/>
+          <Button label="Edit" icon="pi pi-file-edit" class="w-28" @click="showEditTestDialog = true"/>
         </div>
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Delete test</h4>
-          <Button label="Delete" severity="danger" class="w-20" @click="loadDeleteTestDialog()"/>
+          <Button label="Delete" icon="pi pi pi-times-circle" severity="danger" class="w-28" @click="loadDeleteTestDialog()"/>
         </div>
       </div>
       <EditTestDialog :test-id="testId" v-model:visible="showEditTestDialog" @submit="submitEditTestDialog"/>

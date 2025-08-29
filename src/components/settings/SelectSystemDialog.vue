@@ -6,8 +6,10 @@ import { z } from 'zod';
 import { useGradingSystems } from '@/utility/gradingSystemsData';
 import type { GradingSystem } from '@/models/GradingSystem';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
+import { useToast } from 'primevue';
 
 const gradeThresholdsStore = useGradeThresholdsStore();
+const toast = useToast();
 
 const visible = defineModel<boolean>('visible', { default: false });
 const gradingSystems = reactive<GradingSystem[]>(useGradingSystems());
@@ -30,6 +32,12 @@ const cancel = () => {
 const submit = (event: FormSubmitEvent<Record<string, any>>) => {
   if (event.valid && event.states.system) {
     gradeThresholdsStore.replaceGradeThresholds(event.states.system.value.gradethresholds);
+    toast.add({ 
+      severity: 'success', 
+      summary: 'Success', 
+      detail: 'Successfully changed grading system.', 
+      life: 3000 
+    });
     cancel();
   }
 };

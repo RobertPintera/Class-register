@@ -3,10 +3,12 @@ import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 import { isGradeThreshold } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { useToast } from 'primevue';
 import { ref } from 'vue';
 import z from 'zod';
 
 const gradeThresholdsStore = useGradeThresholdsStore();
+const toast = useToast();
 
 const visible = defineModel<boolean>('visible', {default: false});
 
@@ -32,6 +34,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
     if (isGradeThreshold(values)) {
       gradeThresholdsStore.addGradeThreshold(values);
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully added grade threshold.', 
+        life: 3000 
+      });
       cancel();
     } else {
       console.error("Wrong data from form!");
@@ -61,7 +69,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
           $form.minPercentage.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" @click="cancel" />
         <Button label="Add" icon="pi pi-check" type="submit" autofocus/>
       </div>
     </Form>

@@ -69,7 +69,7 @@ const toggleSidebar = () => {
       <router-view /> 
     </div>
   </div>
-  <ConfirmDialog />
+  <ConfirmDialog :draggable="false"/>
   <Toast />
 </template>
 

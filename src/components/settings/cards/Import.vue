@@ -13,12 +13,14 @@ const loadDemoDataDialog = () => {
     header: 'Load demo data',
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Cancel',
       severity: 'secondary',
+      label: 'Cancel',
+      icon: 'pi pi-times',
       outlined: true
     },
     acceptProps: {
-      label: 'Load'
+      label: 'Load',
+      icon: 'pi pi-check'
     },
     accept: async () => {
       try {

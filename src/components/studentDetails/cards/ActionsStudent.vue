@@ -17,16 +17,18 @@ const showEditPersonalDataDialog = ref<boolean>(false);
 const loadDeleteStudentDialog = () => {
   confirm.require({
     message: 'Are you sure you want to proceed? The student will be deleted.',
-    header: 'Delete test',
-    icon: 'pi pi-times-circle',
+    header: 'Delete student',
+    icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Cancel',
       severity: 'secondary',
+      label: 'Cancel',
+      icon: 'pi pi-times',
       outlined: true
     },
     acceptProps: {
       severity: 'danger',
-      label: 'Delete'
+      label: 'Delete',
+      icon: 'pi pi-times-circle'
     },
     accept: async () => {
       try {
@@ -61,11 +63,11 @@ const loadDeleteStudentDialog = () => {
       <div class="flex flex-wrap justify-evenly pb-6">
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Edit student data</h4>
-          <Button label="Edit" class="w-20" @click="showEditPersonalDataDialog = true"/>
+          <Button label="Edit" icon="pi pi-file-edit" class="w-28" @click="showEditPersonalDataDialog = true"/>
         </div>
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Delete student</h4>
-          <Button label="Delete" severity="danger" class="w-20" @click="loadDeleteStudentDialog()"/>
+          <Button label="Delete" icon="pi pi pi-times-circle" severity="danger" class="w-28" @click="loadDeleteStudentDialog()"/>
         </div>
       </div>
       <EditPersonalDataDialog :studentId="studentId" v-model:visible="showEditPersonalDataDialog" />

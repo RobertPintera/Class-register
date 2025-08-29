@@ -1,34 +1,49 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import z from 'zod';
-import type { GradeThreshold } from '@/models/GradeThreshold';
 import { isGradeThreshold } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
+import { useToast } from 'primevue';
 
 const gradeThresholdsStore = useGradeThresholdsStore();
+const toast = useToast();
 
 const props = defineProps<{ id: string; }>();
 const visible = defineModel<boolean>('visible', { default: false });
 
-const initialValues = reactive<GradeThreshold>({ id: "", name: "", minPercentage: 0});
+const initialValues = reactive<{ 
+  id: string, 
+  name: string, 
+  minPercentage: number | null
+}>({ 
+  id: "", 
+  name: "", 
+  minPercentage: null
+}
+);
 
 const resolver = ref(zodResolver(
   z.object({
     name: z.string('Grade name is required').min(1, 'Grade name is required'),
-    minPercentage: z.number('Must be a number')
+    minPercentage: z.number('Min percentage is required')
       .min(0, 'Min percentage cannot be less than 0')
       .max(100, 'Max percentage cannot be greater than 100')
   })
 ));
 
-const updateDataForm = (visible: boolean) => {
+const updateDataForm = async (visible: boolean) => {
   if (visible) {
     const existingGradeThreshold = gradeThresholdsStore.getGradeThreshold(props.id);
     if (existingGradeThreshold) {
       Object.assign(initialValues, existingGradeThreshold);
     }
+    await nextTick();
+    Object.assign(initialValues, {
+      name: '',
+      minPercentage: null,
+    });
   }
 };
 
@@ -49,6 +64,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
     if (isGradeThreshold(values)) {
       gradeThresholdsStore.updateGradeThreshold(props.id, values);
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully edit grade threshold.', 
+        life: 3000 
+      });
       visible.value = false;
     } else {
       console.error("Wrong data from form");
@@ -79,7 +100,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
           $form.minPercentage.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" @click="cancel" />
         <Button label="Add" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

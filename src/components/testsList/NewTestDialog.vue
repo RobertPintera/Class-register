@@ -3,10 +3,12 @@ import { useTestsStore } from '@/stores/useTestsStore';
 import { isTestData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { useToast } from 'primevue';
 import { nextTick, reactive, ref, watch } from 'vue';
 import z from 'zod';
 
 const testsStore = useTestsStore();
+const toast = useToast();
 
 const visible = defineModel<boolean>('visible',{default: false});
 
@@ -83,6 +85,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
     if(isTestData(values)){
       testsStore.addTest(values);
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully added test.', 
+        life: 3000 
+      });
       cancel();
     } else {
       console.error("Wrong data from form!");
@@ -132,7 +140,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" @click="cancel" />
         <Button label="Add" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

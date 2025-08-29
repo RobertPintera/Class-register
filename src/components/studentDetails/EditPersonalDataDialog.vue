@@ -4,10 +4,12 @@ import { useStudentsStore } from '@/stores/useStudentsStore';
 import { isStudentData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { useToast } from 'primevue';
 import { reactive, ref, watch } from 'vue';
 import z from 'zod';
 
 const studentsStore = useStudentsStore();
+const toast = useToast();
 
 const props = defineProps<{studentId: string}>();
 const visible = defineModel<boolean>('visible',{default: false});
@@ -40,6 +42,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
     if(isStudentData(values)){
       studentsStore.updateStudent(props.studentId,values);
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully edited student.', 
+        life: 3000 
+      });
       cancel();
     } else {
       console.error("Wrong data from form!");
@@ -62,7 +70,7 @@ watch(visible, (newValue) => {
 </script>
 
 <template>
-  <Dialog header="Edit Personal Data" v-model:visible="visible" modal>
+  <Dialog header="Edit Student" v-model:visible="visible" modal>
     <Form v-slot="$form" :resolver @submit="submit" :initial-values="initialValues" :validateOnBlur="true" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
@@ -83,7 +91,7 @@ watch(visible, (newValue) => {
          <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Save" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

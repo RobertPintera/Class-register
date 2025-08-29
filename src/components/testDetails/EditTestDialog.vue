@@ -145,7 +145,7 @@ watch(() => visible.value, (visible) => {
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Edit" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

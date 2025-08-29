@@ -4,10 +4,12 @@ import { useStudentsStore } from '@/stores/useStudentsStore';
 import { isStudentData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
+import { useToast } from 'primevue';
 import { reactive, ref } from 'vue';
 import z from 'zod';
 
 const studentsStore = useStudentsStore();
+const toast = useToast();
 
 const visible = defineModel<boolean>('visible',{default: false});
 const genderOptions = ref(['Male','Female']);
@@ -40,6 +42,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 
     if(isStudentData(values)){
       studentsStore.addStudent(values);
+      toast.add({ 
+        severity: 'success', 
+        summary: 'Success', 
+        detail: 'Successfully added student.', 
+        life: 3000 
+      });
       cancel();
     } else {
       console.error("Wrong data from form!");
@@ -71,7 +79,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
          <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Add" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

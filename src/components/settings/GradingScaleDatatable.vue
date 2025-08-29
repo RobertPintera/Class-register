@@ -26,13 +26,15 @@ const deleteTestDialog = (id: string) => {
     header: 'Delete grade threshold',
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Cancel',
       severity: 'secondary',
+      label: 'Cancel',
+      icon: 'pi pi-times',
       outlined: true
     },
     acceptProps: {
+      severity: 'danger',
       label: 'Delete',
-      severity: 'danger'
+      icon: 'pi pi-times-circle'
     },
     accept: async () => {
       try {
