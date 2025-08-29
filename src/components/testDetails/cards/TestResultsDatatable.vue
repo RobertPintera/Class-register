@@ -18,7 +18,7 @@ const tableData = computed(() => {
       if (!student) return null;
 
       const percentage = round2((g.points / props.maxPoints) * 100);
-      const status = props.requiredPoints !== null ? g.points >= props.requiredPoints : false;
+      const status = props.requiredPoints !== null ? g.points >= props.requiredPoints : true;
       return {
         name: student.name,
         surname: student.surname,

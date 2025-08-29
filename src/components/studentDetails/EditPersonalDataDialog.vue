@@ -83,7 +83,7 @@ watch(visible, (newValue) => {
          <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" icon="pi pi-times" @click="cancel" />
+        <Button label="Cancel" variant="outlined" icon="pi pi-times" @click="cancel" />
         <Button label="Save" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>

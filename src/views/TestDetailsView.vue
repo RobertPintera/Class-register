@@ -12,7 +12,7 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestAverage, getTestAverageByGender, getTestMax, getTestMaxByGender, getTestMedian, getTestMedianByGender, getTestMin, getTestMinByGender, getTestStandardDeviation, getTestStandardDeviationByGender, round2 } from '@/utility/mathUtils';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import TestResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
 import TestResults from '@/components/testDetails/cards/TestResults.vue';
 
@@ -72,9 +72,11 @@ onMounted(() => {
   loadTestData();
 });
 
-watch(() => testsStore.tests, () => {
-  loadTestData();
-}, { deep: true } );
+watch(
+  () => testsStore.tests, () => {
+    loadTestData();
+  }, { deep: true }
+);
 </script>
 
 <template>
@@ -85,7 +87,7 @@ watch(() => testsStore.tests, () => {
       class="
       sm:col-span-2
       lg:col-span-2"/>
-      <ActionsTest :test-id="testId"
+      <ActionsTest :test-id="testId" :max-points="test.maxPoints"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>

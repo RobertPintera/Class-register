@@ -3,7 +3,7 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 

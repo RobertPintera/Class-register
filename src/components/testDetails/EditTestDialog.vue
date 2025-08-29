@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Test } from '@/models/Test';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { isTestData } from '@/utility/typeGuards';
 import type { FormSubmitEvent } from '@primevue/forms';
@@ -10,6 +11,7 @@ const testsStore = useTestsStore();
 
 const props = defineProps<{testId: string}>();
 const visible = defineModel<boolean>('visible',{default: false});
+const emit = defineEmits<{(e: 'submit', data: Omit<Test, 'id'>): void }>();
 
 const initialValues = reactive<{
   name: string,
@@ -64,8 +66,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     };
 
     if(isTestData(values)){
-      testsStore.updateTest(props.testId, values);
-      cancel();
+      emit('submit',values);
     } else {
       console.error("Wrong data from form!");
     };
@@ -97,7 +98,7 @@ watch(() => visible.value, (visible) => {
 </script>
 
 <template>
-  <Dialog header="Edit Test" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
+  <Dialog header="Edit test" v-model:visible="visible" :modal="true" :draggable="false" class="w-70">
     <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">

@@ -3,7 +3,7 @@ import type { Grade } from '@/models/Grade';
 import type { Test } from '@/models/Test';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { computed } from 'vue';
 import { round2 } from '@/utility/mathUtils';
 import { useGradesStore } from '@/stores/useGradesStore';

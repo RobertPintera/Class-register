@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Card from '../core/Card.vue';
-import EditPersonalDataDialog from './EditPersonalDataDialog.vue';
 import { useConfirm, useToast } from 'primevue';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useRouter } from 'vue-router';
+import Card from '@/components/core/Card.vue';
+import EditPersonalDataDialog from '../EditPersonalDataDialog.vue';
 
 const studentsStore = useStudentsStore();
 const confirm = useConfirm();
@@ -16,7 +16,7 @@ const showEditPersonalDataDialog = ref<boolean>(false);
 
 const loadDeleteStudentDialog = () => {
   confirm.require({
-    message: 'Are you sure you want to proceed? The test will be deleted.',
+    message: 'Are you sure you want to proceed? The student will be deleted.',
     header: 'Delete test',
     icon: 'pi pi-times-circle',
     rejectProps: {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { getStudentWeightedAverage } from '@/utility/mathUtils';
 import { getStudentFinalGrade } from '@/utility/gradeUtils';

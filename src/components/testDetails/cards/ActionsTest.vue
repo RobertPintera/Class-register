@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import Card from '@/components/core/Card.vue';
 import EditTestDialog from '../EditTestDialog.vue';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useConfirm, useToast } from 'primevue';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { useRouter } from 'vue-router';
+import ChangeGradesDialog from '../ChangeGradesDialog.vue';
+import type { Test } from '@/models/Test';
 
 const testsStore = useTestsStore();
 const confirm = useConfirm();
 const toast = useToast();
 const router = useRouter();
 
-const props = defineProps<{testId: string}>();
+const props = defineProps<{testId: string, maxPoints: number}>();
 const showEditTestDialog = ref<boolean>(false);
+const showChangeGradesDialog = ref<boolean>(false);
+
+const editedTest = reactive<Omit<Test, 'id'>>({
+  name: '',
+  maxPoints: 1,
+  weight: 0,
+  requiredPoints: null,
+  isMandatory: false
+});
 
 const loadDeleteTestDialog = () => {
   confirm.require({
@@ -50,6 +61,17 @@ const loadDeleteTestDialog = () => {
   });
 };
 
+const submitEditTestDialog = (data: Omit<Test, 'id'>) => {
+  Object.assign(editedTest, data);
+  showEditTestDialog.value = false;
+
+  if(editedTest.maxPoints !== props.maxPoints) {
+    showChangeGradesDialog.value = true;
+  } else {
+    testsStore.updateTest(props.testId, editedTest);
+  }
+};
+
 </script>
 
 <template>
@@ -68,7 +90,8 @@ const loadDeleteTestDialog = () => {
           <Button label="Delete" severity="danger" class="w-20" @click="loadDeleteTestDialog()"/>
         </div>
       </div>
-      <EditTestDialog :test-id="testId" v-model:visible="showEditTestDialog"/>
+      <EditTestDialog :test-id="testId" v-model:visible="showEditTestDialog" @submit="submitEditTestDialog"/>
+      <ChangeGradesDialog :test-id="testId" :editedTest v-model:visible="showChangeGradesDialog"/>
     </template>
   </Card>
 </template>
