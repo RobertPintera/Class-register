@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { db } from "@/database/database";
 import { computed, ref } from "vue";
 import type { StudentGrades } from "@/models/StudentGrades";
 import { useGradesStore } from "./useGradesStore";
@@ -12,7 +11,7 @@ import { getGradeThresholdsDb, initGradeThresholdsDb } from "@/database/gradeThr
 import { getAllStudentsDb } from "@/database/studentsDb";
 import { getAllTestsDb } from "@/database/testsDb";
 import { getAllGradesDb } from "@/database/gradesDb";
-import { createDemoDataDb } from "@/database/globalDb";
+import { createDemoDataDb } from "@/database/registerDb";
 
 export const useRegisterStore = defineStore('register', () => {
   const _isLoading = ref(false);
