@@ -46,14 +46,10 @@ const getSeverity = (status: boolean): string => {
     <template #body>
       <DataTable :value="tableData"
         scrollable removableSort paginator paginatorPosition="bottom" :rows=10>
-        <Column field="testName" header="Test">
-        </Column>
-        <Column field="points" header="Score">
-        </Column>
-        <Column field="percentage" header="Normalized Score (%)">
-        </Column>
-        <Column field="maxPoints" header="Max Points">
-        </Column>
+        <Column field="testName" header="Test"/>
+        <Column field="points" header="Score"/>
+        <Column field="percentage" header="Normalized Score (%)"/>
+        <Column field="maxPoints" header="Max Points"/>
         <Column field="status" header="Status">
           <template #body="{ data }">
               <Tag :value="data.status ? 'passed' : 'failed'" :severity="getSeverity(data.status)" />
