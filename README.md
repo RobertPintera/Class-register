@@ -3,7 +3,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 
 🌐 Access Class Register on GitHub Pages:
 
-# Features
+## Features
 
 - Store data in IndexedDB
 - Create and edit student and test records  
