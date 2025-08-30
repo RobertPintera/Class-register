@@ -11,8 +11,8 @@
   --color-primary-background: #fafcff;
   --color-topbar-background: #ffffff; 
   --color-sidebar-background: #ced9ff;
-  --color-sidebaritem-hover-background: #e1efff;
-  --color-sidebaritem-active-background: #c8e2ff;
+  --color-sidebaritem-hover-background: #e8f1ff;
+  --color-sidebaritem-active-background: #d2e3ff;
   --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
   --color-primary-select: #f1f5f9;
@@ -20,7 +20,7 @@
 
 @layer base {
   .testColor{
-    color: #c8e2ff;
+    color: #d2e3ff;
   }
   h1 {
     @apply text-4xl font-bold leading-tight;
