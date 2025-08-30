@@ -67,7 +67,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       toast.add({ 
         severity: 'success', 
         summary: 'Success', 
-        detail: 'Successfully edit grade threshold.', 
+        detail: 'Successfully edited grade threshold.', 
         life: 3000 
       });
       visible.value = false;
@@ -101,7 +101,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex justify-end gap-2 mt-4">
         <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" @click="cancel" />
-        <Button label="Add" icon="pi pi-check" type="submit" autofocus />
+        <Button label="Edit" icon="pi pi-check" type="submit" autofocus />
       </div>
     </Form>
   </Dialog>

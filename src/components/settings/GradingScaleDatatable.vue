@@ -49,7 +49,7 @@ const deleteTestDialog = (id: string) => {
         toast.add({ 
           severity: 'danger', 
           summary: 'Error', 
-          detail: 'Failed deleted grade threshold', 
+          detail: 'Failed to delete grade threshold', 
           life: 3000 
         });
       }

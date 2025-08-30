@@ -11,7 +11,8 @@ import { getGradeThresholdsDb, initGradeThresholdsDb } from "@/database/gradeThr
 import { getAllStudentsDb } from "@/database/studentsDb";
 import { getAllTestsDb } from "@/database/testsDb";
 import { getAllGradesDb } from "@/database/gradesDb";
-import { createDemoDataDb } from "@/database/registerDb";
+import { createDemoDataDb, exportToJsonDb, importFromJsonDb } from "@/database/registerDb";
+import { saveAs } from 'file-saver';
 
 export const useRegisterStore = defineStore('register', () => {
   const _isLoading = ref(false);
@@ -56,6 +57,16 @@ export const useRegisterStore = defineStore('register', () => {
     _isLoading.value = false;
   };
 
+  const exportToJson = async () => {
+    const blob = await exportToJsonDb();
+    saveAs(blob, "register-class-data.json");
+  };
+
+  const importFromJson = async (json: string) => {
+    await importFromJsonDb(json);
+    await loadData();
+  };
+
   const testColumns = computed(() =>
     testsStore.tests.map(test => ({
       field: test.id,
@@ -84,6 +95,6 @@ export const useRegisterStore = defineStore('register', () => {
   return {
     isLoading,
     testColumns, studentGrades,
-    loadData, loadDemoData,
+    loadData, loadDemoData, exportToJson, importFromJson
   };
 });

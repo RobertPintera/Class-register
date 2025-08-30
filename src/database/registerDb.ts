@@ -122,13 +122,12 @@ export async function createDemoDataDb(){
   });
 }
 
-export async function exportToJson() {
+export async function exportToJsonDb() : Promise<Blob> {
   const blob = await exportDB(db, { prettyJson: true });
-  const json = await blob.text();
-  return json;
+  return blob;
 }
 
-export async function importFromJson(json: string) {
+export async function importFromJsonDb(json: string) {
   const blob = new Blob([json], { type: "application/json" });
   await db.transaction("rw", db.tables, async () => {
     for (const table of db.tables) {
