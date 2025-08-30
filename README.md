@@ -31,7 +31,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/class-register.git
+git clone https://github.com/RobertPintera/Class-register
 cd class-register
 ```
 2. **Install dependencies**
