@@ -18,7 +18,7 @@ const tableData = computed(() => {
       if (!student) return null;
 
       const percentage = round2((g.points / props.maxPoints) * 100);
-      const status = props.requiredPoints !== null ? g.points >= props.requiredPoints : false;
+      const status = props.requiredPoints !== null ? g.points >= props.requiredPoints : true;
       return {
         name: student.name,
         surname: student.surname,
@@ -39,7 +39,7 @@ const getSeverity = (status: boolean): string => {
 <template>
   <Card>
     <template #header>
-      <h3>Test results - Details</h3>
+      <h3>Results - details</h3>
     </template>
     <template #body>
       <DataTable :value="tableData"

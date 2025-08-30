@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import ActionsStudent from '@/components/studentDetails/ActionsStudent.vue';
-import ComparisionClass from '@/components/studentDetails/ComparisionClass.vue';
-import FinalGradeResult from '@/components/studentDetails/FinalGradeResult.vue';
-import Performance from '@/components/studentDetails/Performance.vue';
-import PersonalData from '@/components/studentDetails/PersonalData.vue';
-import TestResults from '@/components/studentDetails/TestResults.vue';
-import TestResultsDatatable from '@/components/studentDetails/TestResultsDatatable.vue';
-import TestsTaken from '@/components/studentDetails/TestsTaken.vue';
+import ActionsStudent from '@/components/studentDetails/cards/ActionsStudent.vue';
+import ComparisionClass from '@/components/studentDetails/cards/ComparisionClass.vue';
+import FinalGradeResult from '@/components/studentDetails/cards/FinalGradeResult.vue';
+import PersonalData from '@/components/studentDetails/cards/PersonalData.vue';
+import StudentResults from '@/components/studentDetails/cards/StudentResults.vue';
+import StudentResultsDatatable from '@/components/studentDetails/cards/StudentResultsDatatable.vue';
+import StudentPassRate from '@/components/studentDetails/cards/StudentPassRate.vue';
 import type { Student } from '@/models/Student';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
 import { onMounted, ref, watch } from 'vue';
+import StudentPerformance from '@/components/studentDetails/cards/StudentPerformance.vue';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
@@ -83,10 +83,10 @@ watch(() => studentsStore.students,() => {
       <FinalGradeResult :student-id="studentId"
       class="
       lg:row-span-2 lg:col-start-3 lg:row-start-1"/>
-      <TestsTaken :student-id="student.id" 
+      <StudentPassRate :student-id="student.id" 
       class="
       lg:row-span-2 lg:col-start-4 lg:row-start-1"/>
-      <Performance :individual-performance="individualPerformace" 
+      <StudentPerformance :individual-performance="individualPerformace" 
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-3"/>
@@ -94,11 +94,11 @@ watch(() => studentsStore.students,() => {
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-3"/>
-      <TestResults :student-id="student.id" 
+      <StudentResults :student-id="student.id" 
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-4"/>
-      <TestResultsDatatable :student-id="student.id" 
+      <StudentResultsDatatable :student-id="student.id" 
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-4"/>

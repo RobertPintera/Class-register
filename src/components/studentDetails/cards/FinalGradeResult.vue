@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
 import { getStudentWeightedAverage } from '@/utility/mathUtils';
 import { getStudentFinalGrade } from '@/utility/gradeUtils';
@@ -28,9 +28,12 @@ const stats = computed(() => {
   }).length / total) * 100;
   const lower = 100 - higher;
 
+  const lowerRounded = Math.round(lower);
+  const higherRounded = 100 - lowerRounded;
+
   return [
-    { label: 'Lower or equal', color: '#60a5fa', value: parseFloat(lower.toFixed(1)) },
-    { label: 'Higher', color: "#fbbf24", value: parseFloat(higher.toFixed(1)) }
+    { label: 'Lower or equal', color: '#60a5fa', value: lowerRounded },
+    { label: 'Higher', color: "#fbbf24", value: higherRounded }
   ];
 });
 

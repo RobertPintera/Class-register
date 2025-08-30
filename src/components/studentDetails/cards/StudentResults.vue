@@ -3,7 +3,7 @@ import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 
@@ -97,7 +97,7 @@ const onPageChange = (event: { page: number }) => {
 <template>
   <Card>
     <template #header>
-      <h3>Test Results</h3>
+      <h3>Results</h3>
     </template>
     <template #body>
       <div class="flex-1 min-w-64 h-fit">

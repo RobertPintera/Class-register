@@ -14,7 +14,7 @@ export class Database extends Dexie {
   settings: Table<Settings>;
 
   constructor() {
-    super("Database");
+    super("RegisterClassDatabase");
 
     this.version(1).stores({
       students: "id",

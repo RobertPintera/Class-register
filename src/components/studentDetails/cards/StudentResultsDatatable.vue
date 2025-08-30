@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { computed } from 'vue';
 import { round2 } from '@/utility/mathUtils';
 import { useGradesStore } from '@/stores/useGradesStore';
@@ -42,22 +41,18 @@ const getSeverity = (status: boolean): string => {
 <template>
   <Card>
     <template #header>
-      <h3>Test Results - Data Table</h3>
+      <h3>Results - details</h3>
     </template>
     <template #body>
       <DataTable :value="tableData"
         scrollable removableSort paginator paginatorPosition="bottom" :rows=10>
-        <Column field="testName" header="Test">
-        </Column>
-        <Column field="points" header="Score">
-        </Column>
-        <Column field="percentage" header="Normalized Score (%)">
-        </Column>
-        <Column field="maxPoints" header="Max Points">
-        </Column>
+        <Column field="testName" header="Test"/>
+        <Column field="points" header="Score"/>
+        <Column field="percentage" header="Normalized Score (%)"/>
+        <Column field="maxPoints" header="Max Points"/>
         <Column field="status" header="Status">
           <template #body="{ data }">
-              <Tag :value="data.status ? 'pass' : 'failed'" :severity="getSeverity(data.status)" />
+              <Tag :value="data.status ? 'passed' : 'failed'" :severity="getSeverity(data.status)" />
           </template>
         </Column>
       </DataTable>
@@ -67,6 +62,6 @@ const getSeverity = (status: boolean): string => {
 
 <style scoped>
   :deep(.p-datatable-table-container)	{
-    @apply max-h-[450px];
+    @apply min-h-[400px] h-[400px];
   }
 </style>

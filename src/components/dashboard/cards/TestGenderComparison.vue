@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
-import { getTestNormalizedAverageByGender, round2 } from '@/utility/mathUtils';
+import { getTestAverageByGender, getTestNormalizedAverageByGender, round2 } from '@/utility/mathUtils';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 
@@ -18,12 +18,16 @@ const setChartData = () => {
   const students = studentsStore.students;
   const grades = gradesStore.grades;
 
+  const maleNormalizedScores: number[] = [];
+  const femaleNormalizedScores: number[] = [];
   const maleScores: number[] = [];
   const femaleScores: number[] = [];
 
   tests.forEach(t => {
-    maleScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Male")));
-    femaleScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Female")));
+    maleNormalizedScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Male")));
+    femaleNormalizedScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Female")));
+    maleScores.push(round2(getTestAverageByGender(grades, students, t.id, "Male")));
+    femaleScores.push(round2(getTestAverageByGender(grades, students, t.id, "Female")));
   });
 
   chartData.value = {
@@ -31,13 +35,15 @@ const setChartData = () => {
     datasets: [
       {
         label: 'Male',
-        data: maleScores,
+        data: maleNormalizedScores,
+        rawData: maleScores,
         borderColor: 'rgba(54, 162, 235, 1)',
         backgroundColor: 'rgba(54, 162, 235, 0.3)',
       },
       {
         label: 'Female',
-        data: femaleScores,
+        data: femaleNormalizedScores,
+        rawData: femaleScores,
         borderColor: 'rgba(255, 99, 132, 1)',
         backgroundColor: 'rgba(255, 99, 132, 0.3)',
       },
@@ -52,6 +58,20 @@ const setChartOptions = () => {
     scales: {
       r: {
         beginAtZero: true,
+        min: 0,
+        max: 100,
+      }
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => {
+            const dataset = ctx.dataset;
+            const normalizedValue = ctx.formattedValue;
+            const value = dataset.rawData[ctx.dataIndex];
+            return `${dataset.label}: ${value} (${normalizedValue}%)`;
+          }
+        }
       }
     }
   };

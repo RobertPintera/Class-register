@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 
 const props = defineProps<{ name: string, surname: string, gender: string }>();
 </script>

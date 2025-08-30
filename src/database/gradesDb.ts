@@ -20,3 +20,7 @@ export async function updateGradeDb(
 export async function deleteGradeDb(studentId: string, testId: string): Promise<void> {
   return db.grades.delete([studentId, testId]);
 }
+
+export async function deleteGradesByTestDb(testId: string): Promise<void> {
+  await db.grades.where("testId").equals(testId).delete();
+}

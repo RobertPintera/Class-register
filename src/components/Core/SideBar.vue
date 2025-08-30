@@ -32,7 +32,7 @@ const items = ref([
         'left-0': visible
       }">
       <div v-for="section in items" :key="section.label" class="space-y-1">
-        <h3 class="text-gray-500 font-semibold uppercase text-sm">{{ section.label }}</h3>
+        <h3 class="font-semibold uppercase text-sm">{{ section.label }}</h3>
         <ul>
           <SideBarItem
             v-for="item in section.items" :key="item.route"

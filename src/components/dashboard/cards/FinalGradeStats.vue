@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import Card from '../core/Card.vue';
+import Card from '@/components/core/Card.vue';
 import { getStudentWeightedAverage } from '@/utility/mathUtils';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
@@ -67,11 +67,6 @@ const setChartOptions = () => {
   chartOptions.value =  {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false
-      },
-    },
     scales: {
       y: {
         beginAtZero: true,

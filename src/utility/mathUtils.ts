@@ -4,6 +4,10 @@ import type { Test } from "@/models/Test";
 
 // Global
 
+export function round1(num: number) {
+  return Math.round(num * 10) / 10;
+}
+
 export function round2(num: number) {
   return Math.round(num * 100) / 100;
 }
