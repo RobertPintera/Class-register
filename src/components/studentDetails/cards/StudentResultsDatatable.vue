@@ -56,7 +56,7 @@ const getSeverity = (status: boolean): string => {
         </Column>
         <Column field="status" header="Status">
           <template #body="{ data }">
-              <Tag :value="data.status ? 'pass' : 'failed'" :severity="getSeverity(data.status)" />
+              <Tag :value="data.status ? 'passed' : 'failed'" :severity="getSeverity(data.status)" />
           </template>
         </Column>
       </DataTable>
