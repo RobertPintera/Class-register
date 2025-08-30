@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "./database";
+import { importDB, exportDB, importInto } from "dexie-export-import";
 import type { Grade } from "@/models/Grade";
 import type { Test } from "@/models/Test";
 import type { Student } from "@/models/Student";
@@ -119,4 +120,20 @@ export async function createDemoDataDb(){
     await db.tests.bulkAdd(tests);
     await db.grades.bulkAdd(grades);
   });
+}
+
+export async function exportToJson() {
+  const blob = await exportDB(db, { prettyJson: true });
+  const json = await blob.text();
+  return json;
+}
+
+export async function importFromJson(json: string) {
+  const blob = new Blob([json], { type: "application/json" });
+  await db.transaction("rw", db.tables, async () => {
+    for (const table of db.tables) {
+      await table.clear();
+    }
+  });
+  await importInto(db, blob);
 }

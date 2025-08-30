@@ -12,8 +12,8 @@ import Card from '@/components/core/Card.vue';
     <template #body>
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
-          <h4>Save data (in progress)</h4>
-          <Button label="Save" class="w-fit"/>
+          <h4>Save data</h4>
+          <Button label="Save" icon="pi pi-file-export" class="w-fit"/>
         </div>
       </div>
     </template>

@@ -53,11 +53,11 @@ const loadDemoDataDialog = () => {
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
           <h4>Load demo data</h4>
-          <Button label="Load" class="w-fit" @click="loadDemoDataDialog()"/>
+          <Button label="Load" icon="pi pi-file-import" class="w-fit" @click="loadDemoDataDialog()"/>
         </div>
         <div class="flex flex-col gap-1">
-          <h4>Load data from device (in progress)</h4>
-          <Button label="Load" class="w-fit"/>
+          <h4>Load data from device</h4>
+          <Button label="Load" icon="pi pi-file-import" class="w-fit"/>
         </div>
       </div>
     </template>
