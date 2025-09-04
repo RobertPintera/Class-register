@@ -44,7 +44,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 </script>
 
 <template>
-  <Dialog header="Select Grading system" v-model:visible="visible" modal>
+  <Dialog header="Select Grading system" v-model:visible="visible" :modal="true" :draggable="false" class="w-80">
     <Form v-slot="$form" :resolver="resolver" @submit="submit"
       class="flex flex-col gap-3 mt-2 w-full">
       <Listbox name="system" :options="gradingSystems" optionLabel="name" :virtualScrollerOptions="{ itemSize: 20 }"

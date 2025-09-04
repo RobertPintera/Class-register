@@ -16,7 +16,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 ## Tech stack
 
 - **Vue.js** - Core framework for building user interface
-- **Typescript** - Typed language that compiles to JavaScript
+- **TypeScript** - Typed language that compiles to JavaScript
 - **Tailwind CSS** - Utility-first CSS framework for styling and layout
 - **Pinia** - State management library for Vue
 - **Vue Router** - Client-side routing between pages
@@ -26,6 +26,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 - **FileSaver.js** - Exporting data to `.json` files
 - **Zod** - Schema validation for forms
 - **Uuid** - Generating unique IDs for records
+- **Eslint** - Static analysis tool for keeping the codebase clean and reliable
 
 ## Configuration
 

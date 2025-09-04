@@ -79,12 +79,12 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
 </script>
 
 <template>
-  <Dialog header="Edit Grade Threshold" v-model:visible="visible" modal>
+  <Dialog header="Edit Grade Threshold" v-model:visible="visible" :modal="true" :draggable="false" class="w-80">
     <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="submit" :validateOnBlur="true"
       class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputText id="name" name="name" variant="filled" class="w-60" />
+          <InputText id="name" name="name" variant="filled" class="w-full" />
           <label for="name">Grade</label>
         </FloatLabel>
         <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{ $form.name.error?.message
@@ -92,7 +92,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="minPercentage" name="minPercentage" class="w-60" variant="filled" :min="0" :max="100"
+          <InputNumber id="minPercentage" name="minPercentage" class="w-full" variant="filled" :min="0" :max="100"
             :maxFractionDigits="0" :step="1" />
           <label for="minPercentage">Min Percentage</label>
         </FloatLabel>
