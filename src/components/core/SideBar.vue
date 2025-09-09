@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import SideBarItem from './SideBarItem.vue';
-import type { SideBarItemData } from '@/models/SidebarItemData';
+import SideBarItem from '@/components/core/SideBarItem.vue';
+import type { SideBarItemData } from '@/models/SideBarItemData';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useRoute } from 'vue-router';
+
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
 const route = useRoute();
 
 const props = defineProps<{visible: boolean, isLargeScreen:boolean}>();
-
 
 const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
   const studentId = route.params.studentId as string | undefined;

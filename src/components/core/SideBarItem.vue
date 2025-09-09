@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { SideBarItemData } from '@/models/SidebarItemData';
+import type { SideBarItemData } from '@/models/SideBarItemData';
+
 
 const props = defineProps<SideBarItemData & { active?: boolean }>();
 
