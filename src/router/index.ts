@@ -16,9 +16,9 @@ const routes: RouteRecordRaw[]  = [
       { path: '', component: DashboardView },
       { path: 'grades', component: GradesView },
       { path: 'tests', component: TestsListView},
-      { path: 'test/:testId', component: TestDetailsView, props: true },
+      { path: 'tests/test/:testId', component: TestDetailsView, props: true },
       { path: 'students', component: StudentsListView },
-      { path: 'student/:studentId', component: StudentDetailsView, props: true },
+      { path: 'students/student/:studentId', component: StudentDetailsView, props: true },
       { path: 'settings', component: SettingsView }
     ]
   },

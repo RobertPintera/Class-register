@@ -27,7 +27,7 @@ const clearFilter = () => {
 };
 
 const onRowSelect = (event: any) => {
-  router.push(`/test/${event.data.id}`);
+  router.push(`/tests/test/${event.data.id}`);
 };
 
 const getSeverity = (isMandatory: boolean): string => {

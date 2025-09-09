@@ -25,7 +25,7 @@ const clearFilter = () => {
 };
 
 const onRowSelect = (event: any) => {
-  router.push(`/student/${event.data.id}`);
+  router.push(`/students/student/${event.data.id}`);
 };
 </script>
 
