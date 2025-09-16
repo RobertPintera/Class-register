@@ -166,7 +166,7 @@ const getTooltip = (testId: string) => {
   }
 
   :deep(.p-datatable-tbody > tr > td[data-p-cell-editing="false"]:hover) {
-    @apply bg-primary-select;
+    @apply bg-cell-datatable;
   }
 
   :deep(.p-datatable-tbody > tr > td) {

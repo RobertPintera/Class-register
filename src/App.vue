@@ -23,17 +23,29 @@ SOFTWARE.
  -->
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import { useRegisterStore } from "./stores/useRegisterStore";
 
 const store = useRegisterStore();
+const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+ 
+const handleChangeDarkMode = (e: MediaQueryListEvent) => document.documentElement.classList.toggle('dark', e.matches);
 
 onMounted(() => {
+  document.documentElement.classList.toggle('dark', darkQuery.matches);
+
+  darkQuery.addEventListener('change', handleChangeDarkMode);
+
   console.log("Loading Data");
   store.loadData();
 });
+
+onUnmounted(() => {
+  darkQuery.removeEventListener('change', handleChangeDarkMode);
+});
+
 </script>
 
 <template>
-  <router-view />
+  <router-view/>
 </template>

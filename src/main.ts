@@ -52,6 +52,16 @@ const CustomPreset = definePreset(Aura, {
       800: '{sky.800}',
       900: '{sky.900}',
       950: '{sky.950}'
+    },
+    colorScheme: {
+      dark: {
+        surface: {
+          0: '#ffffff',
+          800: 'var(--color-second-border)',
+          900: 'var(--color-card)',
+          950: 'var(--color-card)'
+        }
+      }
     }
   }
 });
@@ -62,8 +72,9 @@ app.use(PrimeVue, {
     options: {
       cssLayer: {
         name: 'primevue',
-        order: 'theme, base, primevue'
-      }
+        order: 'base, primevue, theme'
+      },
+      darkModeSelector: '.dark',
     }
   }
 });

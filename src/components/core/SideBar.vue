@@ -61,22 +61,29 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
 </script>
 
 <template>
-  <nav class="fixed w-64 flex flex-col overflow-auto transition-all duration-500 ease-in-out z-30"
+  <nav class="fixed w-64 flex flex-col z-30
+    transition-[left,top] duration-500 ease-in-out"
       :class="{
-        'card m-4 h-[calc(100vh-6rem)] top-16': isLargeScreen,
-        'bg-white h-full top-0 p-4': !isLargeScreen,
+        'top-16': isLargeScreen,
+        'top-0': !isLargeScreen,
         'left-[-18rem]': !visible,
         'left-0': visible
       }">
-      <div v-for="section in items" :key="section.label" class="space-y-1">
-        <h3 class="font-semibold uppercase text-sm">{{ section.label }}</h3>
-        <ul>
-          <SideBarItem
-            v-for="item in section.items" :key="item.route" :="item" 
-            :active="$route.path === item.route"
-            @click="$emit('select')"
-          />
-        </ul>
+      <div class="bg-sidebar-background w-full overflow-auto transition-colors duration-[var(--p-transition-duration)] ease-in-out"
+        :class="{
+          'sidebar m-4 h-[calc(100vh-6rem)]': isLargeScreen,
+          'h-full p-4': !isLargeScreen
+        }">
+         <div v-for="section in items" :key="section.label" class="space-y-1">
+          <h3 class="font-semibold uppercase text-sm">{{ section.label }}</h3>
+          <ul>
+            <SideBarItem
+              v-for="item in section.items" :key="item.route" :="item" 
+              :active="$route.path === item.route"
+              @click="$emit('select')"
+            />
+          </ul>
+        </div>
       </div>
     </nav>
 </template>

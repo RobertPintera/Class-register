@@ -1,26 +1,55 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
+@custom-variant dark (&:where(.dark, .dark *)); 
 
 :root{
-  @apply
-  bg-primary-background
-  text-primary-text font-mono;
+  @apply bg-primary-background text-primary-text font-mono;
+   /* <----- PrimeVue -----> */
+   --p-transition-duration: 150ms;
+   --p-transition-timing-function: ease;
+}
+
+@layer base{
+  * {
+    @apply transition-colors;
+    transition-duration: var(--p-transition-duration);
+    transition-timing-function: var(--p-transition-timing-function);
+  }
 }
 
 @theme{
   --color-primary-background: #fafcff;
   --color-topbar-background: #ffffff; 
-  --color-sidebar-background: #ced9ff;
+  --color-sidebar-background: #ffffff;
   --color-sidebaritem-hover-background: #e8f1ff;
   --color-sidebaritem-active-background: #d2e3ff;
   --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
-  --color-primary-select: #f1f5f9;
+   --color-cell-datatable: #f1f5f9;
+  --color-card: #ffffff;
+  /* <----- PrimeVue -----> */
+  --color-second-border: #e2e8f0;
+}
+
+@layer theme{
+  .dark{
+    --color-primary-background:#18181b;
+    --color-topbar-background: #232329;
+    --color-sidebar-background: #232329;
+    --color-sidebaritem-hover-background: #636972;
+    --color-sidebaritem-active-background: #40454d;
+    --color-primary-border: #404450;
+    --color-primary-text: #ffffff;
+    --color-cell-datatable: #505669;
+    --color-card: #232329;
+    /* <----- PrimeVue -----> */
+    --color-second-border: #505669;
+  }
 }
 
 @layer base {
   .testColor{
-    color: #d2e3ff;
+    color: #18181b;
   }
   h1 {
     @apply text-4xl font-bold leading-tight;
@@ -44,7 +73,11 @@
 
 @layer components{
   .card {
-    @apply bg-white shadow m-2 p-4 rounded-lg border-2 border-primary-border;
+    @apply bg-card shadow m-2 p-4 rounded-lg border-2 border-primary-border;
+  }
+
+  .sidebar {
+    @apply shadow m-2 p-4 rounded-lg border-2 border-primary-border;
   }
 
   .title-section{
@@ -54,15 +87,16 @@
   .cards-section{
     @apply flex flex-col mx-2;
   }
-
-    /* ----- Datatable from PrimeVue ----- */
+  
+  /* <----- PrimeVue -----> */
+  /* ----- Datatable ----- */
   .custom-table{
     --p-datatable-body-cell-padding: 0rem 0rem;
     @apply w-[100%];
   }
 
   .p-datatable .p-paginator{
-    @apply border-t border-[var(--p-datatable-border-color)];
+    @apply border-t border-[var(--p-datatable-border-color)] bg-card;
   }
 
   .p-datatable-header{

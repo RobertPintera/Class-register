@@ -2,12 +2,13 @@
 import SideBar from '@/components/core/SideBar.vue';
 import TopBar from '@/components/core/TopBar.vue';
 import { useRegisterStore } from '@/stores/useRegisterStore';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const store = useRegisterStore();
 
 const sidebarVisible = ref(true);
 const isLargeScreen = ref(window.innerWidth >= 1280);
+const isDark = ref(false);
 
 const updateScreen = () => {
   const wasLarge = isLargeScreen.value;
@@ -24,6 +25,8 @@ const updateScreen = () => {
 window.addEventListener('resize', updateScreen);
 
 onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark');
+
   if (isLargeScreen.value) {
     sidebarVisible.value = true;
   }
@@ -33,9 +36,17 @@ onMounted(() => {
   }
 });
 
+const darkModeIcon = computed(() => isDark.value ? 'pi pi-moon' : 'pi pi-sun');
+
 const toggleSidebar = () => {
   sidebarVisible.value = !sidebarVisible.value;
 };
+
+const toggleDarkMode = () => {
+  document.documentElement.classList.toggle('dark');
+  isDark.value = document.documentElement.classList.contains('dark');
+};
+
 </script>
 
 <template>
@@ -49,7 +60,7 @@ const toggleSidebar = () => {
     </Transition>
     
 
-    <TopBar @toggle-sidebar="toggleSidebar"/>
+    <TopBar :dark-mode-icon="darkModeIcon" @toggle-sidebar="toggleSidebar" @toggle-dark-mode="toggleDarkMode"/>
     <SideBar :visible="sidebarVisible" :isLargeScreen="isLargeScreen" @select="isLargeScreen ? null : toggleSidebar()"/>
     <div
       v-if="store.isLoading"
@@ -61,7 +72,7 @@ const toggleSidebar = () => {
         animationDuration=".8s"
       />
     </div>
-    <div v-else class="pt-16 transition-all duration-500 ease-in-out"
+    <div v-else class="pt-16 transition-[margin-left] duration-500 ease-in-out"
       :class="{
         'ml-0': !sidebarVisible,
         'ml-72': sidebarVisible && isLargeScreen
