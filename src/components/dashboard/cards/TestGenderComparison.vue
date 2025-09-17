@@ -60,6 +60,9 @@ const setChartOptions = () => {
         beginAtZero: true,
         min: 0,
         max: 100,
+        ticks: {
+          backdropColor: 'transparent'
+        }
       }
     },
     plugins: {
