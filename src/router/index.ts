@@ -8,12 +8,20 @@ import { createRouter, createWebHashHistory, createWebHistory, type RouteRecordR
 import TestsListView from "@/views/TestsListView.vue";
 import SettingsView from "@/views/SettingsView.vue";
 import TestDetailsView from "@/views/TestDetailsView.vue";
+import HomeLayout from "@/layouts/HomeLayout.vue";
+import HomeView from "@/views/HomeView.vue";
 
 const routes: RouteRecordRaw[]  = [
-  { path: '/', 
+  { path: '/',
+    component: HomeLayout,
+    children: [
+      { path: '', component: HomeView }
+    ]
+  },
+  { path: '/main', 
     component: DefaultLayout,
     children: [
-      { path: '', component: DashboardView },
+      { path: 'dashboard', component: DashboardView },
       { path: 'grades', component: GradesView },
       { path: 'tests', component: TestsListView},
       { path: 'tests/test/:testId', component: TestDetailsView, props: true },

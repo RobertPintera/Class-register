@@ -19,6 +19,7 @@
 
 @theme{
   --color-primary-background: #fafcff;
+  --color-secondary-background: #e0eeff;
   --color-topbar-background: #ffffff; 
   --color-sidebar-background: #ffffff;
   --color-sidebaritem-hover-background: #e8f1ff;
@@ -34,6 +35,7 @@
 @layer theme{
   .dark{
     --color-primary-background:#18181b;
+    --color-secondary-background: #202025;
     --color-topbar-background: #232329;
     --color-sidebar-background: #232329;
     --color-sidebaritem-hover-background: #636972;

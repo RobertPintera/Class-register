@@ -1,15 +1,35 @@
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
 
-const props = defineProps<{ darkModeIcon: string }>();
+const props = withDefaults(defineProps<{ isToggleSidebar?: boolean}>(), {
+  isToggleSidebar: false
+});
+const emit = defineEmits<{
+  (e: 'toggle-sidebar'): void
+}>();
+
+
+const isDark = ref<boolean>(false);
+
+onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark');
+});
+
+const toggleDarkMode = () => {
+  document.documentElement.classList.toggle('dark');
+  isDark.value = document.documentElement.classList.contains('dark');
+};
+
+const darkModeIcon = computed(() => isDark.value ? 'pi pi-moon' : 'pi pi-sun');
 
 </script>
 
 <template>
   <header class="fixed justify-between w-full h-16 flex items-center border-b-2 border-primary-border p-4 pl-6 shadow-md bg-topbar-background z-10 gap-4">
     <div class="flex items-center gap-4">
-       <Button icon="pi pi-bars" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="$emit('toggle-sidebar')"/>
-      <h3>GradExamine</h3>
+      <Button v-if="isToggleSidebar" icon="pi pi-bars" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="emit('toggle-sidebar')"/>
+      <h3>Class Register</h3>
     </div>
-    <Button :icon="props.darkModeIcon" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="$emit('toggle-darkMode')"/>
+    <Button :icon="darkModeIcon" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="toggleDarkMode"/>
   </header>
 </template>

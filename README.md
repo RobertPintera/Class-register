@@ -1,7 +1,7 @@
-# GradExamine
-GradExamine is a web application built with Vue.js that allows managing students' grades. It provides tools to display detailed statistics about individual students or specific tests. All data is stored locally in the browser, so the app works fully without a backend.
+# Class Register
+Class Register is a web application built with Vue.js that allows managing students' grades. It provides tools to display detailed statistics about individual students or specific tests. All data is stored locally in the browser, so the app works fully without a backend.
 
-🌐 Access GradExamine on GitHub Pages: https://robertpintera.github.io/Class-register
+🌐 Access Class Register on GitHub Pages: https://robertpintera.github.io/Class-register
 
 ## Features
 
