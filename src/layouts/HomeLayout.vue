@@ -6,5 +6,7 @@ import TopBar from '@/components/core/TopBar.vue';
 
 <template>
   <TopBar :is-toggle-sidebar="false"/>
-  <router-view />
+  <div class="pt-16">
+    <router-view />
+  </div>
 </template>
