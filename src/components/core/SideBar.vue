@@ -24,36 +24,36 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
     {
       label: "Home",
       items: [
-        { label: 'Dashboard', icon: 'pi pi-home', route: '/' },
+        { label: 'Dashboard', icon: 'pi pi-home', route: '/main/dashboard' },
       ]
     },
     {
       label: "Register",
       items: [
-        { label: 'Grades', icon: 'pi pi-objects-column', route: '/grades' },
-        { label: 'Tests', icon: 'pi pi-book', route: '/tests',
+        { label: 'Grades', icon: 'pi pi-objects-column', route: '/main/grades' },
+        { label: 'Tests', icon: 'pi pi-book', route: '/main/tests',
           items: [
             ...(currentTest ? [
               {
                 label: currentTest ? `${currentTest.name}` : 'test',
                 icon: "pi pi-clipboard",
-                route: `/tests/test/${testId}`,
+                route: `/main//tests/test/${testId}`,
               }
             ] : []),
           ]
         },
-        { label: 'Students', icon: 'pi pi-users', route: '/students',
+        { label: 'Students', icon: 'pi pi-users', route: '/main/students',
           items: [
             ...(currentStudent ? [
               {
                 label: currentStudent ? `${currentStudent.name} ${currentStudent.surname}` : 'student',
                 icon: "pi pi-user",
-                route: `/students/student/${studentId}`,
+                route: `/main/students/student/${studentId}`,
               }
             ] : []),
           ]
         },
-        { label: 'Settings', icon: 'pi pi-cog', route: '/settings'}
+        { label: 'Settings', icon: 'pi pi-cog', route: '/main/settings'}
       ]
     }];
 });
