@@ -26,8 +26,9 @@
   --color-sidebaritem-active-background: #d2e3ff;
   --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
-   --color-cell-datatable: #f1f5f9;
+  --color-cell-datatable: #f1f5f9;
   --color-card: #ffffff;
+  --color-footer-background: #c0d6ff;
   /* <----- PrimeVue -----> */
   --color-second-border: #e2e8f0;
 }
@@ -44,6 +45,7 @@
     --color-primary-text: #ffffff;
     --color-cell-datatable: #505669;
     --color-card: #232329;
+    --color-footer-background: #24272e;
     /* <----- PrimeVue -----> */
     --color-second-border: #505669;
   }

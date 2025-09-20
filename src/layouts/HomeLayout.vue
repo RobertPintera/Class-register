@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Footer from '@/components/core/Footer.vue';
 import TopBar from '@/components/core/TopBar.vue';
 
 
@@ -9,4 +10,5 @@ import TopBar from '@/components/core/TopBar.vue';
   <div class="pt-16">
     <router-view />
   </div>
+  <Footer/>
 </template>
