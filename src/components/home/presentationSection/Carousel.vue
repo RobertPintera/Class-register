@@ -7,6 +7,11 @@ interface itemTemplate {
   startPosition: number;
 };
 
+interface CenterToItemResult {
+  offsetToCenter: number;
+  closestIndex: number;
+}
+
 const images = [
   {
     alt: "Dashboard",
@@ -47,14 +52,12 @@ const gap = 32;
 
 const next = () => {
   itemActive.value = (itemActive.value + 1) % items.value.length;
-  centerToItemAt(itemActive.value);
-  updatePositionItems();
+  moveToItem();
 };
 
 const previous = () => {
   itemActive.value = (itemActive.value - 1 + items.value.length) % items.value.length;
-  centerToItemAt(itemActive.value);
-  updatePositionItems();
+  moveToItem();
 };
 
 const initData = () => {
@@ -107,7 +110,7 @@ const updatePositionItems = () => {
   });
 };
 
-const centerToItem = () => {
+const centerToItem = (): CenterToItemResult | undefined => {
   if (!container.value || items.value.length === 0) return;
 
   const containerRect = container.value.getBoundingClientRect();
@@ -131,13 +134,10 @@ const centerToItem = () => {
   const targetCenter = (targetRect.left - containerRect.left) + targetRect.width / 2;
   const offsetToCenter = containerCenter - targetCenter;
 
-  animateOffset(offset.value + offsetToCenter);
-  itemActive.value = closestIndex;
-
   return { offsetToCenter: offsetToCenter, closestIndex: closestIndex };
 };
 
-const centerToItemAt = (index: number) => {
+const centerToItemAt = (index: number): number | undefined => {
   if (!container.value) return;
   const containerRect = container.value.getBoundingClientRect();
   const containerCenter = containerRect.width / 2;
@@ -146,10 +146,9 @@ const centerToItemAt = (index: number) => {
   const targetCenter = (targetRect.left - containerRect.left) + targetRect.width / 2;
   const offsetToCenter = containerCenter - targetCenter;
 
-  animateOffset(offset.value + offsetToCenter);
   itemActive.value = index;
 
-  return { offsetToCenter: offsetToCenter};
+  return offsetToCenter;
 };
 
 let isDragging = false;
@@ -163,7 +162,6 @@ const onDragStart = (e: MouseEvent | TouchEvent) => {
   updatePositionItems();
 };
 
-
 const onDragMove = (e: MouseEvent | TouchEvent) => {
   if (!isDragging) return;
   const currentX = 'touches' in e ? e.touches[0].clientX : e.clientX;
@@ -175,15 +173,26 @@ const onDragMove = (e: MouseEvent | TouchEvent) => {
 const onDragEnd = () => {
   if (!isDragging) return;
   isDragging = false;
-  centerToItem();
+  const result = centerToItem();
+  if (!result) return;
+  animateOffset(offset.value + result.offsetToCenter);
+  itemActive.value = result?.closestIndex;
   updatePositionItems();
 };
 
 const handleResize = () => {
   initData();
-  const result = centerToItem();
-  offset.value = result.offsetToCenter;
-  itemActive.value = result?.closestIndex;
+  const offsetToCenter = centerToItemAt(itemActive.value);
+  if (!offsetToCenter) return;
+  offset.value = offset.value + offsetToCenter;
+  offset.value = ((offset.value % totalWidth.value) + totalWidth.value) % totalWidth.value;
+  updatePositionItems();
+};
+
+const moveToItem = () => {
+  const offsetToCenter = centerToItemAt(itemActive.value);
+  if (!offsetToCenter) return;
+  animateOffset(offset.value + offsetToCenter);
   updatePositionItems();
 };
 
@@ -192,7 +201,6 @@ onMounted(() => {
   setTimeout(() => {
     handleResize();
   }, 0);
-
   window.addEventListener('resize', handleResize);
 });
 
@@ -207,10 +215,10 @@ onBeforeUnmount(() => {
     <Button icon="pi pi-arrow-left" rounded variant="outlined" @click="previous" class="absolute top-1/2 left-8 z-20"/>
     <Button icon="pi pi-arrow-right" rounded variant="outlined" @click="next" class="absolute top-1/2 right-8 z-20"/>
 
-    <!-- <div class="absolute left-0 top-0 h-full w-64 bg-gradient-to-r from-primary-background to-transparent z-10 pointer-events-none"/> 
-    <div class="absolute right-0 top-0 h-full w-64 bg-gradient-to-l from-primary-background to-transparent z-10 pointer-events-none"/> -->
+    <div class="absolute left-0 top-0 h-full w-64 bg-gradient-to-r from-primary-background to-transparent z-10 pointer-events-none"/> 
+    <div class="absolute right-0 top-0 h-full w-64 bg-gradient-to-l from-primary-background to-transparent z-10 pointer-events-none"/>
 
-    <div ref="container" class="relative overflow-auto"
+    <div ref="container" class="relative overflow-hidden"
       @mousedown="onDragStart"
       @mousemove="onDragMove"
       @mouseup="onDragEnd"
