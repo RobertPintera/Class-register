@@ -37,7 +37,7 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
               {
                 label: currentTest ? `${currentTest.name}` : 'test',
                 icon: "pi pi-clipboard",
-                route: `/main//tests/test/${testId}`,
+                route: `/main/tests/test/${testId}`,
               }
             ] : []),
           ]
@@ -72,7 +72,7 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
       <div class="bg-sidebar-background w-full overflow-auto transition-colors duration-[var(--p-transition-duration)] ease-in-out"
         :class="{
           'sidebar m-4 h-[calc(100vh-6rem)]': isLargeScreen,
-          'h-full p-4': !isLargeScreen
+          'h-[100vh] p-4': !isLargeScreen
         }">
          <div v-for="section in items" :key="section.label" class="space-y-1">
           <h3 class="font-semibold uppercase text-sm">{{ section.label }}</h3>

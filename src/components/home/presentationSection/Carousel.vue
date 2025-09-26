@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeRouteUpdate } from 'vue-router';
 
 interface itemTemplate {
   ref: HTMLElement;
@@ -200,7 +201,7 @@ onMounted(() => {
   // Wait a tick to ensure the DOM is fully rendered before calculating positions
   setTimeout(() => {
     handleResize();
-  }, 0);
+  }, 10);
   window.addEventListener('resize', handleResize);
 });
 

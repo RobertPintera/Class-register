@@ -45,7 +45,7 @@ const toggleSidebar = () => {
       <div 
         v-if="sidebarVisible && !isLargeScreen"
         class="fixed inset-0 bg-black/50 z-20"
-        @click="toggleSidebar"
+        @click="sidebarVisible = false"
       />
     </Transition>
     
