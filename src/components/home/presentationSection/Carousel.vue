@@ -16,31 +16,24 @@ interface CenterToItemResult {
 const images = [
   {
     alt: "Dashboard",
-    src: new URL('@/assets/presentation/preview_dashboard.png', import.meta.url).href
-  },
-  {
-    alt: "Grades",
-    src: new URL("@/assets/presentation/preview_grades_1.png", import.meta.url).href
-  },
-  {
-    alt: "Settings",
-    src: new URL("@/assets/presentation/preview_settings.png", import.meta.url).href
+    src: new URL('@/assets/presentation/preview_dashboard.png', import.meta.url).href,
+    srcDark: new URL('@/assets/presentation/preview_dashboard_dark.png', import.meta.url).href
   },
   {
     alt: "StudentDetails",
-    src: new URL("@/assets/presentation/preview_studentDetails_1.png", import.meta.url).href
-  },
-  {
-    alt: "StudentsList",
-    src: new URL("@/assets/presentation/preview_studentsList.png", import.meta.url).href
+    src: new URL("@/assets/presentation/preview_studentDetails_1.png", import.meta.url).href,
+    srcDark: new URL('@/assets/presentation/preview_studentDetails_1.png', import.meta.url).href
   },
   {
     alt: "TestDetails",
     src: new URL("@/assets/presentation/preview_testDetails_1.png", import.meta.url).href
+    ,
+    srcDark: new URL('@/assets/presentation/preview_testDetails_1.png', import.meta.url).href
   },
   {
     alt: "TestsList",
-    src: new URL("@/assets/presentation/preview_testsList.png", import.meta.url).href
+    src: new URL("@/assets/presentation/preview_testsList.png", import.meta.url).href,
+    srcDark: new URL('@/assets/presentation/preview_testsList.png', import.meta.url).href
   },
 ];
 

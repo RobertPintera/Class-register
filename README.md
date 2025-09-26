@@ -3,6 +3,8 @@ Class Register is a web application built with Vue.js that allows managing stude
 
 🌐 Access Class Register on GitHub Pages: https://robertpintera.github.io/Class-register
 
+ℹ️ In the Settings section, you can use the “Load Demo Data” option to quickly import sample data and try out the application.
+
 ## Features
 
 - Store data in IndexedDB
@@ -11,6 +13,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 - Sort and filter data in interactive tables
 - Configure different ways of editing grades
 - Load demo data from settings
+- Light and Dark Mode
 - Import and export data in `.json` format
 
 ## Tech stack
@@ -54,17 +57,17 @@ npm run preview
 
 ## Preview
 
+### Home
+![Peview home](preview/preview_home.png)
 ### Dashboard
 ![Peview dashboard](preview/preview_dashboard.png)
 ### Students list
 ![Preview students list](preview/preview_studentsList.png)
 ### Student details
 ![Preview student details 1](preview/preview_studentDetails_1.png)
-![Preview student details 2](preview/preview_studentDetails_2.png)
 ### Tests list
 ![Preview tests list](preview/preview_testsList.png)
 ### Test details
 ![Preview test details 1](preview/preview_testDetails_1.png)
-![Preview test details 2](preview/preview_testDetails_2.png)
 ### Settings
 ![Preview settings](preview/preview_settings.png)
