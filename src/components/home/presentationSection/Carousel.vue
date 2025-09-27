@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useGlobalStore } from '@/stores/useGlobalStore';
 import { useDark } from '@vueuse/core';
+import { watch } from 'fs';
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
@@ -194,11 +195,21 @@ const moveToItem = () => {
   updatePositionItems();
 };
 
-onMounted(() => {
-  // Wait a tick to ensure the DOM is fully rendered before calculating positions
-  setTimeout(() => {
-    handleResize();
-  }, 10);
+const waitImagesLoaded = () => {
+  const promises = images.map((img, i) => {
+    return new Promise<void>((resolve) => {
+      const image = new Image();
+      image.src = !globalStore.isDark ? img.src : img.srcDark;
+      image.onload = () => resolve();
+      image.onerror = () => resolve();
+    });
+  });
+  return Promise.all(promises);
+};
+
+onMounted(async () => {
+  await waitImagesLoaded();
+  handleResize();
   window.addEventListener('resize', handleResize);
 });
 
@@ -213,8 +224,8 @@ onBeforeUnmount(() => {
     <Button icon="pi pi-arrow-left" rounded variant="outlined" @click="previous" class="absolute top-1/2 left-8 z-20"/>
     <Button icon="pi pi-arrow-right" rounded variant="outlined" @click="next" class="absolute top-1/2 right-8 z-20"/>
 
-    <div class="absolute left-0 top-0 h-full w-64 bg-gradient-to-r from-primary-background to-transparent z-10 pointer-events-none"/> 
-    <div class="absolute right-0 top-0 h-full w-64 bg-gradient-to-l from-primary-background to-transparent z-10 pointer-events-none"/>
+    <div class="absolute left-0 top-0 h-full w-full max-w-[10vw] bg-gradient-to-r from-primary-background to-transparent z-10 pointer-events-none"/> 
+    <div class="absolute right-0 top-0 h-full w-full max-w-[10vw] bg-gradient-to-l from-primary-background to-transparent z-10 pointer-events-none"/>
 
     <div ref="container" class="relative overflow-hidden"
       @mousedown="onDragStart"
