@@ -2,8 +2,6 @@
 import ActionsTest from '@/components/testDetails/cards/ActionsTest.vue';
 import InfoData from '@/components/testDetails/cards/InfoData.vue';
 import TestPerformance from '@/components/testDetails/cards/TestPerformance.vue';
-import StudentResults from '@/components/testDetails/cards/TestResults.vue';
-import StudentResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
 import TestPassRate from '@/components/testDetails/cards/TestPassRate.vue';
 import TestPassRateByGender from '@/components/testDetails/cards/TestPassRateByGender.vue';
 import TestPerformanceByGender from '@/components/testDetails/cards/TestPerformanceByGender.vue';
@@ -12,7 +10,7 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestAverage, getTestAverageByGender, getTestMax, getTestMaxByGender, getTestMedian, getTestMedianByGender, getTestMin, getTestMinByGender, getTestStandardDeviation, getTestStandardDeviationByGender, round2 } from '@/utility/mathUtils';
-import { onMounted, ref, watch, watchEffect } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import TestResultsDatatable from '@/components/testDetails/cards/TestResultsDatatable.vue';
 import TestResults from '@/components/testDetails/cards/TestResults.vue';
 
