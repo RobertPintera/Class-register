@@ -19,6 +19,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 ## Tech stack
 
 - **Vue.js** - Core framework for building user interface
+- **VueUse** - Collection of essential Vue Composition utilities
 - **TypeScript** - Typed language that compiles to JavaScript
 - **Tailwind CSS** - Utility-first CSS framework for styling and layout
 - **Pinia** - State management library for Vue
