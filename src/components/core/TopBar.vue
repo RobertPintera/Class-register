@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useDark } from '@vueuse/core';
+import { useGlobalStore } from '@/stores/useGlobalStore';
+
+const globalStore = useGlobalStore();
 
 const props = withDefaults(defineProps<{ isToggleSidebar?: boolean}>(), {
   isToggleSidebar: false
@@ -8,19 +12,7 @@ const emit = defineEmits<{
   (e: 'toggle-sidebar'): void
 }>();
 
-
-const isDark = ref<boolean>(false);
-
-onMounted(() => {
-  isDark.value = document.documentElement.classList.contains('dark');
-});
-
-const toggleDarkMode = () => {
-  document.documentElement.classList.toggle('dark');
-  isDark.value = document.documentElement.classList.contains('dark');
-};
-
-const darkModeIcon = computed(() => isDark.value ? 'pi pi-moon' : 'pi pi-sun');
+const darkModeIcon = computed(() => globalStore.isDark ? 'pi pi-moon' : 'pi pi-sun');
 
 </script>
 
@@ -30,6 +22,6 @@ const darkModeIcon = computed(() => isDark.value ? 'pi pi-moon' : 'pi pi-sun');
       <Button v-if="isToggleSidebar" icon="pi pi-bars" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="emit('toggle-sidebar')"/>
       <router-link :to="'/'"><div class="flex gap-2 justify-center items-center"><img src="/logo_class_register.svg" alt="Logo" class="h-full"><h3 class="text-xl sm:text-2xl">Class Register</h3></div></router-link>
     </div>
-    <Button :icon="darkModeIcon" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="toggleDarkMode"/>
+    <Button :icon="darkModeIcon" severity="secondary" variant="text" rounded aria-label="Bookmark" @click="globalStore.toggleDark"/>
   </header>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useGlobalStore } from '@/stores/useGlobalStore';
+import { useDark } from '@vueuse/core';
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
@@ -22,20 +24,22 @@ const images = [
   {
     alt: "StudentDetails",
     src: new URL("@/assets/presentation/preview_studentDetails_1.png", import.meta.url).href,
-    srcDark: new URL('@/assets/presentation/preview_studentDetails_1.png', import.meta.url).href
+    srcDark: new URL('@/assets/presentation/preview_studentDetails_1_dark.png', import.meta.url).href
   },
   {
     alt: "TestDetails",
     src: new URL("@/assets/presentation/preview_testDetails_1.png", import.meta.url).href
     ,
-    srcDark: new URL('@/assets/presentation/preview_testDetails_1.png', import.meta.url).href
+    srcDark: new URL('@/assets/presentation/preview_testDetails_1_dark.png', import.meta.url).href
   },
   {
     alt: "TestsList",
     src: new URL("@/assets/presentation/preview_testsList.png", import.meta.url).href,
-    srcDark: new URL('@/assets/presentation/preview_testsList.png', import.meta.url).href
+    srcDark: new URL('@/assets/presentation/preview_testsList_dark.png', import.meta.url).href
   },
 ];
+
+const globalStore = useGlobalStore();
 
 const container = ref<HTMLElement | null>();
 const itemActive = ref<number>(0);
@@ -223,7 +227,7 @@ onBeforeUnmount(() => {
       <ul class="flex gap-8">
         <!--  -->
         <li v-for="(img, i) in images" :key="i"  :ref="el => { if (el) items[i] = { ref: el as HTMLElement, width: 0, startPosition: 0 } }" class="flex-shrink-0">
-          <img :src="img.src" :alt="img.alt"
+          <img :src="!globalStore.isDark ? img.src : img.srcDark" :alt="img.alt"
             class="w-full min-w-[128px] max-w-[50vw] border-4 border-primary-border rounded-2xl select-none"
             :draggable="false"
           >
