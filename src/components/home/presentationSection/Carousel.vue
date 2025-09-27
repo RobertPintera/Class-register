@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useGlobalStore } from '@/stores/useGlobalStore';
 import { useDark } from '@vueuse/core';
-import { watch } from 'fs';
 import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
 import { onBeforeRouteUpdate } from 'vue-router';
 
