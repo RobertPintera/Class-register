@@ -4,10 +4,8 @@
 <template>
   <div class="card">
     <div class="mb-2">
-      <slot name="header">
-      </slot>
+      <slot name="header"/>
     </div>
-    <slot name="body">
-    </slot>
+    <slot name="body"/>
   </div>
 </template>

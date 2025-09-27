@@ -130,4 +130,8 @@
   .p-datatable-table-container {
     @apply border-l border-r border-[var(--p-datatable-border-color)];
   }
+
+  .p-toast {
+    @apply w-auto max-w-96 ml-4;
+  }
 }

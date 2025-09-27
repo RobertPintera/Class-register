@@ -49,7 +49,6 @@ const toggleSidebar = () => {
       />
     </Transition>
     
-
     <TopBar :is-toggle-sidebar="true" @toggle-sidebar="toggleSidebar"/>
     <SideBar :visible="sidebarVisible" :isLargeScreen="isLargeScreen" @select="isLargeScreen ? null : toggleSidebar()"/>
     <div
@@ -67,7 +66,9 @@ const toggleSidebar = () => {
         'ml-0': !sidebarVisible,
         'ml-72': sidebarVisible && isLargeScreen
       }">
-      <router-view /> 
+      <div>
+        <router-view /> 
+      </div>
     </div>
   </div>
   <ConfirmDialog :draggable="false"/>
