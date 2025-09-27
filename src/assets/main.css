@@ -5,13 +5,13 @@
 :root{
   @apply bg-primary-background text-primary-text font-mono;
    /* <----- PrimeVue -----> */
-   --p-transition-duration: 150ms;
+   --p-transition-duration: 0ms;
    --p-transition-timing-function: ease;
 }
 
 @layer base{
   * {
-    @apply transition-colors;
+    /* @apply transition-colors; */
     transition-duration: var(--p-transition-duration);
     transition-timing-function: var(--p-transition-timing-function);
   }
