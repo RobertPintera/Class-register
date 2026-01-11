@@ -50,7 +50,7 @@ const loadDeleteTestDialog = () => {
           detail: 'Successfully deleted test', 
           life: 3000 
         });
-        router.push('/tests');
+        router.push('/main/tests');
       } catch (err) {
         toast.add({ 
           severity: 'danger', 

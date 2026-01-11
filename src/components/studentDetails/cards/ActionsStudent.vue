@@ -39,7 +39,7 @@ const loadDeleteStudentDialog = () => {
           detail: 'Successfully deleted student', 
           life: 3000 
         });
-        router.push('/students');
+        router.push('/main/students');
       } catch (err) {
         toast.add({ 
           severity: 'danger', 
