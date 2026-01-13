@@ -33,6 +33,10 @@ onMounted(() => {
   }
 });
 
+onMounted(
+  () => window.removeEventListener('resize', updateScreen)
+);
+
 const toggleSidebar = () => {
   sidebarVisible.value = !sidebarVisible.value;
 };
@@ -56,7 +60,7 @@ const toggleSidebar = () => {
       class="fixed top-0 left-0 w-full h-full bg-black/40 z-[9999] flex items-center justify-center"
     >
       <ProgressSpinner
-        style="width:200px;height:200px"
+        style="width:200px; height:200px"
         strokeWidth="4"
         animationDuration=".8s"
       />

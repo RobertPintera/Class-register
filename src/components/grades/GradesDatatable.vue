@@ -119,7 +119,7 @@ const getTooltip = (testId: string) => {
         No students found.
       </div>
     </template>
-    <Column sortable field="fullName" header="Student" filterField="fullName" frozen>
+    <Column sortable field="fullName" header="Student" filterField="fullName" :frozen="true">
       <template #body="{ data }">
         <div class="w-full cursor-pointer px-3 py-4">
           {{ data.fullName }}
