@@ -66,7 +66,7 @@ const toggleSidebar = () => {
         'ml-0': !sidebarVisible,
         'ml-72': sidebarVisible && isLargeScreen
       }">
-      <div>
+      <div class="mx-auto max-w-[1640px]">
         <router-view /> 
       </div>
     </div>
