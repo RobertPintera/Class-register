@@ -1,41 +1,28 @@
 <script setup lang="ts">
 import SideBar from '@/components/core/SideBar.vue';
 import TopBar from '@/components/core/TopBar.vue';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 import { useRegisterStore } from '@/stores/useRegisterStore';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-const store = useRegisterStore();
+const globalStore = useGlobalStore();
+const registerStore = useRegisterStore();
 
 const sidebarVisible = ref(true);
-const isLargeScreen = ref(window.innerWidth >= 1280);
-
-const updateScreen = () => {
-  const wasLarge = isLargeScreen.value;
-  isLargeScreen.value = window.innerWidth >= 1280;
-  if (!wasLarge && isLargeScreen.value) {
-    sidebarVisible.value = true;
-  }
-
-  if (wasLarge && !isLargeScreen.value) {
-    sidebarVisible.value = false;
-  }
-};
-
-window.addEventListener('resize', updateScreen);
 
 onMounted(() => {
-  if (isLargeScreen.value) {
+  if (globalStore.isLargeScreen) {
     sidebarVisible.value = true;
   }
 
-  if (!isLargeScreen.value) {
+  if (!globalStore.isLargeScreen) {
     sidebarVisible.value = false;
   }
 });
 
-onMounted(
-  () => window.removeEventListener('resize', updateScreen)
-);
+watch(() => globalStore.isLargeScreen, (isLarge) => {
+  sidebarVisible.value = isLarge;
+});
 
 const toggleSidebar = () => {
   sidebarVisible.value = !sidebarVisible.value;
@@ -47,16 +34,16 @@ const toggleSidebar = () => {
   <div class="min-h-full">
     <Transition>
       <div 
-        v-if="sidebarVisible && !isLargeScreen"
+        v-if="sidebarVisible && !globalStore.isLargeScreen"
         class="fixed inset-0 bg-black/50 z-20"
         @click="sidebarVisible = false"
       />
     </Transition>
     
     <TopBar :is-toggle-sidebar="true" @toggle-sidebar="toggleSidebar"/>
-    <SideBar :visible="sidebarVisible" :isLargeScreen="isLargeScreen" @select="isLargeScreen ? null : toggleSidebar()"/>
+    <SideBar :visible="sidebarVisible" :isLargeScreen="globalStore.isLargeScreen" @select="globalStore.isLargeScreen ? null : toggleSidebar()"/>
     <div
-      v-if="store.isLoading"
+      v-if="registerStore.isLoading"
       class="fixed top-0 left-0 w-full h-full bg-black/40 z-[9999] flex items-center justify-center"
     >
       <ProgressSpinner
@@ -68,7 +55,7 @@ const toggleSidebar = () => {
     <div v-else class="pt-16 transition-[margin-left] duration-500 ease-in-out"
       :class="{
         'ml-0': !sidebarVisible,
-        'ml-72': sidebarVisible && isLargeScreen
+        'ml-72': sidebarVisible && globalStore.isLargeScreen
       }">
       <div class="mx-auto max-w-[1640px]">
         <router-view /> 
