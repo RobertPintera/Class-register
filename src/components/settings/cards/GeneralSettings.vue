@@ -37,7 +37,7 @@ watch(selectedEditGrade, () => {
     <template #body>
       <div class="flex flex-col gap-4 mt-2">
         <div class="flex items-center gap-4">
-          <h5>Editing grade:</h5>
+          <p>Editing grade:</p>
           <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
             class="w-full md:w-56" />
         </div>

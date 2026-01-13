@@ -73,6 +73,15 @@
   h6 {
     @apply text-base font-medium leading-snug;
   }
+  p {
+    @apply text-base leading-relaxed;
+  }
+}
+
+@layer utilities{
+  .text-highlight{
+    @apply text-lg;
+  }
 }
 
 @layer components{

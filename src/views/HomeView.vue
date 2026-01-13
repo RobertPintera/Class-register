@@ -3,7 +3,6 @@ import FeaturesSection from '@/components/home/featuresSection/FeaturesSection.v
 import MainSection from '@/components/home/mainSection/MainSection.vue';
 import PresentationSection from '@/components/home/presentationSection/PresentationSection.vue';
 
-
 </script>
 
 <template>

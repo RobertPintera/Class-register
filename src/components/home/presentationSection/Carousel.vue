@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { useGlobalStore } from '@/stores/useGlobalStore';
-import { useDark } from '@vueuse/core';
-import { computed, nextTick, onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue';
-import { onBeforeRouteUpdate } from 'vue-router';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 
 interface itemTemplate {
   ref: HTMLElement;
@@ -42,6 +40,8 @@ const images = [
 const globalStore = useGlobalStore();
 
 const container = ref<HTMLElement | null>();
+let resizeObserver: ResizeObserver;
+
 const itemActive = ref<number>(0);
 const items = ref<itemTemplate[]>([]);
 const totalWidth = ref<number>(0);
@@ -67,11 +67,9 @@ const initData = () => {
   const widths = items.value.map(el => el.width);
   const gapsTotal = (images.length - 1) * gap;
   totalWidth.value = widths.reduce((sum, w) => sum + w, 0) + gapsTotal;
-  
-  console.log(totalWidth.value);
 };
 
-function animateOffset(target: number, duration = 400) {
+const animateOffset = (target: number, duration = 400) => {
   const start = performance.now();
   const initial = offset.value;
 
@@ -86,7 +84,7 @@ function animateOffset(target: number, duration = 400) {
   }
 
   requestAnimationFrame(step);
-}
+};
 
 const updatePositionItems = () => {
   if (!container.value) return;
@@ -209,11 +207,21 @@ const waitImagesLoaded = () => {
 onMounted(async () => {
   await waitImagesLoaded();
   handleResize();
-  window.addEventListener('resize', handleResize);
+  
+  // React only when the container changes size
+  if (container.value) {
+    resizeObserver = new ResizeObserver(() => {
+      handleResize();
+    });
+
+    resizeObserver.observe(container.value);
+  }
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize);
+  if (resizeObserver && container.value) {
+    resizeObserver.unobserve(container.value);
+  }
 });
 
 </script>
