@@ -7,6 +7,7 @@ const globalStore = useGlobalStore();
 const props = withDefaults(defineProps<{ isToggleSidebar?: boolean}>(), {
   isToggleSidebar: false
 });
+
 const emit = defineEmits<{
   (e: 'toggle-sidebar'): void
 }>();

@@ -69,7 +69,7 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
         'left-[-18rem]': !visible,
         'left-0': visible
       }">
-      <div class="bg-sidebar-background w-full overflow-auto transition-colors duration-[var(--p-transition-duration)] ease-in-out"
+      <div class="bg-sidebar-background w-full overflow-auto ease-in-out"
         :class="{
           'sidebar m-4 h-[calc(100vh-6rem)]': isLargeScreen,
           'h-[100vh] p-4': !isLargeScreen
