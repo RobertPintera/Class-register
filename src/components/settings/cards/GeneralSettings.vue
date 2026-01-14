@@ -6,6 +6,8 @@ import { onMounted, ref, watch } from 'vue';
 const settingsStore = useSettingsStore();
 
 const selectedEditGrade = ref<{ name: string, code: string }>();
+const isFrozenStudentInGrades = ref<boolean>();
+
 const editGradesOption = ref([
   { name: 'With dialog', code: 'D' },
   { name: 'With input', code: 'I' },
@@ -17,6 +19,7 @@ onMounted(() => {
   } else {
     selectedEditGrade.value = { name: 'With input', code: 'I' };
   }
+  isFrozenStudentInGrades.value = settingsStore.settings?.frozenStudentInGrades;
 });
 
 watch(selectedEditGrade, () => {
@@ -26,6 +29,10 @@ watch(selectedEditGrade, () => {
     settingsStore.updateSettings({ editWithDialog: false });
   }
 }, { deep: true });
+
+watch(isFrozenStudentInGrades, () => {
+  settingsStore.updateSettings({ frozenStudentInGrades: isFrozenStudentInGrades.value });
+});
 
 </script>
 
@@ -40,6 +47,10 @@ watch(selectedEditGrade, () => {
           <p>Editing grade:</p>
           <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
             class="w-full md:w-56" />
+        </div>
+        <div class="flex items-center gap-4">
+          <p>Frozen student in grades:</p>
+          <Checkbox v-model="isFrozenStudentInGrades" binary/>
         </div>
       </div>
     </template>

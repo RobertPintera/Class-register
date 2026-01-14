@@ -2,7 +2,6 @@ import type { Student } from "@/models/Student";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useGradesStore } from "./useGradesStore";
-import { db } from "@/database/database";
 import { v4 as uuidv4 } from 'uuid';
 import { addStudentDb, deleteStudentAndGradesDb, updateStudentDb } from "@/database/studentsDb";
 

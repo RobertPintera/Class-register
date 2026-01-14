@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRegisterStore } from '@/stores/useRegisterStore';
-import { onMounted, reactive, ref, watch } from 'vue';
+import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
@@ -9,7 +9,9 @@ import { useSettingsStore } from '@/stores/useSettingsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import EditGradeDialog from './EditGradeDialog.vue';
+import { useGlobalStore } from '@/stores/useGlobalStore';
 
+const globalStore = useGlobalStore();
 const registerStore = useRegisterStore();
 const testsStore = useTestsStore();
 const settingsStore = useSettingsStore();
@@ -19,6 +21,8 @@ const editWithDialog = ref<boolean>();
 
 const dialogVisible = ref(false);
 const filters = ref<Record<string, AdvancedFilter>>({});
+
+const isFrozen = computed(() => settingsStore.settings?.frozenStudentInGrades && globalStore.isMediumScreen);
 
 const initFilters = () => {
   filters.value['fullName'] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]};
@@ -119,7 +123,7 @@ const getTooltip = (testId: string) => {
         No students found.
       </div>
     </template>
-    <Column sortable field="fullName" header="Student" filterField="fullName" :frozen="true">
+    <Column sortable field="fullName" header="Student" filterField="fullName" :frozen="isFrozen">
       <template #body="{ data }">
         <div class="w-full cursor-pointer px-3 py-4">
           {{ data.fullName }}

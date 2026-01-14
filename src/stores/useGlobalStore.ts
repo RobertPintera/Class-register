@@ -7,13 +7,15 @@ export const useGlobalStore = defineStore('global', () => {
   const isDark = computed(() => _isDark.value);
   const _windowSize = useWindowSize();
   const isLargeScreen = computed(() => _windowSize.width.value >= 1280);
+  const isMediumScreen = computed(() => _windowSize.width.value >= 768);
 
   const toggleDark = () => {
     _isDark.value = !_isDark.value;
   };
 
   return { 
-    isDark, 
+    isDark,
+    isMediumScreen,
     isLargeScreen,
     toggleDark 
   };

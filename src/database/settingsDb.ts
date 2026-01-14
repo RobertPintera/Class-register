@@ -7,6 +7,7 @@ export async function initSettingsDb(): Promise<void> {
     await db.settings.add({
       id: "global",
       editWithDialog: false,
+      frozenStudentInGrades: true
     });
   }
 }
