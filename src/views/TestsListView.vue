@@ -9,6 +9,7 @@ const showNewTestDialog = ref<boolean>(false);
 </script>
 
 <template>
+  <h1 class="sr-only">Register - Tests</h1>
   <h2 class="title-section">Tests</h2>
   <div class="cards-section">
     <Card>

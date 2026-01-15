@@ -78,7 +78,8 @@ watch(
 </script>
 
 <template>
-  <h2 class="title-section">Test Details</h2>
+  <h1 class="sr-only">Register - Test details</h1>
+  <h2 class="title-section">Test details</h2>
   <div class="cards-section">
     <div v-if="test" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto w-full">
       <InfoData :name="test?.name" :weight="test?.weight" :required-points="test?.requiredPoints" :max-points="test?.maxPoints" :is-mandatory="test?.isMandatory"

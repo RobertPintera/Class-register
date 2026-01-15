@@ -69,7 +69,8 @@ watch(() => studentsStore.students,() => {
 </script>
 
 <template>
-  <h2 class="title-section">Student Details</h2>
+  <h1 class="sr-only">Register - Student Details</h1>
+  <h2 class="title-section">Student details</h2>
   <div class="cards-section">
     <div v-if="student" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-auto w-full">
       <PersonalData :name="student.name" :surname="student.surname" :gender="student.gender" 

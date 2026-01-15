@@ -8,6 +8,7 @@ const showNewStudentDialog = ref<boolean>(false);
 </script>
 
 <template>
+  <h1 class="sr-only">Register - Students</h1>
   <h2 class="title-section">Students</h2>
   <div class="cards-section">
     <Card>

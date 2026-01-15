@@ -7,6 +7,7 @@ import Import from '@/components/settings/cards/Import.vue';
 </script>
 
 <template>
+  <h1 class="sr-only">Register - Settings</h1>
   <h2 class="title-section">Settings</h2>
   <div class="cards-section">
     <div class="grid grid-cols-1 lg:grid-cols-2 auto-rows-auto w-full">

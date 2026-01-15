@@ -4,6 +4,7 @@ import GradesDatatable from '@/components/grades/GradesDatatable.vue';
 </script>
 
 <template>
+  <h1 class="sr-only">Register - Grades</h1>
   <h2 class="title-section">Grades</h2>
   <div class="cards-section">
     <Card>
