@@ -74,7 +74,7 @@ onMounted(updateChart);
 <template>
   <Card>
     <template #header>
-      <h3>Class Comparison</h3>
+      <h3>Class comparison</h3>
     </template>
     <template #body>
       <div class="relative w-full h-[90%]">

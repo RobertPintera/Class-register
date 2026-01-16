@@ -1,39 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import Card from '@/components/core/Card.vue';
-import { useRegisterStore } from '@/stores/useRegisterStore';
-import { getStudentWeightedAverage } from '@/utility/mathUtils';
-import { getStudentFinalGrade } from '@/utility/gradeUtils';
-import { useTestsStore } from '@/stores/useTestsStore';
-import { useGradesStore } from '@/stores/useGradesStore';
-import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
-import { useStudentsStore } from '@/stores/useStudentsStore';
+import type { GradeThreshold } from '@/models/GradeThreshold';
+import type { GradeStats } from '@/models/GradeStats';
 
-const studentsStore = useStudentsStore();
-const testsStore = useTestsStore();
-const gradesStore = useGradesStore();
-const gradeThresholdsStore = useGradeThresholdsStore();
-
-const props = defineProps<{studentId: string}>();
-
-const bestGrade = ref<string>(getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, props.studentId));
+const props = defineProps<{studentId: string, finalGrade: GradeThreshold, gradesStats: GradeStats}>();
 
 const stats = computed(() => {
-  const students = studentsStore.students;
-  const total = students.length || 1;
-  
-  const higher = (students.filter(s => {
-    const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, s.id);
-    return grade > bestGrade.value; 
-  }).length / total) * 100;
-  const lower = 100 - higher;
-
-  const lowerRounded = Math.round(lower);
-  const higherRounded = 100 - lowerRounded;
-
   return [
-    { label: 'Lower or equal', color: '#60a5fa', value: lowerRounded },
-    { label: 'Higher', color: "#fbbf24", value: higherRounded }
+    { label: 'Lower or equal', color: '#60a5fa', value: props.gradesStats.lowerValue },
+    { label: 'Higher', color: "#fbbf24", value: props.gradesStats.higherValue }
   ];
 });
 
@@ -42,12 +18,12 @@ const stats = computed(() => {
 <template>
   <Card class="flex flex-col">
     <template #header>
-      <h3>Final Grade</h3>
+      <h3>Final grade</h3>
     </template>
     <template #body>
       <div class="flex-1 flex justify-center items-center">
         <h4 class="text-[clamp(1rem,5vw,4rem)] leading-none">
-          {{ bestGrade }}
+          {{ props.finalGrade.name }}
         </h4>
       </div>
       <div class="mt-auto">

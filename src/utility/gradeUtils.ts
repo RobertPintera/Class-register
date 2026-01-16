@@ -2,7 +2,7 @@ import type { Grade } from "@/models/Grade";
 import type { GradeThreshold } from "@/models/GradeThreshold";
 import type { Test } from "@/models/Test";
 
-export function getStudentFinalGrade(grades: Grade[], tests: Test[],thresholds: GradeThreshold[], studentId: string): string {
+export function getStudentFinalGrade(grades: Grade[], tests: Test[], thresholds: GradeThreshold[], studentId: string): GradeThreshold {
   const studentGrades = grades.filter(g => g.studentId === studentId);
 
   const results = studentGrades.map(g => {
@@ -37,5 +37,5 @@ export function getStudentFinalGrade(grades: Grade[], tests: Test[],thresholds: 
     .filter(t => averagePercentage >= t.minPercentage)
     .sort((a, b) => b.minPercentage - a.minPercentage)[0];
 
-  return grade ? grade.name : '—';
+  return grade ? grade : {id: '', name: '', minPercentage: 0};
 }

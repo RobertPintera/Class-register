@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
 import Card from '@/components/core/Card.vue';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
+import type { StudentResult } from '@/models/TestResult';
 
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 
-const props = defineProps<{ studentId: string }>();
+const props = defineProps<{ studentId: string, results: StudentResult[] }>();
 
 const chartData = ref<{ labels: string[]; datasets: DatasetTestResults[] }>();
 const chartOptions = ref();
@@ -21,24 +21,11 @@ const totalRecords = ref(0);
 
 
 const setChartData = () => {
-  const studentScores = gradesStore.grades
-    .filter(g => g.studentId === props.studentId)
-    .map(g => {
-      const test = testsStore.tests.find(t => t.id === g.testId);
-      const max = test?.maxPoints ?? 100;
-      return {
-        testName: test?.name ?? 'Unknown Test',
-        score: g.points,
-        maxScore: max,
-        percentage: (g.points / max) * 100
-      };
-    });
-
-  totalRecords.value = studentScores.length;
+  totalRecords.value = props.results.length;
 
   const start = currentPage.value * rowsPerPage;
   const end = start + rowsPerPage;
-  const pageScores = studentScores.slice(start, end);
+  const pageScores = props.results.slice(start, end);
 
   chartData.value = {
     labels: pageScores.map(t => t.testName),
@@ -46,8 +33,8 @@ const setChartData = () => {
       {
         label: 'Score',
         data: pageScores.map(t => t.percentage),
-        originalScores: pageScores.map(t => t.score),
-        maxScores: pageScores.map(t => t.maxScore),
+        points: pageScores.map(t => t.points),
+        maxPoints: pageScores.map(t => t.maxPoints),
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgb(34, 197, 94)',
         borderWidth: 1,
@@ -68,7 +55,7 @@ const setChartOptions = () => {
           label: (ctx: TooltipItem<'bar'>) => {
             const dataset = ctx.dataset as DatasetTestResults;
             const index = ctx.dataIndex;
-            return `${dataset.originalScores[index]} / ${dataset.maxScores[index]} points (${ctx.formattedValue}%)`;
+            return `${dataset.points[index]} / ${dataset.maxPoints[index]} points (${ctx.formattedValue}%)`;
           },
         },
       },

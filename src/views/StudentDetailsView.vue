@@ -11,25 +11,50 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, getStudentMax, getStudentMedian, getStudentMin, getStudentStandardDeviation, getStudentWeightedAverage, round2 } from '@/utility/mathUtils';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import StudentPerformance from '@/components/studentDetails/cards/StudentPerformance.vue';
+import { getStudentFinalGrade } from '@/utility/gradeUtils';
+import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
+import type { GradeThreshold } from '@/models/GradeThreshold';
+import type { GradeStats } from '@/models/GradeStats';
+import type { Performance } from '@/models/Performance';
+import type { StudentResult } from '@/models/TestResult';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
+const gradeThresholdsStore = useGradeThresholdsStore();
 
 const props = defineProps<{ studentId: string }>();
 const student = ref<Student>();
-
-const individualPerformace = ref<{weightedAverage: number; median: number; standardDeviation: number; min: number; max: number}>({
+const finalGrade = ref<GradeThreshold>({ id: "", name: "", minPercentage: 0});
+const gradeStats = ref<GradeStats>({lowerValue: 0, higherValue: 100});
+const individualPerformace = ref<Performance>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
-
-const classPerformace = ref<{weightedAverage: number; median: number; standardDeviation: number; min: number; max: number}>({
+const classPerformace = ref<Performance>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
+const results = computed<StudentResult[]>(() => {
+  return gradesStore.grades
+    .filter(g => g.studentId === props.studentId)
+    .map(g => {
+      const test = testsStore.tests.find(t => t.id === g.testId);
+      const maxPoints = test?.maxPoints ?? 100;
+      const requiredPoints = test?.requiredPoints ?? 0;
+      const percentage = round2((g.points / maxPoints) * 100);
+      const status = g.points >= requiredPoints;
+      return {
+        testName: test?.name ?? 'Unknown Test',
+        points: g.points,
+        percentage,
+        maxPoints,
+        status
+      };
+    });
+});
 
-const loadStudentData = () => {
+const loadData = () => {
   const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
@@ -54,10 +79,33 @@ const loadStudentData = () => {
     min: round2(getClassMin(grades, studentTests)),
     max: round2(getClassMax(grades, studentTests))
   };
+
+  finalGrade.value = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, props.studentId);
+  const studentGrade = finalGrade.value;
+
+  if(studentGrade){
+    const students = studentsStore.students;
+    const total = students.length || 1;
+    
+    const higher = (students.filter(s => {
+      const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, s.id);
+      return grade.minPercentage > studentGrade.minPercentage; 
+    }).length / total) * 100;
+    const lower = 100 - higher;
+
+    const lowerRounded = Math.round(lower);
+    const higherRounded = 100 - lowerRounded;
+
+    gradeStats.value = { 
+      lowerValue: lowerRounded, 
+      higherValue: higherRounded 
+    };
+  }
 };
 
+
 onMounted(() => {
-  loadStudentData();
+  loadData();
 });
 
 watch(() => studentsStore.students,() => {
@@ -77,11 +125,13 @@ watch(() => studentsStore.students,() => {
       class="
       sm:col-span-2
       lg:col-span-2"/>
-      <ActionsStudent :student-id="studentId" 
+      <ActionsStudent :student="student" :final-grade="finalGrade" :grades-stats="gradeStats" 
+      :individual-performance="individualPerformace" :class-performance="classPerformace"
+      :results="results"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
-      <FinalGradeResult :student-id="studentId"
+      <FinalGradeResult :student-id="studentId" :final-grade="finalGrade" :gradesStats="gradeStats"
       class="
       lg:row-span-2 lg:col-start-3 lg:row-start-1"/>
       <StudentPassRate :student-id="student.id" 
@@ -95,11 +145,11 @@ watch(() => studentsStore.students,() => {
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-3"/>
-      <StudentResults :student-id="student.id" 
+      <StudentResults :student-id="student.id" :results="results"
       class="
       sm:col-span-2
       lg:col-span-2 lg:row-start-4"/>
-      <StudentResultsDatatable :student-id="student.id" 
+      <StudentResultsDatatable :student-id="student.id" :results="results"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-3 lg:row-start-4"/>
