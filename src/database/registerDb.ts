@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "./database";
-import { importDB, exportDB, importInto } from "dexie-export-import";
+import { exportDB, importInto } from "dexie-export-import";
 import type { Grade } from "@/models/Grade";
 import type { Test } from "@/models/Test";
 import type { Student } from "@/models/Student";

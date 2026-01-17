@@ -11,7 +11,7 @@ import type { Performance } from '@/models/Performance';
 import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { GradeStats } from '@/models/GradeStats';
 import type { StudentResult } from '@/models/TestResult';
-import { generateStudentReportPDF } from '@/utility/pdfUtils';
+import { pdfService } from '@/services/pdfService';
 
 const studentsStore = useStudentsStore();
 const confirm = useConfirm();
@@ -69,7 +69,7 @@ const generateReport = async () => {
     results: props.results
   };
 
-  await generateStudentReportPDF(payload);
+  await pdfService.generateStudentReportPDF(payload);
 };
 
 </script>

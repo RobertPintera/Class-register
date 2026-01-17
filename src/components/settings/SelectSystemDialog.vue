@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue';
 import type { FormSubmitEvent } from '@primevue/forms';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { z } from 'zod';
-import { useGradingSystems } from '@/utility/gradingSystemsData';
+import { useGradingSystems } from '@/constants/gradingSystemsData';
 import type { GradingSystem } from '@/models/GradingSystem';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 import { useToast } from 'primevue';

@@ -103,7 +103,6 @@ const loadData = () => {
   }
 };
 
-
 onMounted(() => {
   loadData();
 });

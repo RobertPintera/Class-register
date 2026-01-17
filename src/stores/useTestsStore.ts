@@ -1,10 +1,8 @@
-import { db } from "@/database/database";
 import type { Test } from "@/models/Test";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { v4 as uuidv4 } from 'uuid';
 import { useGradesStore } from "./useGradesStore";
-import { addTestDb, deleteTestAndGradesDb, updateTestDb } from "@/database/testsDb";
+import { testService } from "@/services/testService";
 
 
 export const useTestsStore = defineStore('tests', () => {
@@ -13,13 +11,12 @@ export const useTestsStore = defineStore('tests', () => {
   const tests = computed(() => _tests.value);
   
   const addTest = async (test: Omit<Test, 'id'>) => {
-    const newTest: Test = { id: uuidv4(), ...test };
-    await addTestDb(newTest);
+    const newTest = await testService.addTest(test);
     _tests.value.push(newTest);
   };
 
   const updateTest = async (id: string, updated: Partial<Omit<Test, 'id'>>) => {
-    await updateTestDb(id, updated);
+    testService.updateTest(id, updated);
     const index = _tests.value.findIndex(t => t.id === id);
     if (index !== -1) {
       _tests.value[index] = { ..._tests.value[index], ...updated };
@@ -27,7 +24,7 @@ export const useTestsStore = defineStore('tests', () => {
   };
 
   const deleteTest = async (testId: string) => {
-    await deleteTestAndGradesDb(testId);
+    await testService.deleteTest(testId);
     _tests.value = _tests.value.filter(t => t.id !== testId);
     gradesStore.setGrades(gradesStore.grades.filter(g => g.testId !== testId));
   };

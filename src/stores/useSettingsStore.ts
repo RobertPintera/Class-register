@@ -1,6 +1,5 @@
-import { db } from "@/database/database";
-import { updateSettingsDb } from "@/database/settingsDb";
 import type { Settings } from "@/models/Settings";
+import { settingsService } from "@/services/settingsService";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -11,7 +10,7 @@ export const useSettingsStore = defineStore('settings', () => {
   const updateSettings = async (data: Partial<Omit<Settings, 'id'>>) => {
     if (!_settings.value) return;
     
-    await updateSettingsDb(data);
+    await settingsService.updateSettings(data);
     Object.assign(_settings.value, data);
   };
 

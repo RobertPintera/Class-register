@@ -1,8 +1,7 @@
 import type { Grade } from "@/models/Grade";
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
-import { addGradeDb, deleteGradeDb, deleteGradesByTestDb, updateGradeDb } from "@/database/gradesDb";
-import { round1 } from "@/utility/mathUtils";
+import { computed, ref } from "vue";import { round1 } from "@/utility/mathUtils";
+import { gradeService } from "@/services/gradeService";
 
 export const useGradesStore = defineStore('grades', () => {
   const _grades = ref<Grade[]>([]);
@@ -13,22 +12,22 @@ export const useGradesStore = defineStore('grades', () => {
     const existingGrade = _grades.value.find(g => g.studentId === updatedGrade.studentId && g.testId === updatedGrade.testId);
     if (existingGrade) {
       existingGrade.points = updatedGrade.points;
-      await updateGradeDb(existingGrade.testId, existingGrade.studentId, {points: existingGrade.points});
+      await gradeService.updateGrade(existingGrade.testId, existingGrade.studentId, {points: existingGrade.points});
     } else {
       _grades.value.push(updatedGrade);
-      await addGradeDb(updatedGrade);
+      await gradeService.addGrade(updatedGrade);
     }
   };
 
   const deleteGrade = async (studentId: string, testId: string) => {
-    await deleteGradeDb(studentId, testId);
+    await gradeService.deleteGrade(studentId, testId);
     _grades.value = _grades.value.filter(
       g => !(g.studentId === studentId && g.testId === testId)
     );
   };
 
-  const setGrades = (newStudents: Grade[]) => {
-    _grades.value = newStudents;
+  const setGrades = (newGrades: Grade[]) => {
+    _grades.value = newGrades;
   };
 
   const getGrade = (studentId: string, testId: string): Grade | undefined => {
@@ -48,7 +47,7 @@ export const useGradesStore = defineStore('grades', () => {
     await Promise.all(
       newGrades
         .filter(g => g.testId === testId)
-        .map(g => updateGradeDb(g.testId, g.studentId, { points: g.points }))
+        .map(g => gradeService.updateGrade(g.testId, g.studentId, { points: g.points }))
     );
 
     _grades.value = newGrades;
@@ -66,14 +65,14 @@ export const useGradesStore = defineStore('grades', () => {
     await Promise.all(
       newGrades
         .filter(g => g.testId === testId)
-        .map(g => updateGradeDb(g.testId, g.studentId, { points: g.points }))
+        .map(g => gradeService.updateGrade(g.testId, g.studentId, { points: g.points }))
     );
 
     _grades.value = newGrades;
   };
 
   const deleteGradesByTest = async (testId: string) => {
-    await deleteGradesByTestDb(testId);
+    await gradeService.deleteGradesByTest(testId);
     _grades.value = _grades.value.filter(g => g.testId !== testId);
   };
 

@@ -6,13 +6,13 @@ import { useGradeThresholdsStore } from "./useGradeThresholdsStore";
 import { useSettingsStore } from "./useSettingsStore";
 import { useStudentsStore } from "./useStudentsStore";
 import { useTestsStore } from "./useTestsStore";
-import { getSettingsDb, initSettingsDb } from "@/database/settingsDb";
-import { getGradeThresholdsDb, initGradeThresholdsDb } from "@/database/gradeThresholdsDb";
-import { getAllStudentsDb } from "@/database/studentsDb";
-import { getAllTestsDb } from "@/database/testsDb";
-import { getAllGradesDb } from "@/database/gradesDb";
 import { createDemoDataDb, exportToJsonDb, importFromJsonDb } from "@/database/registerDb";
 import { saveAs } from 'file-saver';
+import { settingsService } from "@/services/settingsService";
+import { gradeThresholdService } from "@/services/gradeThresholdService";
+import { studentService } from "@/services/studentSerivce";
+import { testService } from "@/services/testService";
+import { gradeService } from "@/services/gradeService";
 
 export const useRegisterStore = defineStore('register', () => {
   const _isLoading = ref(false);
@@ -28,14 +28,14 @@ export const useRegisterStore = defineStore('register', () => {
     if (_isLoading.value) return;
     _isLoading.value = true;
 
-    await initSettingsDb();
-    await initGradeThresholdsDb();
+    await settingsService.initSettings();
+    await gradeThresholdService.initGradeThresholds();
     
-    gradeThresholdsStore.setGradeThresholds(await getGradeThresholdsDb());
-    settingsStore.setSettings(await getSettingsDb() ?? {id: 'global', editWithDialog: true});
-    studentsStore.setStudents(await getAllStudentsDb());
-    testsStore.setTests(await getAllTestsDb());
-    gradesStore.setGrades(await getAllGradesDb());
+    gradeThresholdsStore.setGradeThresholds(await gradeThresholdService.getAllGradeThresholds());
+    settingsStore.setSettings(await settingsService.getSettings() ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true});
+    studentsStore.setStudents(await studentService.getAllStudents());
+    testsStore.setTests(await testService.getAllTests());
+    gradesStore.setGrades(await gradeService.getAllGrades());
 
     await new Promise(resolve => setTimeout(resolve, 500));
     _isLoading.value = false;
@@ -47,11 +47,11 @@ export const useRegisterStore = defineStore('register', () => {
 
     await createDemoDataDb();
     
-    gradeThresholdsStore.setGradeThresholds(await getGradeThresholdsDb());
-    settingsStore.setSettings(await getSettingsDb() ?? {id: 'global', editWithDialog: true});
-    studentsStore.setStudents(await getAllStudentsDb());
-    testsStore.setTests(await getAllTestsDb());
-    gradesStore.setGrades(await getAllGradesDb());
+    gradeThresholdsStore.setGradeThresholds(await gradeThresholdService.getAllGradeThresholds());
+    settingsStore.setSettings(await settingsService.getSettings() ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true});
+    studentsStore.setStudents(await studentService.getAllStudents());
+    testsStore.setTests(await testService.getAllTests());
+    gradesStore.setGrades(await gradeService.getAllGrades());
 
     await new Promise(resolve => setTimeout(resolve, 500));
     _isLoading.value = false;

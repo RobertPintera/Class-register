@@ -21,7 +21,7 @@ export async function getGradeThresholdsDb(): Promise<GradeThreshold[]> {
   return db.thresholds.toArray();
 }
 
-export async function addGradeThresholdDb(threshold: GradeThreshold): Promise<string> {
+export async function addGradeThresholdDb(threshold: GradeThreshold): Promise<GradeThreshold> {
   return db.thresholds.add(threshold);
 }
 

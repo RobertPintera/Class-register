@@ -2,21 +2,19 @@ import type { GradeThreshold } from "@/models/GradeThreshold";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { v4 as uuidv4 } from 'uuid';
-import { db } from "@/database/database";
-import { addGradeThresholdDb, deleteGradeThresholdDb, replaceGradeThresholdsDb, updateGradeThresholdDb } from "@/database/gradeThresholdsDb";
+import { gradeThresholdService } from "@/services/gradeThresholdService";
 
 export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
   const _gradeThresholds = ref<GradeThreshold[]>([]);
   const gradeThresholds = computed(() => _gradeThresholds.value);
   
   const addGradeThreshold = async(threshold: Omit<GradeThreshold, 'id'>) => {
-    const newGradeThreshold: GradeThreshold = { id: uuidv4(), ...threshold };
-    await addGradeThresholdDb(newGradeThreshold);
+    const newGradeThreshold = await gradeThresholdService.addGradeThreshold(threshold);
     _gradeThresholds.value.push(newGradeThreshold);
   };
 
   const updateGradeThreshold = async(id: string, updated: Partial<Omit<GradeThreshold, 'id'>>) => {
-    await updateGradeThresholdDb(id, updated);
+    await gradeThresholdService.updateGradeThreshold(id, updated);
     const index = _gradeThresholds.value.findIndex(t => t.id === id);
     if (index !== -1) {
       _gradeThresholds.value[index] = { ..._gradeThresholds.value[index], ...updated };
@@ -24,7 +22,7 @@ export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
   };
 
   const deleteGradeThreshold = async(thresholdId: string) => {
-    await deleteGradeThresholdDb(thresholdId);
+    await gradeThresholdService.deleteGradeThreshold(thresholdId);
     _gradeThresholds.value = _gradeThresholds.value.filter(t => t.id !== thresholdId);
   };
 
@@ -33,7 +31,7 @@ export const useGradeThresholdsStore = defineStore('gradeThresholds', () => {
       id: uuidv4(),
       ...t
     }));
-    await replaceGradeThresholdsDb(newGradeThresholds);
+    await gradeThresholdService.replaceGradeThreshold(newGradeThresholds);
     _gradeThresholds.value = newGradeThresholds;
   };
 
