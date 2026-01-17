@@ -1,8 +1,9 @@
 import type { Grade } from "@/models/Grade";
 import type { GradeThreshold } from "@/models/GradeThreshold";
+import type { Settings } from "@/models/Settings";
 import type { Test } from "@/models/Test";
 
-export function getStudentFinalGrade(grades: Grade[], tests: Test[], thresholds: GradeThreshold[], studentId: string): GradeThreshold {
+export function getStudentFinalGrade(grades: Grade[], tests: Test[], thresholds: GradeThreshold[], settings: Settings, studentId: string): GradeThreshold {
   const studentGrades = grades.filter(g => g.studentId === studentId);
 
   const results = studentGrades.map(g => {
@@ -12,19 +13,19 @@ export function getStudentFinalGrade(grades: Grade[], tests: Test[], thresholds:
   });
 
   // checking for missing mandatory tests
-  // const missedMandatory = tests.some(
-  //   t => t.isMandatory && !results.find(r => r.id === t.id)
-  // );
+  const missedMandatory = tests.some(
+    t => t.isMandatory && !results.find(r => r.id === t.id)
+  );
 
-  // checking for failed mandatory tests
-  // const failedMandatory = results.some(
-  //   r => r.isMandatory && r.requiredPoints !== null && r.points < r.requiredPoints
-  // );
+  // checking for failed tests
+  const failedTest = results.some(
+    r => r.requiredPoints !== null && r.points < r.requiredPoints
+  );
 
-  // if (missedMandatory || failedMandatory) {
-  //   const lowestGrade = thresholds.sort((a, b) => a.minPercentage - b.minPercentage)[0];
-  //   return lowestGrade ? lowestGrade.name : '—';
-  // }
+  if ((settings.lowestGradeForTestMandatory && missedMandatory) || (settings.lowestGradeForTestFailed && failedTest)) {
+    const lowestGrade = thresholds.sort((a, b) => a.minPercentage - b.minPercentage)[0];
+    return lowestGrade ? lowestGrade : {id: '', name: '', minPercentage: 0};
+  }
 
   const totalWeight = results.reduce((sum, r) => sum + r.weight, 0);
   const weightedSum = results.reduce(

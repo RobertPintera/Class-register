@@ -5,12 +5,10 @@ import FinalGradeStats from '@/components/dashboard/cards/FinalGradeStats.vue';
 import MandatoryTestsCount from '@/components/dashboard/cards/MandatoryTestsCount.vue';
 import TestGenderComparison from '@/components/dashboard/cards/TestGenderComparison.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
-import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { getClassMax, getClassMedian, getClassMin, getClassStandardDeviation, getClassWeightedAverage, round2 } from '@/utility/mathUtils';
 import { onMounted, ref } from 'vue';
 
-const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 

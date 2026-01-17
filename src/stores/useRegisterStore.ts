@@ -6,13 +6,13 @@ import { useGradeThresholdsStore } from "./useGradeThresholdsStore";
 import { useSettingsStore } from "./useSettingsStore";
 import { useStudentsStore } from "./useStudentsStore";
 import { useTestsStore } from "./useTestsStore";
-import { createDemoDataDb, exportToJsonDb, importFromJsonDb } from "@/database/registerDb";
 import { saveAs } from 'file-saver';
 import { settingsService } from "@/services/settingsService";
 import { gradeThresholdService } from "@/services/gradeThresholdService";
 import { studentService } from "@/services/studentSerivce";
 import { testService } from "@/services/testService";
 import { gradeService } from "@/services/gradeService";
+import { registerService } from "@/services/registerService";
 
 export const useRegisterStore = defineStore('register', () => {
   const _isLoading = ref(false);
@@ -32,7 +32,8 @@ export const useRegisterStore = defineStore('register', () => {
     await gradeThresholdService.initGradeThresholds();
     
     gradeThresholdsStore.setGradeThresholds(await gradeThresholdService.getAllGradeThresholds());
-    settingsStore.setSettings(await settingsService.getSettings() ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true});
+    settingsStore.setSettings(await settingsService.getSettings() ?? 
+    {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false});
     studentsStore.setStudents(await studentService.getAllStudents());
     testsStore.setTests(await testService.getAllTests());
     gradesStore.setGrades(await gradeService.getAllGrades());
@@ -45,10 +46,11 @@ export const useRegisterStore = defineStore('register', () => {
     if (isLoading.value) return;
     _isLoading.value = true;
 
-    await createDemoDataDb();
+    await registerService.createDemoData();
     
     gradeThresholdsStore.setGradeThresholds(await gradeThresholdService.getAllGradeThresholds());
-    settingsStore.setSettings(await settingsService.getSettings() ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true});
+    settingsStore.setSettings(await settingsService.getSettings() ?? 
+    {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false});
     studentsStore.setStudents(await studentService.getAllStudents());
     testsStore.setTests(await testService.getAllTests());
     gradesStore.setGrades(await gradeService.getAllGrades());
@@ -58,12 +60,12 @@ export const useRegisterStore = defineStore('register', () => {
   };
 
   const exportToJson = async () => {
-    const blob = await exportToJsonDb();
+    const blob = await registerService.exportToJson();
     saveAs(blob, "register-class-data.json");
   };
 
   const importFromJson = async (json: string) => {
-    await importFromJsonDb(json);
+    await registerService.importFromJson(json);
     await loadData();
   };
 

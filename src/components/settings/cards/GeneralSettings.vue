@@ -1,37 +1,42 @@
 <script setup lang="ts">
 import Card from '@/components/core/Card.vue';
 import { useSettingsStore } from '@/stores/useSettingsStore';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const settingsStore = useSettingsStore();
-
-const selectedEditGrade = ref<{ name: string, code: string }>();
-const isFrozenStudentInGrades = ref<boolean>();
 
 const editGradesOption = ref([
   { name: 'With dialog', code: 'D' },
   { name: 'With input', code: 'I' },
 ]);
 
-onMounted(() => {
-  if (settingsStore.settings?.editWithDialog) {
-    selectedEditGrade.value = { name: 'With dialog', code: 'D' };
-  } else {
-    selectedEditGrade.value = { name: 'With input', code: 'I' };
+
+const selectedEditGrade = computed({
+  get() {
+    return settingsStore.settings?.editWithDialog
+      ? { name: 'With dialog', code: 'D' }
+      : { name: 'With input', code: 'I' };
+  },
+  set(value) {
+    settingsStore.updateSettings({
+      editWithDialog: value?.code === 'D',
+    });
   }
-  isFrozenStudentInGrades.value = settingsStore.settings?.frozenStudentInGrades;
 });
 
-watch(selectedEditGrade, () => {
-  if (selectedEditGrade.value?.code === 'D') {
-    settingsStore.updateSettings({ editWithDialog: true });
-  } else {
-    settingsStore.updateSettings({ editWithDialog: false });
-  }
-}, { deep: true });
+const isFrozenStudentInGrades = computed({
+  get: () => settingsStore.settings?.frozenStudentInGrades ?? false,
+  set: v => settingsStore.updateSettings({ frozenStudentInGrades: v })
+});
 
-watch(isFrozenStudentInGrades, () => {
-  settingsStore.updateSettings({ frozenStudentInGrades: isFrozenStudentInGrades.value });
+const isLowestGradeForTestMandatory = computed({
+  get: () => settingsStore.settings?.lowestGradeForTestMandatory ?? false,
+  set: v => settingsStore.updateSettings({ lowestGradeForTestMandatory: v })
+});
+
+const isLowestGradeForTestFailed = computed({
+  get: () => settingsStore.settings?.lowestGradeForTestFailed ?? false,
+  set: v => settingsStore.updateSettings({ lowestGradeForTestFailed: v })
 });
 
 </script>
@@ -51,6 +56,14 @@ watch(isFrozenStudentInGrades, () => {
         <div class="flex items-center gap-4">
           <p>Frozen student in grades:</p>
           <Checkbox v-model="isFrozenStudentInGrades" binary/>
+        </div>
+        <div class="flex items-center gap-4">
+          <p>Assign lowest grade if a mandatory test was not taken:</p>
+          <Checkbox v-model="isLowestGradeForTestMandatory" binary/>
+        </div>
+        <div class="flex items-center gap-4">
+          <p>Assign lowest grade if the test was failed:</p>
+          <Checkbox v-model="isLowestGradeForTestFailed" binary/>
         </div>
       </div>
     </template>

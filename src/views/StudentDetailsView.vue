@@ -19,11 +19,13 @@ import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { GradeStats } from '@/models/GradeStats';
 import type { Performance } from '@/models/Performance';
 import type { StudentResult } from '@/models/TestResult';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 const gradeThresholdsStore = useGradeThresholdsStore();
+const settingsStore = useSettingsStore();
 
 const props = defineProps<{ studentId: string }>();
 const student = ref<Student>();
@@ -80,7 +82,9 @@ const loadData = () => {
     max: round2(getClassMax(grades, studentTests))
   };
 
-  finalGrade.value = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, props.studentId);
+  const settings = settingsStore.settings ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false};
+
+  finalGrade.value = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, props.studentId);
   const studentGrade = finalGrade.value;
 
   if(studentGrade){
@@ -88,7 +92,7 @@ const loadData = () => {
     const total = students.length || 1;
     
     const higher = (students.filter(s => {
-      const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, s.id);
+      const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, s.id);
       return grade.minPercentage > studentGrade.minPercentage; 
     }).length / total) * 100;
     const lower = 100 - higher;

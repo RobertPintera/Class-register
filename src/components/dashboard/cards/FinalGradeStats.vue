@@ -6,11 +6,14 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 import { useTestsStore } from '@/stores/useTestsStore';
+import { getStudentFinalGrade } from '@/utility/gradeUtils';
+import { useSettingsStore } from '@/stores/useSettingsStore';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 const gradeThresholdsStore = useGradeThresholdsStore();
+const settingsStore = useSettingsStore();
 
 const chartData = ref();
 const chartOptions = ref();
@@ -20,6 +23,7 @@ const setChartData = () => {
   const tests = testsStore.tests;
   const grades = gradesStore.grades;
   const gradeThresholds = gradeThresholdsStore.gradeThresholds.slice().sort((a, b) => a.minPercentage - b.minPercentage);
+  const settings = settingsStore.settings ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false};
 
   const countsMale: Record<string, number> = {};
   const countsFemale: Record<string, number> = {};
@@ -28,18 +32,13 @@ const setChartData = () => {
     countsFemale[th.name] = 0;
   });
 
-  for (const s of students) {
-    const average = getStudentWeightedAverage(grades, tests, s.id);
-    const th = gradeThresholds.slice()
-      .sort((a, b) => b.minPercentage - a.minPercentage)
-      .find(th => average >= th.minPercentage);
+  for (const student of students) {
+    const grade = getStudentFinalGrade(grades, tests, gradeThresholds, settings, student.id);
 
-    if (!th) continue;
-
-    if (s.gender === 'Male')
-      countsMale[th.name]++;
-    else if (s.gender === 'Female') 
-      countsFemale[th.name]++;
+    if (student.gender === 'Male')
+      countsMale[grade.name]++;
+    else if (student.gender === 'Female') 
+      countsFemale[grade.name]++;
   }
 
   chartData.value =  {
