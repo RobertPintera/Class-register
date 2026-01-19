@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Card from '@/components/core/Card.vue';
 import { useSettingsStore } from '@/stores/useSettingsStore';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 
 const settingsStore = useSettingsStore();
 
@@ -62,7 +62,7 @@ const isLowestGradeForTestFailed = computed({
           <Checkbox v-model="isLowestGradeForTestMandatory" binary/>
         </div>
         <div class="flex items-center gap-4">
-          <p>Assign lowest grade if the test was failed:</p>
+          <p>Assign lowest grade if a test was failed:</p>
           <Checkbox v-model="isLowestGradeForTestFailed" binary/>
         </div>
       </div>

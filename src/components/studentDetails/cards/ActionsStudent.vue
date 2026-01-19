@@ -12,13 +12,16 @@ import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { GradeStats } from '@/models/GradeStats';
 import type { StudentResult } from '@/models/TestResult';
 import { pdfService } from '@/services/pdfService';
+import type { PassRate } from '@/models/PassRate';
 
 const studentsStore = useStudentsStore();
 const confirm = useConfirm();
 const toast = useToast();
 const router = useRouter();
 
-const props = defineProps<{student: Student, finalGrade: GradeThreshold, gradesStats: GradeStats, individualPerformance: Performance, classPerformance: Performance, results: StudentResult[]}>();
+const props = defineProps<{student: Student, finalGrade: GradeThreshold, gradesStats: GradeStats, 
+  individualPerformance: Performance, classPerformance: Performance, 
+  results: StudentResult[], passRate: PassRate}>();
 const showEditPersonalDataDialog = ref<boolean>(false);
 
 const loadDeleteStudentDialog = () => {
@@ -66,7 +69,8 @@ const generateReport = async () => {
     gradesStats: props.gradesStats,
     individualPerformance: props.individualPerformance,
     classPerformace: props.classPerformance,
-    results: props.results
+    results: props.results,
+    passRate: props.passRate
   };
 
   await pdfService.generateStudentReportPDF(payload);

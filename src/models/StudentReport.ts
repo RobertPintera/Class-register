@@ -3,6 +3,7 @@ import type { GradeThreshold } from "./GradeThreshold";
 import type { Performance } from "./Performance";
 import type { StudentResult } from "./TestResult";
 import type { Student } from "./Student";
+import type { PassRate } from "./PassRate";
 
 export interface StudentReport {
   student: Student;
@@ -10,5 +11,6 @@ export interface StudentReport {
   gradesStats: GradeStats;
   individualPerformance: Performance;
   classPerformace: Performance;
+  passRate: PassRate;
   results: StudentResult[];
 }

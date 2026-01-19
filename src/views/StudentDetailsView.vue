@@ -20,6 +20,7 @@ import type { GradeStats } from '@/models/GradeStats';
 import type { Performance } from '@/models/Performance';
 import type { StudentResult } from '@/models/TestResult';
 import { useSettingsStore } from '@/stores/useSettingsStore';
+import type { PassRate } from '@/models/PassRate';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
@@ -37,6 +38,10 @@ const individualPerformace = ref<Performance>({
 const classPerformace = ref<Performance>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
+const passRate = ref<PassRate>({
+  passed: 0, failed: 0, notTakenOptional: 0, notTakenMandatory: 0
+});
+
 const results = computed<StudentResult[]>(() => {
   return gradesStore.grades
     .filter(g => g.studentId === props.studentId)
@@ -60,12 +65,16 @@ const loadData = () => {
   const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
-  const grades = gradesStore.grades;
+  // Setting student
   student.value = s;
+
+  const grades = gradesStore.grades;
+
   const studentTests = testsStore.tests.filter(test =>
     gradesStore.grades.some(g => g.studentId === props.studentId && g.testId === test.id)
   );
 
+  // Set performance
   individualPerformace.value = {
     weightedAverage: round2(getStudentWeightedAverage(grades, studentTests, props.studentId)),
     median: round2(getStudentMedian(grades, studentTests, props.studentId)),
@@ -82,8 +91,10 @@ const loadData = () => {
     max: round2(getClassMax(grades, studentTests))
   };
 
+  // Set settings
   const settings = settingsStore.settings ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false};
 
+  // Set final grades
   finalGrade.value = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, props.studentId);
   const studentGrade = finalGrade.value;
 
@@ -105,6 +116,23 @@ const loadData = () => {
       higherValue: higherRounded 
     };
   }
+
+  // Set pass rate
+  testsStore.tests.forEach(test => {
+    const grade = gradesStore.getGrade(props.studentId, test.id);
+
+    if (!grade) {
+      if (test.isMandatory) {
+        passRate.value.notTakenMandatory++;
+      } else {
+        passRate.value.notTakenOptional++;
+      }
+    } else if (!test.requiredPoints || grade.points >= test.requiredPoints) {
+      passRate.value.passed++;
+    } else {
+      passRate.value.failed++;
+    }
+  });
 };
 
 onMounted(() => {
@@ -130,14 +158,14 @@ watch(() => studentsStore.students,() => {
       lg:col-span-2"/>
       <ActionsStudent :student="student" :final-grade="finalGrade" :grades-stats="gradeStats" 
       :individual-performance="individualPerformace" :class-performance="classPerformace"
-      :results="results"
+      :results="results" :pass-rate="passRate"
       class="
       sm:col-span-2
       lg:col-span-2 lg:col-start-1 lg:row-start-2"/>
       <FinalGradeResult :student-id="studentId" :final-grade="finalGrade" :gradesStats="gradeStats"
       class="
       lg:row-span-2 lg:col-start-3 lg:row-start-1"/>
-      <StudentPassRate :student-id="student.id" 
+      <StudentPassRate :student-id="student.id" :pass-rate="passRate" 
       class="
       lg:row-span-2 lg:col-start-4 lg:row-start-1"/>
       <StudentPerformance :individual-performance="individualPerformace" 

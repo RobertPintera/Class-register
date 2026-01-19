@@ -3,12 +3,7 @@ import { onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
 import Card from '@/components/core/Card.vue';
-import { useTestsStore } from '@/stores/useTestsStore';
-import { useGradesStore } from '@/stores/useGradesStore';
 import type { StudentResult } from '@/models/TestResult';
-
-const testsStore = useTestsStore();
-const gradesStore = useGradesStore();
 
 const props = defineProps<{ studentId: string, results: StudentResult[] }>();
 

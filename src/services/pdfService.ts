@@ -3,6 +3,14 @@ import { autoTable } from 'jspdf-autotable';
 import { robotoBold, robotoRegular } from "../constants/fonts";
 import type { StudentReport } from "@/models/StudentReport";
 
+declare module "jspdf" {
+  interface jsPDF {
+    lastAutoTable?: {
+      finalY: number;
+    };
+  }
+}
+
 class PdfService {
   private async loadSvgToCanvas(src: string): Promise<HTMLCanvasElement> {
     const img = new Image();
@@ -27,6 +35,26 @@ class PdfService {
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 10;
+    let y = margin;
+    const lineGap = 7;
+    const sectionGap = 9;
+
+    const nextLine = (gap = lineGap) => {
+      y += gap;
+      return y;
+    };
+
+    const drawSectionTitle = (title: string) => {
+      doc.setFontSize(16);
+      doc.text(title, margin, y);
+
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.5);
+      nextLine(2);
+      doc.line(margin, y, pageWidth - margin, y);
+      
+      nextLine(6);
+    };
 
     doc.addFileToVFS("Roboto-Regular.ttf", robotoRegular);
     doc.addFont("Roboto-Regular.ttf", "roboto", "normal");
@@ -39,92 +67,93 @@ class PdfService {
     doc.addImage(canvas, "PNG", margin, margin, 10, 10);
     doc.setFont("roboto", "bold");
     doc.setFontSize(24);
-    doc.text("Class register", 22, 18);
+    doc.text("Class register", 22, y + 8);
+    nextLine(20);
 
     // Header
     doc.setFont("roboto", "bold");
     doc.setFontSize(20);
-    doc.text("Student report", margin, 30);
+    doc.text("Student report", margin, y);
 
     // Date
     doc.setFont("Roboto", "normal");
     doc.setFontSize(16);
     const date = new Date().toISOString().slice(0, 10);
-    doc.text(`${date}`, pageWidth - margin, 30, { align: "right" });
+    doc.text(`${date}`, pageWidth - margin, y, { align: "right" });
 
-    // // Personal data
-    doc.setFontSize(16);
-    doc.text("Personal data", margin, 40);
+    nextLine(sectionGap);
 
-    // // Line
-    doc.setDrawColor(0, 0, 0);
-    doc.setLineWidth(0.5);
-    doc.line(margin, 42, pageWidth - margin, 42);
+    // Personal data
+    drawSectionTitle("Personal data");
 
     doc.setFontSize(12);
-    doc.text(`Name: ${report.student.name}`, margin, 48);
-    doc.text(`Surname: ${report.student.surname}`, margin, 55);
-    doc.text(`Gender: ${report.student.gender}`, margin, 62);
+    doc.text(`Name: ${report.student.name}`, margin, y);
+    nextLine();
+    doc.text(`Surname: ${report.student.surname}`, margin, y);
+    nextLine();
+    doc.text(`Gender: ${report.student.gender}`, margin, y);
+    nextLine(sectionGap);
 
-    // // Performance
-    doc.setFontSize(16);
-    doc.text("Performance", margin, 72);
+    // Pass rate
+    drawSectionTitle("Pass rate");
+    doc.setFontSize(12);
+    doc.text(`Passed: ${report.passRate.passed}`, margin, y);
+    nextLine();
+    doc.text(`Failed: ${report.passRate.failed}`, margin, y);
+    nextLine();
+    doc.text(`Not taken: ${report.passRate.notTakenOptional}`, margin, y);
+    nextLine();
+    doc.text(`Not taken - Mandatory: ${report.passRate.notTakenMandatory}`, margin, y);
+    nextLine(sectionGap);
 
-    // // Line
-    doc.setDrawColor(0, 0, 0);
-    doc.setLineWidth(0.5);
-    doc.line(margin, 74, pageWidth - margin, 74);
+    // Performance
+    drawSectionTitle("Performance");
 
     // Final grade
     doc.setFontSize(12);
-    doc.text(`Final grade: ${report.finalGrade.name}`, margin, 80);
-
+    doc.text(`Final grade: ${report.finalGrade.name}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`${report.gradesStats.lowerValue}% students has lower or equal grade`, margin, 86);
-
+    doc.text(`${report.gradesStats.lowerValue}% students has lower or equal grade`, margin, y);
+    nextLine(6);
     // Weighted average
     doc.setFontSize(12);
-    doc.text(`Weighted average: ${report.individualPerformance.weightedAverage}`, margin, 92);
-
+    doc.text(`Weighted average: ${report.individualPerformance.weightedAverage}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`Class: ${report.classPerformace.weightedAverage}`, margin, 98);
-
+    doc.text(`Class: ${report.classPerformace.weightedAverage}`, margin, y);
+    nextLine(6);
     // Median
     doc.setFontSize(12);
-    doc.text(`Median: ${report.individualPerformance.median}`, margin, 104);
-
+    doc.text(`Median: ${report.individualPerformance.median}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`Class: ${report.classPerformace.median}`, margin, 110);
-
+    doc.text(`Class: ${report.classPerformace.median}`, margin, y);
+    nextLine(6);
     // Standard Deviatation
     doc.setFontSize(12);
-    doc.text(`Standard Deviatation: ${report.individualPerformance.standardDeviation}`, margin, 116);
-
+    doc.text(`Standard Deviatation: ${report.individualPerformance.standardDeviation}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`Class: ${report.classPerformace.standardDeviation}`, margin, 122);
-
+    doc.text(`Class: ${report.classPerformace.standardDeviation}`, margin, y);
+    nextLine(6);
     // Max
     doc.setFontSize(12);
-    doc.text(`Max: ${report.individualPerformance.max}`, margin, 128);
-
+    doc.text(`Max: ${report.individualPerformance.max}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`Class: ${report.classPerformace.max}`, margin, 134);
-
+    doc.text(`Class: ${report.classPerformace.max}`, margin, y);
+    nextLine(6);
     // Min
     doc.setFontSize(12);
-    doc.text(`Min: ${report.individualPerformance.min}`, margin, 140);
-
+    doc.text(`Min: ${report.individualPerformance.min}`, margin, y);
+    nextLine(6);
     doc.setFontSize(10);
-    doc.text(`Class: ${report.classPerformace.min}`, margin, 146);
+    doc.text(`Class: ${report.classPerformace.min}`, margin, y);
+    nextLine(sectionGap);
 
     // Results
-    doc.setFontSize(16);
-    doc.text("Results", margin, 154);
-
-    // Line
-    doc.setDrawColor(0, 0, 0);
-    doc.setLineWidth(0.5);
-    doc.line(margin, 156, pageWidth - margin, 156);
+    drawSectionTitle("Results");
 
     // Results - Table
     const headers = [["Test", "Score", "Normalized score (%)","Max points","Status"]];
@@ -139,7 +168,7 @@ class PdfService {
     autoTable(doc, {
       head: headers,
       body: data,
-      startY: 160,
+      startY: y,
       margin: { top: margin, left: margin, bottom: margin, right: margin },
       styles: {
         font: "roboto",
@@ -164,6 +193,7 @@ class PdfService {
       },
     });
 
+    y = (doc.lastAutoTable?.finalY ?? y) + sectionGap;
 
     const pageCount = doc.getNumberOfPages();
 
