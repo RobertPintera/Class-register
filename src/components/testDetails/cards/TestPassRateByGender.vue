@@ -3,33 +3,17 @@ import { onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
+import type { PassRate } from '@/models/PassRate';
 
 const studentsStore = useStudentsStore();
 const gradesStore = useGradesStore();
 
-const props = defineProps<{testId: string, requiredPoints: number | null}>();
+const props = defineProps<{passRateByMale: PassRate, passRateByFemale: PassRate}>();
 const chartData = ref();
 const chartOptions = ref();
 
 const setChartData = () => {
-  const genders = ['Male', 'Female'];
 
-  const stats: Record<string, { passed: number; failed: number; notTaken: number }> = {};
-  genders.forEach(g => (stats[g] = { passed: 0, failed: 0, notTaken: 0 }));
-
-  studentsStore.students.forEach(student => {
-    const grade = gradesStore.getGrade(student.id, props.testId);
-    const gender = student.gender;
-
-    if (!grade) {
-      stats[gender].notTaken++;
-    } else if (props.requiredPoints === null || grade.points >= props.requiredPoints) {
-      stats[gender].passed++;
-    } else {
-      stats[gender].failed++;
-    }
-    
-  });
 
   chartData.value = {
     labels: ["Passed","Failed","Not taken"],
@@ -37,9 +21,9 @@ const setChartData = () => {
       {
         label: 'Male',
         data: [
-          stats['Male'].passed,
-          stats['Male'].failed,
-          stats['Male'].notTaken,
+          props.passRateByMale.passed,
+          props.passRateByMale.failed,
+          props.passRateByMale.notTaken,
         ],
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgb(34, 197, 94)',
@@ -48,9 +32,9 @@ const setChartData = () => {
       {
         label: 'Female',
         data: [
-          stats['Female'].passed,
-          stats['Female'].failed,
-          stats['Female'].notTaken,
+          props.passRateByFemale.passed,
+          props.passRateByFemale.failed,
+          props.passRateByFemale.notTaken,
         ],
         backgroundColor: 'rgba(6, 182, 212, 0.6)',
         borderColor: 'rgb(6, 182, 212)',

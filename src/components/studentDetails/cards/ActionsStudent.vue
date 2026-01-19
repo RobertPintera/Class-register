@@ -7,12 +7,12 @@ import Card from '@/components/core/Card.vue';
 import EditPersonalDataDialog from '../EditPersonalDataDialog.vue';
 import type { Student } from '@/models/Student';
 import type { StudentReport } from '@/models/StudentReport';
-import type { Performance } from '@/models/Performance';
+import type { PerformanceStats } from '@/models/PerformanceStats';
 import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { GradeStats } from '@/models/GradeStats';
-import type { StudentResult } from '@/models/TestResult';
+import type { TestResult } from '@/models/TestResult';
 import { pdfService } from '@/services/pdfService';
-import type { PassRate } from '@/models/PassRate';
+import type { DetailedPassRate } from '@/models/DetailedPassRate';
 
 const studentsStore = useStudentsStore();
 const confirm = useConfirm();
@@ -20,8 +20,9 @@ const toast = useToast();
 const router = useRouter();
 
 const props = defineProps<{student: Student, finalGrade: GradeThreshold, gradesStats: GradeStats, 
-  individualPerformance: Performance, classPerformance: Performance, 
-  results: StudentResult[], passRate: PassRate}>();
+  individualPerformance: PerformanceStats, classPerformance: PerformanceStats, 
+  results: TestResult[], passRate: DetailedPassRate}>();
+
 const showEditPersonalDataDialog = ref<boolean>(false);
 
 const loadDeleteStudentDialog = () => {

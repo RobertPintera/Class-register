@@ -1,4 +1,4 @@
-export interface Performance {
+export interface PerformanceStats {
   weightedAverage: number;
   median: number;
   standardDeviation: number;

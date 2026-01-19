@@ -3,9 +3,9 @@ import { onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
 import Card from '@/components/core/Card.vue';
-import type { StudentResult } from '@/models/TestResult';
+import type { TestResult } from '@/models/TestResult';
 
-const props = defineProps<{ studentId: string, results: StudentResult[] }>();
+const props = defineProps<{ studentId: string, results: TestResult[] }>();
 
 const chartData = ref<{ labels: string[]; datasets: DatasetTestResults[] }>();
 const chartOptions = ref();

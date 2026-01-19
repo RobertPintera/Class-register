@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Card from '@/components/core/Card.vue';
-import type { StudentResult } from '@/models/TestResult';
+import type { TestResult } from '@/models/TestResult';
 
-const props = defineProps<{ studentId: string, results: StudentResult[]}>();
+const props = defineProps<{ studentId: string, results: TestResult[]}>();
 
 const getSeverity = (status: boolean): string => {
   if(status)

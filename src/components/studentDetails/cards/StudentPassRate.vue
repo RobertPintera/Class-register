@@ -3,12 +3,12 @@ import { onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
-import type { PassRate } from '@/models/PassRate';
+import type { DetailedPassRate } from '@/models/DetailedPassRate';
 
 const testsStore = useTestsStore();
 const gradesStore = useGradesStore();
 
-const props = defineProps<{ studentId: string, passRate: PassRate }>();
+const props = defineProps<{ studentId: string, passRate: DetailedPassRate }>();
 const chartData = ref();
 const chartOptions = ref();
 

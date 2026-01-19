@@ -1,16 +1,16 @@
 import type { GradeStats } from "./GradeStats";
 import type { GradeThreshold } from "./GradeThreshold";
-import type { Performance } from "./Performance";
-import type { StudentResult } from "./TestResult";
+import type { PerformanceStats } from "./PerformanceStats";
+import type { TestResult } from "./TestResult";
 import type { Student } from "./Student";
-import type { PassRate } from "./PassRate";
+import type { DetailedPassRate } from "./DetailedPassRate";
 
 export interface StudentReport {
   student: Student;
   finalGrade: GradeThreshold;
   gradesStats: GradeStats;
-  individualPerformance: Performance;
-  classPerformace: Performance;
-  passRate: PassRate;
-  results: StudentResult[];
+  individualPerformance: PerformanceStats;
+  classPerformace: PerformanceStats;
+  passRate: DetailedPassRate;
+  results: TestResult[];
 }

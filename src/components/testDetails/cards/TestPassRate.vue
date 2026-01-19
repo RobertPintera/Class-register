@@ -1,38 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
-import { useStudentsStore } from '@/stores/useStudentsStore';
-import { useGradesStore } from '@/stores/useGradesStore';
+import type { PassRate } from '@/models/PassRate';
 
-const studentsStore = useStudentsStore();
-const gradesStore = useGradesStore();
-
-const props = defineProps<{testId: string, requiredPoints: number | null}>();
+const props = defineProps<{passRate: PassRate}>();
 const chartData = ref();
 const chartOptions = ref();
 
 const setChartData = () => {
-  let passed = 0;
-  let failed = 0;
-  let notTaken = 0;
-
-  studentsStore.students.filter(student => {
-    const grade = gradesStore.getGrade(student.id, props.testId);
-
-    if (!grade) {
-      notTaken++;
-    } else if (props.requiredPoints === null || grade.points >= props.requiredPoints) {
-      passed++;
-    } else {
-      failed++;
-    }
-  });
-
   return {
     labels: ["Passed", "Failed", "Not Taken"],
     datasets: [
       {
-        data: [passed, failed, notTaken],
+        data: [props.passRate.passed, props.passRate.failed, props.passRate.notTaken],
         backgroundColor: [
           'rgba(34, 197, 94, 0.6)',  
           'rgba(239, 68, 68, 0.6)',

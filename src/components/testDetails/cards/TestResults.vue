@@ -3,11 +3,10 @@ import { onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
 import { useStudentsStore } from '@/stores/useStudentsStore';
 import { useGradesStore } from '@/stores/useGradesStore';
+import type { StudentResult } from '@/models/StudentResult';
+import type { Test } from '@/models/Test';
 
-const studentsStore = useStudentsStore();
-const gradesStore = useGradesStore();
-
-const props = defineProps<{ testId: string, maxScore: number }>();
+const props = defineProps<{ test: Test,results: StudentResult[] }>();
 
 const chartData = ref();
 const chartOptions = ref();
@@ -18,23 +17,11 @@ const totalRecords = ref(0);
 
 
 const setChartData = () => {
-  const testScores = gradesStore.grades
-    .filter(g => g.testId === props.testId)
-    .map(g => {
-      const student = studentsStore.students.find(t => t.id === g.studentId);
-      return {
-        name: student?.name,
-        surname: student?.surname,
-        score: g.points,
-        percentage: (g.points / props.maxScore) * 100
-      };
-    });
-
-  totalRecords.value = testScores.length;
+  totalRecords.value = props.results.length;
 
   const start = currentPage.value * rowsPerPage;
   const end = start + rowsPerPage;
-  const pageScores = testScores.slice(start, end);
+  const pageScores = props.results.slice(start, end);
 
   chartData.value = {
     labels: pageScores.map(t => `${t.name} ${t.surname}`),
@@ -42,7 +29,7 @@ const setChartData = () => {
       {
         label: 'Score',
         data: pageScores.map(t => t.percentage),
-        scores: pageScores.map(t => t.score),
+        scores: pageScores.map(t => t.points),
         backgroundColor: 'rgba(34, 197, 94, 0.6)',
         borderColor: 'rgb(34, 197, 94)',
         borderWidth: 1,
@@ -63,7 +50,7 @@ const setChartOptions = () => {
           label: (ctx: any) => {
             const dataset = ctx.dataset;
             const index = ctx.dataIndex;
-            return `${dataset.scores[index]} / ${props.maxScore} points (${ctx.formattedValue}%)`;
+            return `${dataset.scores[index]} / ${props.test.maxPoints} points (${ctx.formattedValue}%)`;
           },
         },
       },

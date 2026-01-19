@@ -17,10 +17,10 @@ import { getStudentFinalGrade } from '@/utility/gradeUtils';
 import { useGradeThresholdsStore } from '@/stores/useGradeThresholdsStore';
 import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { GradeStats } from '@/models/GradeStats';
-import type { Performance } from '@/models/Performance';
-import type { StudentResult } from '@/models/TestResult';
+import type { PerformanceStats } from '@/models/PerformanceStats';
+import type { TestResult } from '@/models/TestResult';
 import { useSettingsStore } from '@/stores/useSettingsStore';
-import type { PassRate } from '@/models/PassRate';
+import type { DetailedPassRate } from '@/models/DetailedPassRate';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
@@ -32,17 +32,17 @@ const props = defineProps<{ studentId: string }>();
 const student = ref<Student>();
 const finalGrade = ref<GradeThreshold>({ id: "", name: "", minPercentage: 0});
 const gradeStats = ref<GradeStats>({lowerValue: 0, higherValue: 100});
-const individualPerformace = ref<Performance>({
+const individualPerformace = ref<PerformanceStats>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
-const classPerformace = ref<Performance>({
+const classPerformace = ref<PerformanceStats>({
   weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
 });
-const passRate = ref<PassRate>({
+const passRate = ref<DetailedPassRate>({
   passed: 0, failed: 0, notTakenOptional: 0, notTakenMandatory: 0
 });
 
-const results = computed<StudentResult[]>(() => {
+const results = computed<TestResult[]>(() => {
   return gradesStore.grades
     .filter(g => g.studentId === props.studentId)
     .map(g => {
@@ -65,7 +65,7 @@ const loadData = () => {
   const s = studentsStore.getStudent(props.studentId);
   if (!s) return;
 
-  // Setting student
+  // Set student
   student.value = s;
 
   const grades = gradesStore.grades;
@@ -140,10 +140,7 @@ onMounted(() => {
 });
 
 watch(() => studentsStore.students,() => {
-  const s = studentsStore.getStudent(props.studentId);
-  if (!s) return;
-
-  student.value = s;
+  loadData();
 }, { deep: true } );
 </script>
 

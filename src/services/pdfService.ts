@@ -2,6 +2,7 @@ import { jsPDF } from "jspdf";
 import { autoTable } from 'jspdf-autotable';
 import { robotoBold, robotoRegular } from "../constants/fonts";
 import type { StudentReport } from "@/models/StudentReport";
+import type { TestReport } from "@/models/TestReport";
 
 declare module "jspdf" {
   interface jsPDF {
@@ -162,6 +163,196 @@ class PdfService {
       r.points,
       `${r.percentage}%`,
       r.maxPoints,
+      r.status ? "Passed" : "Failed"
+    ]);
+
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: y,
+      margin: { top: margin, left: margin, bottom: margin, right: margin },
+      styles: {
+        font: "roboto",
+        fontSize: 12,
+        halign: "center",
+        valign: "middle",
+        cellPadding: 3,
+        fillColor: 255,
+        textColor: 0,
+      },
+      headStyles: {
+        fillColor: [40, 40, 40],
+        textColor: 255,
+        halign: "center",
+        valign: "middle",
+      },
+      bodyStyles: {
+        fillColor: 255,
+        textColor: 0,
+        halign: "center",
+        valign: "middle",
+      },
+    });
+
+    y = (doc.lastAutoTable?.finalY ?? y) + sectionGap;
+
+    const pageCount = doc.getNumberOfPages();
+
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i); 
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+
+      doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, pageHeight - 5, {
+        align: "center",
+      });
+    }
+
+    window.open(doc.output("bloburl"));
+  };
+
+  async generateTestReportPF (report: TestReport) {
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    const margin = 10;
+    let y = margin;
+    const lineGap = 7;
+    const sectionGap = 9;
+
+    const nextLine = (gap = lineGap) => {
+      y += gap;
+      return y;
+    };
+
+    const drawSectionTitle = (title: string) => {
+      doc.setFontSize(16);
+      doc.text(title, margin, y);
+
+      doc.setDrawColor(0, 0, 0);
+      doc.setLineWidth(0.5);
+      nextLine(2);
+      doc.line(margin, y, pageWidth - margin, y);
+      
+      nextLine(6);
+    };
+
+    doc.addFileToVFS("Roboto-Regular.ttf", robotoRegular);
+    doc.addFont("Roboto-Regular.ttf", "roboto", "normal");
+
+    doc.addFileToVFS("Roboto-Bold.ttf", robotoBold);
+    doc.addFont("Roboto-Bold.ttf", "roboto", "bold");
+
+    // Logo
+    const canvas = await this.loadSvgToCanvas("/logo_class_register.svg");
+    doc.addImage(canvas, "PNG", margin, margin, 10, 10);
+    doc.setFont("roboto", "bold");
+    doc.setFontSize(24);
+    doc.text("Class register", 22, y + 8);
+    nextLine(20);
+
+    // Header
+    doc.setFont("roboto", "bold");
+    doc.setFontSize(20);
+    doc.text("Test report", margin, y);
+
+    // Date
+    doc.setFont("Roboto", "normal");
+    doc.setFontSize(16);
+    const date = new Date().toISOString().slice(0, 10);
+    doc.text(`${date}`, pageWidth - margin, y, { align: "right" });
+
+    nextLine(sectionGap);
+
+    // Personal data
+    drawSectionTitle("Personal data");
+
+    doc.setFontSize(12);
+    doc.text(`Name: ${report.test.name}`, margin, y);
+    nextLine();
+    doc.text(`Weight: ${report.test.weight}`, margin, y);
+    nextLine();
+    doc.text(`Required points: ${report.test.requiredPoints}`, margin, y);
+    nextLine();
+    doc.text(`Max points: ${report.test.maxPoints}`, margin, y);
+    nextLine();
+    doc.text(`Required points: ${report.test.maxPoints}`, margin, y);
+    nextLine();
+    doc.text(`Required points: ${report.test.isMandatory}`, margin, y);
+    nextLine(sectionGap);
+
+    // Pass rate
+    drawSectionTitle("Pass rate");
+    doc.setFontSize(12);
+    doc.text(`Passed: ${report.passRate.passed}`, margin, y);
+    nextLine();
+    doc.text(`Failed: ${report.passRate.failed}`, margin, y);
+    nextLine();
+    doc.text(`Not taken: ${report.passRate.notTaken}`, margin, y);
+
+    nextLine(sectionGap);
+
+    // Performance
+    drawSectionTitle("Performance");
+
+    // Weighted average
+    doc.setFontSize(12);
+    doc.text(`Weighted average: ${report.performance.weightedAverage}`, margin, y);
+    nextLine(6);
+    doc.setFontSize(10);
+    doc.text(`Male: ${report.malePerformance.weightedAverage}`, margin, y);
+    nextLine(6);
+    doc.text(`Female: ${report.femalePerformace.weightedAverage}`, margin, y);
+    nextLine(6);
+    // Median
+    doc.setFontSize(12);
+    doc.text(`Median: ${report.performance.median}`, margin, y);
+    nextLine(6);
+    doc.setFontSize(10);
+    doc.text(`Male: ${report.malePerformance.median}`, margin, y);
+    nextLine(6);
+    doc.text(`Female: ${report.femalePerformace.median}`, margin, y);
+    nextLine(6);
+    // Standard Deviatation
+    doc.setFontSize(12);
+    doc.text(`Standard Deviatation: ${report.performance.standardDeviation}`, margin, y);
+    nextLine(6);
+    doc.setFontSize(10);
+    doc.text(`Male: ${report.malePerformance.standardDeviation}`, margin, y);
+    nextLine(6);
+    doc.text(`Female: ${report.femalePerformace.standardDeviation}`, margin, y);
+    nextLine(6);
+    // Max
+    doc.setFontSize(12);
+    doc.text(`Max: ${report.performance.max}`, margin, y);
+    nextLine(6);
+    doc.setFontSize(10);
+    doc.text(`Male: ${report.malePerformance.max}`, margin, y);
+    nextLine(6);
+    doc.text(`Female: ${report.femalePerformace.max}`, margin, y);
+    nextLine(6);
+    // Min
+    doc.setFontSize(12);
+    doc.text(`Min: ${report.performance.min}`, margin, y);
+    nextLine(6);
+    doc.setFontSize(10);
+    doc.text(`Male: ${report.malePerformance.min}`, margin, y);
+    nextLine(6);
+    doc.text(`Female: ${report.femalePerformace.min}`, margin, y);
+    nextLine(sectionGap);
+
+    // Results
+    drawSectionTitle("Results");
+
+    // Results - Table
+    const headers = [["Name", "Surname", "Score","Normalized score (%)","Status"]];
+    const data = report.results.map(r => [
+      r.name,
+      r.surname,
+      r.points,
+      `${r.percentage}%`,
       r.status ? "Passed" : "Failed"
     ]);
 
