@@ -29,7 +29,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import router from './router';
-import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, ConfirmationService, ConfirmDialog, DataTable, Dialog, FloatLabel, IconField, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, Paginator, ProgressSpinner, RadioButton, RadioButtonGroup, Ripple, Select, SelectButton, Tag, Toast, ToastService, ToggleSwitch, Toolbar, Tooltip } from 'primevue';
+import { Accordion, AccordionContent, AccordionHeader, AccordionPanel, Button, ButtonGroup, Checkbox, Column, ConfirmationService, ConfirmDialog, DataTable, Dialog, FloatLabel, IconField, ImageCompare, InputIcon, InputNumber, InputText, Knob, Listbox, Menu, Menubar, Message, MeterGroup, Paginator, ProgressSpinner, RadioButton, RadioButtonGroup, Ripple, Select, SelectButton, Tag, Toast, ToastService, ToggleSwitch, Toolbar, Tooltip } from 'primevue';
 import 'primeicons/primeicons.css';
 import { createPinia } from 'pinia';
 import { definePreset } from '@primeuix/themes';
@@ -117,6 +117,7 @@ app.component('Toast',Toast);
 app.component("Tag",Tag);
 app.component('RadioButton',RadioButton);
 app.component('RadioButtonGroup',RadioButtonGroup);
+app.component('ImageCompare',ImageCompare);
 
 const pinia = createPinia();
 app.use(pinia);
