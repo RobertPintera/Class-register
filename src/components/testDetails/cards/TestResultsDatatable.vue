@@ -17,7 +17,7 @@ const getSeverity = (status: boolean): string => {
       <h3>Results - details</h3>
     </template>
     <template #body>
-      <DataTable :value="results"
+      <DataTable :value="props.results"
         scrollable removableSort paginator paginatorPosition="bottom" :rows=10>
         <Column field="name" header="Name"/>
         <Column field="surname" header="Surname"/>

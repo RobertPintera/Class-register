@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Card from '@/components/core/Card.vue';
 import type { PassRate } from '@/models/PassRate';
 
@@ -61,6 +61,12 @@ const updateChart = () => {
 onMounted(() => {
   updateChart();
 });
+
+watch(
+  () => props.passRate, () => {
+    updateChart();
+  }, { deep: true }
+);
 
 </script>
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Card from '@/components/core/Card.vue';
 import type { StudentResult } from '@/models/StudentResult';
 import type { Test } from '@/models/Test';
 
-const props = defineProps<{ test: Test,results: StudentResult[] }>();
+const props = defineProps<{ test: Test, results: StudentResult[] }>();
 
 const chartData = ref();
 const chartOptions = ref();
@@ -67,6 +67,12 @@ const updateChart = () => {
 onMounted(() => {
   updateChart();
 });
+
+watch(
+  () => [props.test, props.results], () => {
+    updateChart();
+  }, { deep: true }
+);
 
 const onPageChange = (event: { page: number }) => {
   currentPage.value = event.page;

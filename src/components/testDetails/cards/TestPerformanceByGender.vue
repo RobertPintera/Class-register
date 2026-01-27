@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Card from '@/components/core/Card.vue';
+import type { PerformanceStats } from '@/models/PerformanceStats';
 
 const props = defineProps<{
-  maleData: { weightedAverage: number; median: number; standardDeviation: number, min: number, max: number };
-  femaleData: { weightedAverage: number; median: number; standardDeviation: number, min: number, max: number };
+  maleData: PerformanceStats;
+  femaleData: PerformanceStats;
 }>();
 const chartData = ref();
 const chartOptions = ref();
@@ -66,6 +67,13 @@ const updateChart = () => {
 };
 
 onMounted(updateChart);
+
+watch(
+  () => [props.maleData, props.femaleData], () => {
+    updateChart();
+  }, { deep: true }
+);
+
 </script>
 
 <template>

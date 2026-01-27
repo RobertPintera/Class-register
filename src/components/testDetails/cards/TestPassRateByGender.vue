@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import Card from '@/components/core/Card.vue';
 import { useGradesStore } from '@/stores/useGradesStore';
 import { useStudentsStore } from '@/stores/useStudentsStore';
@@ -64,6 +64,12 @@ const updateChart = () => {
 onMounted(() => {
   updateChart();
 });
+
+watch(
+  () => [props.passRateByMale, props.passRateByFemale], () => {
+    updateChart();
+  }, { deep: true }
+);
 
 
 </script>
