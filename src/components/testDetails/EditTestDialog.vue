@@ -69,7 +69,7 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
       maxPoints: event.states.maxPoints.value,
       weight: event.states.weight.value,
       requiredPoints: event.states.isRequired.value ? event.states.requiredPoints.value : null,
-      isMandatory: event.states.isRequired.value ? event.states.isMandatory.value : false
+      isMandatory: event.states.isMandatory.value
     };
 
     if(isTestData(values)){

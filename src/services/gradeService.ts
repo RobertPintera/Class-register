@@ -10,8 +10,7 @@ class GradeService {
     return await addGradeDb(grade);
   }
 
-  async updateGrade(studentId: string, testId: string, updatedFields: Partial<Omit<Grade, "testId" | "studentId">>
-  ): Promise<number> {
+  async updateGrade(studentId: string, testId: string, updatedFields: Partial<Omit<Grade, "testId" | "studentId">>): Promise<number> {
     return await updateGradeDb(testId, studentId, updatedFields);
   }
 
