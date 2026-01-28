@@ -1,9 +1,10 @@
 import type { Student } from "@/models/Student";
 import { v4 as uuidv4 } from "uuid";
 import { addStudentDb, deleteStudentAndGradesDb, updateStudentDb, getAllStudentsDb } from "@/database/studentsDb";
+import type { Observable } from "dexie";
 
 class StudentService {
-  async getAllStudents(): Promise<Student[]> {
+  getAllStudents(): Observable<Student[]> {
     return getAllStudentsDb();
   }
 

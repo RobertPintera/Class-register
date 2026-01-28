@@ -1,13 +1,14 @@
 import type { GradeThreshold } from "@/models/GradeThreshold";
 import { initGradeThresholdsDb, getGradeThresholdsDb, addGradeThresholdDb, updateGradeThresholdDb, deleteGradeThresholdDb, replaceGradeThresholdsDb,} from "@/database/gradeThresholdsDb";
 import { v4 as uuidv4 } from 'uuid';
+import type { Observable } from "dexie";
 
 class GradeThresholdService {
   async initGradeThresholds(): Promise<void> {
     await initGradeThresholdsDb();
   }
 
-  async getAllGradeThresholds(): Promise<GradeThreshold[]> {
+  getAllGradeThresholds(): Observable<GradeThreshold[]> {
     return getGradeThresholdsDb();
   }
 

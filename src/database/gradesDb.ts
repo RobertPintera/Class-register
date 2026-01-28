@@ -1,8 +1,9 @@
 import type { Grade } from "@/models/Grade";
 import { db } from "./database";
+import { liveQuery, type Observable } from "dexie";
 
-export async function getAllGradesDb(): Promise<Grade[]> {
-  return db.grades.toArray();
+export function getAllGradesDb(): Observable<Grade[]> {
+  return liveQuery(() => db.grades.toArray());
 }
 
 export async function addGradeDb(grade: Grade): Promise<string> {

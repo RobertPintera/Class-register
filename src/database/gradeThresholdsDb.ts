@@ -1,6 +1,7 @@
 import type { GradeThreshold } from "@/models/GradeThreshold";
 import { db } from "./database";
 import { v4 as uuidv4 } from "uuid";
+import { liveQuery, type Observable } from "dexie";
 
 export async function initGradeThresholdsDb(): Promise<void> {
   const count = await db.thresholds.count();
@@ -17,8 +18,8 @@ export async function initGradeThresholdsDb(): Promise<void> {
   }
 }
 
-export async function getGradeThresholdsDb(): Promise<GradeThreshold[]> {
-  return db.thresholds.toArray();
+export function getGradeThresholdsDb(): Observable<GradeThreshold[]> {
+  return liveQuery(() => db.thresholds.toArray());
 }
 
 export async function addGradeThresholdDb(threshold: GradeThreshold): Promise<GradeThreshold> {

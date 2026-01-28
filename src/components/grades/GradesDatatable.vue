@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import type { Grade } from '@/models/Grade';
@@ -10,12 +9,14 @@ import { useGradesStore } from '@/stores/useGradesStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import EditGradeDialog from './EditGradeDialog.vue';
 import { useGlobalStore } from '@/stores/useGlobalStore';
+import { useStudentsStore } from '@/stores/useStudentsStore';
+import type { StudentGrades } from '@/models/StudentGrades';
 
 const globalStore = useGlobalStore();
-const registerStore = useRegisterStore();
 const testsStore = useTestsStore();
 const settingsStore = useSettingsStore();
 const gradesStore = useGradesStore();
+const studentsStore = useStudentsStore();
 
 const editWithDialog = ref<boolean>();
 
@@ -24,10 +25,35 @@ const filters = ref<Record<string, AdvancedFilter>>({});
 
 const isFrozen = computed(() => settingsStore.settings?.frozenStudentInGrades && globalStore.isMediumScreen);
 
+const testColumns = computed(() =>
+  testsStore.tests.map(test => ({
+    field: test.id,
+    header: test.name,
+  }))
+);
+
+const studentGrades = computed<StudentGrades[]>(() =>
+  studentsStore.students.map(student => {
+    const row: StudentGrades = {
+      studentId: student.id,
+      fullName: `${student.name} ${student.surname}`,
+    };
+
+    for (const test of testsStore.tests) {
+      const grade = gradesStore.grades.find(
+        g => g.studentId === student.id && g.testId === test.id
+      );
+      row[test.id] = grade ? grade.points : -1;
+    }
+
+    return row;
+  })
+);
+
 const initFilters = () => {
   filters.value['fullName'] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }]};
 
-  for (const col of registerStore.testColumns) {
+  for (const col of testColumns.value) {
     if (!filters.value[col.field]) {
       filters.value[col.field] = { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] };
     }
@@ -40,7 +66,7 @@ onMounted(() => {
   editWithDialog.value = settingsStore.settings?.editWithDialog;
 });
 
-watch(() => registerStore.testColumns, (columns) => {
+watch(() => testColumns.value, (columns) => {
   const columnFields = columns.map(c => c.field);
 
   for (const col of columns) {
@@ -90,7 +116,8 @@ const onCellEditComplete = (event: any) => {
   if(!test) return;
 
   if (newValue !== null && newValue !== undefined) {
-    if(!checkPointsRangeOfTest(grade.points,test.maxPoints)) return;
+    if(!checkPointsRangeOfTest(grade.points, test.maxPoints)) return;
+
     gradesStore.updateGrade(grade);
   } else {
     gradesStore.deleteGrade(grade.studentId, grade.testId);
@@ -109,7 +136,7 @@ const getTooltip = (testId: string) => {
 </script>
     
 <template> 
-  <DataTable :value="registerStore.studentGrades" editMode="cell" class="custom-table"
+  <DataTable :value="studentGrades" editMode="cell" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     v-model:filters="filters" filterDisplay="menu"
     @cell-edit-complete="onCellEditComplete">
@@ -134,7 +161,7 @@ const getTooltip = (testId: string) => {
       </template>
     </Column>
     <Column sortable
-      v-for="col in registerStore.testColumns"
+      v-for="col in testColumns"
       :key="col.field"
       :field="col.field"
       :header="col.header" :filterField="col.field" dataType="numeric">

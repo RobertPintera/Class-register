@@ -1,16 +1,17 @@
 import { addGradeDb, deleteGradeDb, deleteGradesByTestDb, getAllGradesDb, updateGradeDb } from "@/database/gradesDb";
 import type { Grade } from "@/models/Grade";
+import type { Observable } from "dexie";
 
 class GradeService {
-  async getAllGrades(): Promise<Grade[]> {
-    return await getAllGradesDb();
+  getAllGrades(): Observable<Grade[]> {
+    return getAllGradesDb();
   }
 
   async addGrade(grade: Grade): Promise<string> {
     return await addGradeDb(grade);
   }
 
-  async updateGrade(studentId: string, testId: string, updatedFields: Partial<Omit<Grade, "testId" | "studentId">>): Promise<number> {
+  async updateGrade(testId: string, studentId: string, updatedFields: Partial<Omit<Grade, "testId" | "studentId">>): Promise<number> {
     return await updateGradeDb(testId, studentId, updatedFields);
   }
 

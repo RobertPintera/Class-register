@@ -112,7 +112,7 @@ app.component("MeterGroup",MeterGroup);
 app.component("SelectButton",SelectButton);
 app.component("Checkbox",Checkbox);
 app.component("Paginator",Paginator);
-app.component('ConfirmDialog', ConfirmDialog)
+app.component('ConfirmDialog', ConfirmDialog);
 app.component('Toast',Toast);
 app.component("Tag",Tag);
 app.component('RadioButton',RadioButton);

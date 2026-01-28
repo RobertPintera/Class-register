@@ -1,8 +1,9 @@
 import type { Test } from "@/models/Test";
 import { db } from "./database";
+import { liveQuery, type Observable } from "dexie";
 
-export async function getAllTestsDb(): Promise<Test[]> {
-  return db.tests.toArray();
+export function getAllTestsDb(): Observable<Test[]> {
+  return liveQuery(() => db.tests.toArray());
 }
 
 export async function addTestDb(test: Test): Promise<string> {

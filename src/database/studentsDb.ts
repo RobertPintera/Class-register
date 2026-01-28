@@ -1,8 +1,9 @@
 import type { Student } from "@/models/Student";
 import { db } from "./database";
+import { liveQuery, type Observable } from "dexie";
 
-export async function getAllStudentsDb(): Promise<Student[]> {
-  return db.students.toArray();
+export function getAllStudentsDb(): Observable<Student[]> {
+  return liveQuery(() => db.students.toArray());
 }
 
 export async function addStudentDb(student: Student): Promise<string> {

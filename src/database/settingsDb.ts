@@ -1,5 +1,6 @@
 import type { Settings } from "@/models/Settings";
 import { db } from "./database";
+import { liveQuery, type Observable } from "dexie";
 
 export async function initSettingsDb(): Promise<void> {
   const existing = await db.settings.get("global");
@@ -7,13 +8,15 @@ export async function initSettingsDb(): Promise<void> {
     await db.settings.add({
       id: "global",
       editWithDialog: false,
-      frozenStudentInGrades: true
+      frozenStudentInGrades: true,
+      lowestGradeForTestMandatory: false,
+      lowestGradeForTestFailed: false
     });
   }
 }
 
-export async function getSettingsDb(): Promise<Settings | undefined> {
-  return db.settings.get("global");
+export function getSettingsDb(): Observable<Settings | undefined>{
+  return liveQuery(() => db.settings.get("global"));
 }
 
 export async function updateSettingsDb(

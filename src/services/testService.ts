@@ -1,9 +1,10 @@
 import type { Test } from "@/models/Test";
 import { v4 as uuidv4 } from "uuid";
 import { getAllTestsDb, addTestDb, updateTestDb, deleteTestAndGradesDb } from "@/database/testsDb";
+import type { Observable } from "dexie";
 
 class TestService {
-  async getAllTests(): Promise<Test[]> {
+  getAllTests(): Observable<Test[]> {
     return getAllTestsDb();
   }
 

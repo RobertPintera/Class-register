@@ -4,13 +4,14 @@ import {
   getSettingsDb,
   updateSettingsDb
 } from "@/database/settingsDb";
+import type { Observable } from "dexie";
 
 class SettingsService {
   async initSettings() {
     await initSettingsDb();
   }
 
-  async getSettings(): Promise<Settings | undefined> {
+  getSettings(): Observable<Settings | undefined> {
     return getSettingsDb();
   }
 
