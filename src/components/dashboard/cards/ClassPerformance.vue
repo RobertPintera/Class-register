@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import Card from '@/components/core/Card.vue';
 import PerformanceCard from '@/components/core/PerformanceCard.vue';
+import type { PerformanceStats } from '@/models/PerformanceStats';
 
-const props = defineProps<{
-  classPerformance: {
-    weightedAverage: number;
-    median: number;
-    standardDeviation: number;
-    max: number;
-    min: number;
-  };
-}>();
+const props = defineProps<{classPerformance: PerformanceStats}>();
 
 </script>
 

@@ -1,37 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed } from 'vue';
 import Card from '@/components/core/Card.vue';
-import { useTestsStore } from '@/stores/useTestsStore';
 import { getTestAverageByGender, getTestNormalizedAverageByGender, round2 } from '@/utility/mathUtils';
-import { useStudentsStore } from '@/stores/useStudentsStore';
-import { useGradesStore } from '@/stores/useGradesStore';
+import type { Grade } from '@/models/Grade';
+import type { Student } from '@/models/Student';
+import type { Test } from '@/models/Test';
 
-const studentsStore = useStudentsStore();
-const testsStore = useTestsStore();
-const gradesStore = useGradesStore();
+const props = defineProps<{ tests: Test[], students: Student[] ,grades: Grade[]}>();
 
-const chartData = ref();
-const chartOptions = ref();
-
-const setChartData = () => {
-  const tests = testsStore.tests;
-  const students = studentsStore.students;
-  const grades = gradesStore.grades;
-
+const chartData = computed(() => {
   const maleNormalizedScores: number[] = [];
   const femaleNormalizedScores: number[] = [];
   const maleScores: number[] = [];
   const femaleScores: number[] = [];
 
-  tests.forEach(t => {
-    maleNormalizedScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Male")));
-    femaleNormalizedScores.push(round2(getTestNormalizedAverageByGender(grades, students, t, "Female")));
-    maleScores.push(round2(getTestAverageByGender(grades, students, t.id, "Male")));
-    femaleScores.push(round2(getTestAverageByGender(grades, students, t.id, "Female")));
+  props.tests.forEach(t => {
+    maleNormalizedScores.push(round2(getTestNormalizedAverageByGender(props.grades, props.students, t, "Male")));
+    femaleNormalizedScores.push(round2(getTestNormalizedAverageByGender(props.grades, props.students, t, "Female")));
+    maleScores.push(round2(getTestAverageByGender(props.grades, props.students, t.id, "Male")));
+    femaleScores.push(round2(getTestAverageByGender(props.grades, props.students, t.id, "Female")));
   });
 
-  chartData.value = {
-    labels: tests.map(t => t.name),
+  return {
+    labels: props.tests.map(t => t.name),
     datasets: [
       {
         label: 'Male',
@@ -49,43 +40,34 @@ const setChartData = () => {
       },
     ]
   };
-};
+});
 
-const setChartOptions = () => {
-  chartOptions.value = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      r: {
-        beginAtZero: true,
-        min: 0,
-        max: 100,
-        ticks: {
-          backdropColor: 'transparent'
-        }
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    r: {
+      beginAtZero: true,
+      min: 0,
+      max: 100,
+      ticks: {
+        backdropColor: 'transparent'
       }
-    },
-    plugins: {
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => {
-            const dataset = ctx.dataset;
-            const normalizedValue = ctx.formattedValue;
-            const value = dataset.rawData[ctx.dataIndex];
-            return `${dataset.label}: ${value} (${normalizedValue}%)`;
-          }
+    }
+  },
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: (ctx: any) => {
+          const dataset = ctx.dataset;
+          const normalizedValue = ctx.formattedValue;
+          const value = dataset.rawData[ctx.dataIndex];
+          return `${dataset.label}: ${value} (${normalizedValue}%)`;
         }
       }
     }
-  };
+  }
 };
-
-const updateChart = () => {
-  setChartData();
-  setChartOptions();
-};
-
-onMounted(updateChart);
 
 </script>
 

@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
-import { useGradesStore } from '@/stores/useGradesStore';
-import { useTestsStore } from '@/stores/useTestsStore';
 import type { DetailedPassRate } from '@/models/DetailedPassRate';
-
-const testsStore = useTestsStore();
-const gradesStore = useGradesStore();
 
 const props = defineProps<{ studentId: string, passRate: DetailedPassRate }>();
 const chartData = ref();

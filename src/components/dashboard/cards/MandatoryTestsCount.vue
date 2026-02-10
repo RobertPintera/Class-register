@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Card from '@/components/core/Card.vue';
-import { useTestsStore } from '@/stores/useTestsStore';
+import type { Test } from '@/models/Test';
 
-const testsStore = useTestsStore();
+const props = defineProps<{ tests: Test[] }>();
 
-const chartData = ref();
-const chartOptions = ref();
-
-const setChartData = () => {
+const chartData = computed(() => {
   let mandatory = 0;
   let optional = 0;
 
-  testsStore.tests.forEach(test => {
+  props.tests.forEach(test => {
     if (test.isMandatory) {
       mandatory++;
     } else {
@@ -20,7 +17,7 @@ const setChartData = () => {
     }
   });
 
-  chartData.value = {
+  return {
     labels: ['Mandatory', 'Optional'],
     datasets: [
       {
@@ -37,26 +34,17 @@ const setChartData = () => {
       },
     ],
   };
-};
+});
 
-const setChartOptions = () => {
-  chartOptions.value = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: false,
     },
-  };
+  },
 };
-
-const updateChart = () => {
-  setChartData();
-  setChartOptions();
-};
-
-onMounted(updateChart);
 
 </script>
 
