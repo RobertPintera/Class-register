@@ -4,7 +4,7 @@ import ClassPerformance from '@/components/dashboard/cards/ClassPerformance.vue'
 import FinalGradeStats from '@/components/dashboard/cards/FinalGradeStats.vue';
 import MandatoryTestsCount from '@/components/dashboard/cards/MandatoryTestsCount.vue';
 import TestGenderComparison from '@/components/dashboard/cards/TestGenderComparison.vue';
-import { DetailedPassRate } from '@/models/DetailedPassRate';
+import type { DetailedPassRate } from '@/models/DetailedPassRate';
 import type { GradeThreshold } from '@/models/GradeThreshold';
 import type { PerformanceStats } from '@/models/PerformanceStats';
 import { useGradesStore } from '@/stores/useGradesStore';
