@@ -10,7 +10,6 @@ const editGradesOption = ref([
   { name: 'With input', code: 'I' },
 ]);
 
-
 const selectedEditGrade = computed({
   get() {
     return settingsStore.settings?.editWithDialog

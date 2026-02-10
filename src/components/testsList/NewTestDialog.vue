@@ -44,7 +44,6 @@ watch(() => visible.value, (visible) => {
   updateDataForm(visible);
 });
 
-
 const base = {
   name: z.string().min(1, "Name is required"),
   maxPoints: z.number({ message: "Max points is required" }).min(1, "Max points must be at least 1"),

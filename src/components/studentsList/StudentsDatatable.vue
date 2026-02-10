@@ -8,7 +8,7 @@ import { ref } from 'vue';
 
 const studentsStore = useStudentsStore();
 
-const filters = ref<Record<string,AdvancedFilter | SimpleFilter>>({});
+const filters = ref<Record<string, AdvancedFilter | SimpleFilter>>({});
 
 const initFilters = () => {
   filters.value = {
