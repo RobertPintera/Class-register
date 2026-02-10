@@ -27,6 +27,10 @@
           <h3>Export and import</h3>
           <p class="text-highlight">Easily transfer data between devices by importing or exporting complete information in .json format.</p>
         </div>
+        <div class="w-full sm:w-1/2 lg:w-1/3 px-8 mb-8 text-center">
+          <h3>PDF Reports</h3>
+          <p class="text-highlight">Generate detailed PDF reports of students and tests, including tables of results.</p>
+        </div>
       </div>
     </div>
   </div>
