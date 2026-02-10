@@ -15,6 +15,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 - Load demo data from settings
 - Light and Dark Mode
 - Import and export data in `.json` format
+- Generate student and test reports in PDF format
 
 ## Tech stack
 
@@ -31,6 +32,8 @@ Class Register is a web application built with Vue.js that allows managing stude
 - **Zod** - Schema validation for forms
 - **Uuid** - Generating unique IDs for records
 - **Eslint** - Static analysis tool for keeping the codebase clean and reliable
+- **JsPDF** - Generating PDF documents in the browser
+- **Jspdf-AutoTable** - Plugin for JsPDF to create tables easily in PDF files
 
 ## Configuration
 
