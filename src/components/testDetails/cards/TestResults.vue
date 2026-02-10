@@ -1,27 +1,22 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import Card from '@/components/core/Card.vue';
 import type { StudentResult } from '@/models/StudentResult';
 import type { Test } from '@/models/Test';
 
 const props = defineProps<{ test: Test, results: StudentResult[] }>();
 
-const chartData = ref();
-const chartOptions = ref();
-
 const currentPage = ref(0);
 const rowsPerPage = 4;
-const totalRecords = ref(0);
 
+const totalRecords = computed(() => props.results.length);
 
-const setChartData = () => {
-  totalRecords.value = props.results.length;
-
+const chartData = computed(() => {
   const start = currentPage.value * rowsPerPage;
   const end = start + rowsPerPage;
   const pageScores = props.results.slice(start, end);
 
-  chartData.value = {
+  return {
     labels: pageScores.map(t => `${t.name} ${t.surname}`),
     datasets: [
       {
@@ -34,49 +29,31 @@ const setChartData = () => {
       },
     ],
   };
-};
+});
 
-const setChartOptions = () => {
-  chartOptions.value = {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => {
-            const dataset = ctx.dataset;
-            const index = ctx.dataIndex;
-            return `${dataset.scores[index]} / ${props.test.maxPoints} points (${ctx.formattedValue}%)`;
-          },
+const chartOptions = {
+  indexAxis: 'y',
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { position: 'top' },
+    tooltip: {
+      callbacks: {
+        label: (ctx: any) => {
+          const dataset = ctx.dataset;
+          const index = ctx.dataIndex;
+          return `${dataset.scores[index]} / ${props.test.maxPoints} points (${ctx.formattedValue}%)`;
         },
       },
     },
-    scales: {
-      x: { min: 0, max: 100 },
-    },
-  };
+  },
+  scales: {
+    x: { min: 0, max: 100 },
+  },
 };
-
-const updateChart = () => {
-  setChartData();
-  setChartOptions();
-};
-
-onMounted(() => {
-  updateChart();
-});
-
-watch(
-  () => [props.test, props.results], () => {
-    updateChart();
-  }, { deep: true }
-);
 
 const onPageChange = (event: { page: number }) => {
   currentPage.value = event.page;
-  setChartData();
 };
 
 </script>

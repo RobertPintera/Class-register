@@ -50,7 +50,7 @@ export const useGradesStore = defineStore('grades', () => {
     await Promise.all(
       newGrades
         .filter(g => g.testId === testId)
-        .map(g => gradeService.updateGrade(g.studentId, g.testId, { points: g.points }))
+        .map(g => gradeService.updateGrade(g.testId, g.studentId, { points: g.points }))
     );
   };
 
@@ -63,10 +63,10 @@ export const useGradesStore = defineStore('grades', () => {
       return g;
     });
 
+    const gradesToUpdate = newGrades.filter(g => g.testId === testId);
+
     await Promise.all(
-      newGrades
-        .filter(g => g.testId === testId)
-        .map(g => gradeService.updateGrade(g.studentId, g.testId, { points: g.points }))
+      gradesToUpdate.map(g => gradeService.updateGrade(g.testId, g.studentId, { points: g.points }))
     );
   };
 

@@ -38,7 +38,6 @@ const submit = async (event: FormSubmitEvent<Record<string, any>>) => {
   if (event.valid) {
     let isValid: boolean = false;
     const selectedOption = event.states.option.value;
-    console.log(selectedOption);
     console.log(props.editedTest);
     console.log(testsStore.getTest(props.testId));
 
