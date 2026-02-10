@@ -2,7 +2,6 @@
 import Footer from '@/components/core/Footer.vue';
 import TopBar from '@/components/core/TopBar.vue';
 
-
 </script>
 
 <template>

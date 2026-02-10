@@ -64,7 +64,7 @@ class PdfService {
     doc.addFont("Roboto-Bold.ttf", "roboto", "bold");
 
     // Logo
-    const canvas = await this.loadSvgToCanvas("/logo_class_register.svg");
+    const canvas = await this.loadSvgToCanvas("logo_class_register.svg");
     doc.addImage(canvas, "PNG", margin, margin, 10, 10);
     doc.setFont("roboto", "bold");
     doc.setFontSize(24);
@@ -246,7 +246,7 @@ class PdfService {
     doc.addFont("Roboto-Bold.ttf", "roboto", "bold");
 
     // Logo
-    const canvas = await this.loadSvgToCanvas("/logo_class_register.svg");
+    const canvas = await this.loadSvgToCanvas("logo_class_register.svg");
     doc.addImage(canvas, "PNG", margin, margin, 10, 10);
     doc.setFont("roboto", "bold");
     doc.setFontSize(24);
