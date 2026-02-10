@@ -21,6 +21,7 @@ import type { PerformanceStats } from '@/models/PerformanceStats';
 import type { TestResult } from '@/models/TestResult';
 import { useSettingsStore } from '@/stores/useSettingsStore';
 import type { DetailedPassRate } from '@/models/DetailedPassRate';
+import { defaultSettings } from '@/constants/constants';
 
 const studentsStore = useStudentsStore();
 const testsStore = useTestsStore();
@@ -29,17 +30,81 @@ const gradeThresholdsStore = useGradeThresholdsStore();
 const settingsStore = useSettingsStore();
 
 const props = defineProps<{ studentId: string }>();
-const student = ref<Student>();
-const finalGrade = ref<GradeThreshold>({ id: "", name: "", minPercentage: 0});
-const gradeStats = ref<GradeStats>({lowerValue: 0, higherValue: 100});
-const individualPerformace = ref<PerformanceStats>({
-  weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
+
+const student = computed(() => studentsStore.getStudent(props.studentId));
+
+const finalGrade = computed<GradeThreshold>(() => {
+  const settings = settingsStore.settings ?? defaultSettings;
+  return getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, props.studentId);
 });
-const classPerformace = ref<PerformanceStats>({
-  weightedAverage: 0, median: 0, standardDeviation: 0, min: 0, max: 0
+
+const gradeStats = computed(() => {
+  const studentGrade = finalGrade.value;
+  if (!studentGrade) return { lowerValue: 0, higherValue: 100 };
+
+  const students = studentsStore.students;
+  const settings = settingsStore.settings ?? defaultSettings;
+
+  const total = students.length || 1;
+
+  const higher = (students.filter(s => {
+    const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, s.id);
+    return grade.minPercentage > studentGrade.minPercentage; 
+  }).length / total) * 100;
+  const lower = 100 - higher;
+
+  const lowerRounded = Math.round(lower);
+  const higherRounded = 100 - lowerRounded;
+
+  return { lowerValue: lowerRounded, higherValue: higherRounded };
 });
-const passRate = ref<DetailedPassRate>({
-  passed: 0, failed: 0, notTakenOptional: 0, notTakenMandatory: 0
+
+const individualPerformace = computed<PerformanceStats>(() => {
+  const grades = gradesStore.grades;
+  const studentTests = testsStore.tests.filter(test =>
+    grades.some(g => g.studentId === props.studentId && g.testId === test.id)
+  );
+
+  return {
+    weightedAverage: round2(getStudentWeightedAverage(grades, studentTests, props.studentId)),
+    median: round2(getStudentMedian(grades, studentTests, props.studentId)),
+    standardDeviation: round2(getStudentStandardDeviation(grades, studentTests, props.studentId)),
+    min: round2(getStudentMin(grades, props.studentId, studentTests)),
+    max: round2(getStudentMax(grades, props.studentId, studentTests))
+  };
+});
+
+const classPerformace = computed<PerformanceStats>(() => {
+  const grades = gradesStore.grades;
+  const studentTests = testsStore.tests.filter(test =>
+    grades.some(g => g.studentId === props.studentId && g.testId === test.id)
+  );
+
+  return {
+    weightedAverage: round2(getClassWeightedAverage(grades, studentTests)),
+    median: round2(getClassMedian(grades, studentTests)),
+    standardDeviation: round2(getClassStandardDeviation(grades, studentTests)),
+    min: round2(getClassMin(grades, studentTests)),
+    max: round2(getClassMax(grades, studentTests))
+  };
+});
+
+const passRate = computed<DetailedPassRate>(() => {
+  const result: DetailedPassRate = { passed: 0, failed: 0, notTakenOptional: 0, notTakenMandatory: 0 };
+
+  testsStore.tests.forEach(test => {
+    const grade = gradesStore.getGrade(props.studentId, test.id);
+    if (!grade) {
+      if (test.isMandatory) result.notTakenMandatory++;
+      else result.notTakenOptional++;
+    } else if (!test.requiredPoints || grade.points >= test.requiredPoints) {
+      result.passed++;
+    } else {
+      result.failed++;
+    }
+  });
+
+  return result;
 });
 
 const results = computed<TestResult[]>(() => {
@@ -61,87 +126,6 @@ const results = computed<TestResult[]>(() => {
     });
 });
 
-const loadData = () => {
-  const s = studentsStore.getStudent(props.studentId);
-  if (!s) return;
-
-  // Set student
-  student.value = s;
-
-  const grades = gradesStore.grades;
-
-  const studentTests = testsStore.tests.filter(test =>
-    gradesStore.grades.some(g => g.studentId === props.studentId && g.testId === test.id)
-  );
-
-  // Set performance
-  individualPerformace.value = {
-    weightedAverage: round2(getStudentWeightedAverage(grades, studentTests, props.studentId)),
-    median: round2(getStudentMedian(grades, studentTests, props.studentId)),
-    standardDeviation: round2(getStudentStandardDeviation(grades, studentTests, props.studentId)),
-    min: round2(getStudentMin(grades, props.studentId, studentTests)),
-    max: round2(getStudentMax(grades, props.studentId, studentTests))
-  };
-
-  classPerformace.value = {
-    weightedAverage: round2(getClassWeightedAverage(grades, studentTests)),
-    median: round2(getClassMedian(grades, studentTests)),
-    standardDeviation: round2(getClassStandardDeviation(grades, studentTests)),
-    min: round2(getClassMin(grades, studentTests)),
-    max: round2(getClassMax(grades, studentTests))
-  };
-
-  // Set settings
-  const settings = settingsStore.settings ?? {id: 'global', editWithDialog: true, frozenStudentInGrades: true, lowestGradeForTestMandatory: false, lowestGradeForTestFailed: false};
-
-  // Set final grades
-  finalGrade.value = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, props.studentId);
-  const studentGrade = finalGrade.value;
-
-  if(studentGrade){
-    const students = studentsStore.students;
-    const total = students.length || 1;
-    
-    const higher = (students.filter(s => {
-      const grade = getStudentFinalGrade(gradesStore.grades, testsStore.tests, gradeThresholdsStore.gradeThresholds, settings, s.id);
-      return grade.minPercentage > studentGrade.minPercentage; 
-    }).length / total) * 100;
-    const lower = 100 - higher;
-
-    const lowerRounded = Math.round(lower);
-    const higherRounded = 100 - lowerRounded;
-
-    gradeStats.value = { 
-      lowerValue: lowerRounded, 
-      higherValue: higherRounded 
-    };
-  }
-
-  // Set pass rate
-  testsStore.tests.forEach(test => {
-    const grade = gradesStore.getGrade(props.studentId, test.id);
-
-    if (!grade) {
-      if (test.isMandatory) {
-        passRate.value.notTakenMandatory++;
-      } else {
-        passRate.value.notTakenOptional++;
-      }
-    } else if (!test.requiredPoints || grade.points >= test.requiredPoints) {
-      passRate.value.passed++;
-    } else {
-      passRate.value.failed++;
-    }
-  });
-};
-
-onMounted(() => {
-  loadData();
-});
-
-watch(() => studentsStore.students,() => {
-  loadData();
-}, { deep: true } );
 </script>
 
 <template>

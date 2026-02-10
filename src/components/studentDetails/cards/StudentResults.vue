@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import type { TooltipItem } from 'chart.js';
 import type { DatasetTestResults } from '@/models/DatasetTestResults';
 import Card from '@/components/core/Card.vue';
@@ -7,22 +7,17 @@ import type { TestResult } from '@/models/TestResult';
 
 const props = defineProps<{ studentId: string, results: TestResult[] }>();
 
-const chartData = ref<{ labels: string[]; datasets: DatasetTestResults[] }>();
-const chartOptions = ref();
-
 const currentPage = ref(0);
 const rowsPerPage = 4;
-const totalRecords = ref(0);
+const totalRecords = computed(() => props.results.length);
 
 
-const setChartData = () => {
-  totalRecords.value = props.results.length;
-
+const chartData = computed<{ labels: string[]; datasets: DatasetTestResults[] }>(() => {
   const start = currentPage.value * rowsPerPage;
   const end = start + rowsPerPage;
   const pageScores = props.results.slice(start, end);
 
-  chartData.value = {
+  return {
     labels: pageScores.map(t => t.testName),
     datasets: [
       {
@@ -36,44 +31,33 @@ const setChartData = () => {
       },
     ],
   };
-};
+});
 
-const setChartOptions = () => {
-  chartOptions.value = {
-    indexAxis: 'y',
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { position: 'top' },
-      tooltip: {
-        callbacks: {
-          label: (ctx: TooltipItem<'bar'>) => {
-            const dataset = ctx.dataset as DatasetTestResults;
-            const index = ctx.dataIndex;
-            return `${dataset.points[index]} / ${dataset.maxPoints[index]} points (${ctx.formattedValue}%)`;
-          },
+const chartOptions = {
+  indexAxis: 'y',
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { position: 'top' },
+    tooltip: {
+      callbacks: {
+        label: (ctx: TooltipItem<'bar'>) => {
+          const dataset = ctx.dataset as DatasetTestResults;
+          const index = ctx.dataIndex;
+          return `${dataset.points[index]} / ${dataset.maxPoints[index]} points (${ctx.formattedValue}%)`;
         },
       },
     },
-    scales: {
-      x: { min: 0, max: 100 },
-    },
-  };
+  },
+  scales: {
+    x: { min: 0, max: 100 },
+  },
 };
-
-const updateChart = () => {
-  setChartData();
-  setChartOptions();
-};
-
-onMounted(() => {
-  updateChart();
-});
 
 const onPageChange = (event: { page: number }) => {
   currentPage.value = event.page;
-  setChartData();
 };
+
 </script>
 
 <template>
