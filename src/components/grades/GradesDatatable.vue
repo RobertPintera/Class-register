@@ -31,6 +31,7 @@ const testColumns = computed(() =>
   testsStore.tests.map(test => ({
     field: test.id,
     header: test.name,
+    maxPoints: test.maxPoints
   }))
 );
 
@@ -174,7 +175,8 @@ const getTooltip = (testId: string) => {
         </div>
       </template>
       <template v-if="!editWithDialog" #editor="{ data, field }">
-        <InputNumber v-model="data[field]" :min="0" autofocus fluid :allowEmpty="true" 
+        <InputNumber v-model="data[field]" :min="0" :max="col.maxPoints" autofocus fluid :allowEmpty="true" 
+        :data-cy="`grade-input-cell`"
         :defaultValue="data[field] === -1 ? null : data[field]" v-tooltip.top="getTooltip(field)"/>
       </template>
       <template #filter="{ filterModel }">
