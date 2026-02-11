@@ -18,12 +18,14 @@ const settingsStore = useSettingsStore();
 const gradesStore = useGradesStore();
 const studentsStore = useStudentsStore();
 
-const editWithDialog = ref<boolean>();
-
 const dialogVisible = ref(false);
 const filters = ref<Record<string, AdvancedFilter>>({});
 
 const isFrozen = computed(() => settingsStore.settings?.frozenStudentInGrades && globalStore.isMediumScreen);
+
+const editWithDialog = computed<boolean>(() =>
+  settingsStore.settings?.editWithDialog ?? false
+);
 
 const testColumns = computed(() =>
   testsStore.tests.map(test => ({
@@ -61,10 +63,6 @@ const initFilters = () => {
 };
 
 initFilters();
-
-onMounted(() => {
-  editWithDialog.value = settingsStore.settings?.editWithDialog;
-});
 
 watch(() => testColumns.value, (columns) => {
   const columnFields = columns.map(c => c.field);
@@ -152,7 +150,7 @@ const getTooltip = (testId: string) => {
     </template>
     <Column sortable field="fullName" header="Student" filterField="fullName" :frozen="isFrozen">
       <template #body="{ data }">
-        <div class="w-full cursor-pointer px-3 py-4">
+        <div class="w-full cursor-pointer px-3 py-4" :data-cy="`${data.fullName}`">
           {{ data.fullName }}
         </div>
       </template>

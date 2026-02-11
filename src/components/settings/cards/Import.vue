@@ -55,7 +55,13 @@ const loadDataFromDeviceDialog = () => {
       severity: 'secondary',
       label: 'Cancel',
       icon: 'pi pi-times',
-      outlined: true
+      outlined: true,
+      pt: {
+        root: {
+          "data-cy": "yes",
+          class: "yes",
+        }
+      }
     },
     acceptProps: {
       label: 'Load',
@@ -97,11 +103,11 @@ const handleFileSelected = async (event: Event) => {
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-1">
           <h4>Load demo data</h4>
-          <Button label="Load" icon="pi pi-file-import" class="w-fit" @click="loadDemoDataDialog()"/>
+          <Button data-cy="load-demo-data-button" label="Load" icon="pi pi-file-import" class="w-fit" @click="loadDemoDataDialog()"/>
         </div>
         <div class="flex flex-col gap-1">
           <h4>Load data from device</h4>
-          <Button label="Load" icon="pi pi-file-import" class="w-fit" @click="loadDataFromDeviceDialog()"/>
+          <Button data-cy="load-data-button" label="Load" icon="pi pi-file-import" class="w-fit" @click="loadDataFromDeviceDialog()"/>
           <input type="file" ref="fileInput" accept="application/json" class="hidden" @change="handleFileSelected">
         </div>
       </div>

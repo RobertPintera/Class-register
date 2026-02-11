@@ -62,7 +62,12 @@ const toggleSidebar = () => {
       </div>
     </div>
   </div>
-  <ConfirmDialog :draggable="false"/>
+  <ConfirmDialog :draggable="false" appendTo="body"
+  :pt="{
+    pcAcceptButton: { root: { 'data-cy': 'confirm-accept-button' } },
+    pcRejectButton: { root: { 'data-cy': 'confirm-reject-button' } }
+  }"
+/>
   <Toast />
 </template>
 

@@ -49,8 +49,12 @@ const isLowestGradeForTestFailed = computed({
       <div class="flex flex-col gap-4 mt-2">
         <div class="flex items-center gap-4">
           <p>Editing grade:</p>
-          <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select"
-            class="w-full md:w-56" />
+          <Select v-model="selectedEditGrade" :options="editGradesOption" optionLabel="name" placeholder="Select" data-cy="editing-grade-select"
+            class="w-full md:w-56">
+          <template #option="{ option }">
+            <span class="p-select-option-label" data-pc-section="optionlabel" :data-cy="`editing-grade-option-${option.code}`">{{ option.name }}</span>
+          </template>
+          </Select>
         </div>
         <div class="flex items-center gap-4">
           <p>Frozen student in grades:</p>
