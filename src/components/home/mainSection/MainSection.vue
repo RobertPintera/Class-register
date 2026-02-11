@@ -13,7 +13,7 @@ const goToDashboard = () => {
     <div class="mx-auto max-w-7xl flex flex-col items-center justify-center gap-4">
       <h1 class="text-6xl">Class register</h1>
       <p class="text-3xl">The offline tool to manage student grades and track their progress.</p>
-      <Button label="Start to use" size="large" @click="goToDashboard"/>
+      <Button data-cy="start-button" label="Start to use" size="large" @click="goToDashboard"/>
     </div>
   </div>
 </template>

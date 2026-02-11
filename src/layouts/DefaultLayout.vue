@@ -40,7 +40,7 @@ const toggleSidebar = () => {
       />
     </Transition>
     
-    <TopBar :is-toggle-sidebar="true" @toggle-sidebar="toggleSidebar"/>
+    <TopBar :is-toggle-sidebar="true" :visible="sidebarVisible" @toggle-sidebar="toggleSidebar"/>
     <SideBar :visible="sidebarVisible" :isLargeScreen="globalStore.isLargeScreen" @select="globalStore.isLargeScreen ? null : toggleSidebar()"/>
     <div
       v-if="registerStore.isLoading"

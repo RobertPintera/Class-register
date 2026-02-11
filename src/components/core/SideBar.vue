@@ -61,7 +61,7 @@ const items = computed<{ label: string; items: SideBarItemData[] }[]>(() => {
 </script>
 
 <template>
-  <nav class="fixed w-64 flex flex-col z-30
+  <nav data-cy="sidebar" class="fixed w-64 flex flex-col z-30
     transition-[left,top] duration-500 ease-in-out"
       :class="{
         'top-16': isLargeScreen,
