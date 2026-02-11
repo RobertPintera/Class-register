@@ -166,6 +166,9 @@ const getTooltip = (testId: string) => {
       <template #body="{ data }">
          <div
           class="w-full min-h-1 cursor-pointer px-3 py-4"
+          :data-cy="`grade-cell`"
+          :data-student-id="data.studentId"
+          :data-test-id="col.field"
           @click="onCellClick(data.studentId, col.field)">
           {{ gradesStore.getGrade(data.studentId, col.field)?.points ?? '-' }}
         </div>
