@@ -33,7 +33,7 @@ const onRowSelect = (event: any) => {
   <DataTable :value="studentsStore.students" class="custom-table"
     scrollable removableSort paginator paginatorPosition="bottom" :rows=10
     v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','surname']"
-    @rowSelect="onRowSelect" selectionMode="single">
+    @rowSelect="onRowSelect" selectionMode="single"  :pt="{ headerRow: { 'data-cy': 'students-table-header-row' } }">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
@@ -57,7 +57,7 @@ const onRowSelect = (event: any) => {
         </div>
       </template>
       <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" placeholder="Search by Name" />
+        <InputText v-model="filterModel.value" type="text" placeholder="Search by Name" data-cy="name-input"/>
       </template>
     </Column>
     <Column sortable field="surname" header="Surname" filterField="surname">
@@ -67,7 +67,7 @@ const onRowSelect = (event: any) => {
         </div>
       </template>
       <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" placeholder="Search by Surname" />
+        <InputText v-model="filterModel.value" type="text" placeholder="Search by Surname" data-cy="surname-input"/>
       </template>
     </Column>
   </DataTable>

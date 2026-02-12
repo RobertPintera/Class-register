@@ -17,7 +17,7 @@ const showNewStudentDialog = ref<boolean>(false);
       </template>
       <template #body>
         <div class="mt-2 mb-4">
-          <Button label="New" icon="pi pi-plus" @click="showNewStudentDialog = true"/>
+          <Button label="New" icon="pi pi-plus" data-cy="new-student-button" @click="showNewStudentDialog = true"/>
         </div>
         <StudentsDatatable/>
       </template>
