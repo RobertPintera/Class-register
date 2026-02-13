@@ -56,12 +56,6 @@ const loadDataFromDeviceDialog = () => {
       label: 'Cancel',
       icon: 'pi pi-times',
       outlined: true,
-      pt: {
-        root: {
-          "data-cy": "yes",
-          class: "yes",
-        }
-      }
     },
     acceptProps: {
       label: 'Load',

@@ -74,25 +74,25 @@ watch(visible, (newValue) => {
     <Form v-slot="$form" :resolver @submit="submit" :initial-values="initialValues" :validateOnBlur="true" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputText id="name" name="name" variant="filled" class="w-60" />
+          <InputText id="name" name="name" variant="filled" class="w-60" data-cy="name-input"/>
           <label for="name">Name</label>
         </FloatLabel>
         <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{ $form.name.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputText id="surname" name="surname" variant="filled" class="w-60" />
+          <InputText id="surname" name="surname" variant="filled" class="w-60" data-cy="surname-input"/>
           <label for="surname">Surname</label>
         </FloatLabel>
         <Message v-if="$form.surname?.invalid" severity="error" size="small" variant="simple">{{ $form.surname.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
-        <SelectButton name="gender" :options="genderOptions" :allowEmpty="false"/>
-         <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
+        <SelectButton name="gender" :options="genderOptions" :allowEmpty="false" data-cy="gender-select"/>
+        <Message v-if="$form.gender?.invalid" severity="error" size="small" variant="simple">{{ $form.gender.error?.message }}</Message>
       </div>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
-        <Button label="Save" icon="pi pi-check" type="submit" autofocus />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" data-cy="cancel-button" @click="cancel" />
+        <Button label="Save" icon="pi pi-check" type="submit" data-cy="save-button" autofocus />
       </div>
     </Form>
   </Dialog>

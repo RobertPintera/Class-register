@@ -88,15 +88,15 @@ const generateReport = async () => {
       <div class="flex flex-wrap justify-evenly pb-6 gap-4">
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Edit student data</h4>
-          <Button label="Edit" icon="pi pi-file-edit" class="w-28" @click="showEditPersonalDataDialog = true"/>
+          <Button label="Edit" icon="pi pi-file-edit" class="w-28" data-cy="edit-button" @click="showEditPersonalDataDialog = true"/>
         </div>
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Delete student</h4>
-          <Button label="Delete" icon="pi pi pi-times-circle" severity="danger" class="w-28" @click="loadDeleteStudentDialog()"/>
+          <Button label="Delete" icon="pi pi pi-times-circle" severity="danger" data-cy="delete-button" class="w-28" @click="loadDeleteStudentDialog()"/>
         </div>
         <div class="flex flex-col justify-center items-center gap-1">
           <h4>Generate report PDF</h4>
-          <Button label="Report PDF" icon="pi pi pi-file-pdf" severity="info" @click="generateReport()"/>
+          <Button label="Report PDF" icon="pi pi pi-file-pdf" severity="info" data-cy="report-button" @click="generateReport()"/>
         </div>
       </div>
       <EditPersonalDataDialog :studentId="student.id" v-model:visible="showEditPersonalDataDialog" />
