@@ -16,11 +16,11 @@ const getSeverity = (isMandatory: boolean): string => {
       <h3>Info data</h3>
     </template>
     <template #body>
-      <p>Name: {{ props.name }}</p>
-      <p>Weight: {{ props.weight }}</p>
-      <p>Required points: {{ props.requiredPoints ?? '-' }}</p>
-      <p>Max points: {{ props.maxPoints }}</p>
-      <p>Mandatory: <Tag :value="isMandatory ? 'Yes' : 'No'" :severity="getSeverity(isMandatory)" /></p>
+      <p data-cy="name">Name: {{ props.name }}</p>
+      <p data-cy="weight">Weight: {{ props.weight }}</p>
+      <p data-cy="required-points">Required points: {{ props.requiredPoints ?? '-' }}</p>
+      <p data-cy="max-points">Max points: {{ props.maxPoints }}</p>
+      <p data-cy="mandatory">Mandatory: <Tag :value="isMandatory ? 'Yes' : 'No'" :severity="getSeverity(isMandatory)" /></p>
     </template>
   </Card>
 </template>

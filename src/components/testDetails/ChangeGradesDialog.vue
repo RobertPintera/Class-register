@@ -78,22 +78,22 @@ const submit = async (event: FormSubmitEvent<Record<string, any>>) => {
     <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-2 w-full">
       <RadioButtonGroup name="option" class="flex flex-col gap-3 w-full">
         <div class="flex gap-1">
-          <RadioButton inputId="reduce" value="Reduce" />
+          <RadioButton inputId="reduce" value="Reduce" data-cy="reduce-radio-button"/>
           <label for="reduce">Reduce grades to new maximum points</label>
         </div>
         <div class="flex gap-1">
-          <RadioButton inputId="normalize" value="Normalize" />
+          <RadioButton inputId="normalize" value="Normalize" data-cy="normalize-radio-button"/>
           <label for="normalize">Normalize grades to new maximum points</label>
         </div>
         <div class="flex gap-1">
-          <RadioButton inputId="delete" value="Delete" />
+          <RadioButton inputId="delete" value="Delete" data-cy="delete-radio-button"/>
           <label for="delete">Delete all grades</label>
         </div>
       </RadioButtonGroup>
       <Message v-if="$form.option?.invalid" severity="error" size="small" variant="simple">{{ $form.option.error?.message }}</Message>
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" @click="cancel" />
-        <Button label="Edit" icon="pi pi-check" type="submit" autofocus />
+        <Button label="Cancel" severity="secondary" variant="outlined" icon="pi pi-times" data-cy="cancel-button" @click="cancel" />
+        <Button label="Edit" icon="pi pi-check" type="submit" data-cy="save-button" autofocus />
       </div>
     </Form>
   </Dialog>
