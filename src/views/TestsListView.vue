@@ -18,7 +18,7 @@ const showNewTestDialog = ref<boolean>(false);
       </template>
       <template #body>
         <div class="mb-4">
-          <Button label="New" icon="pi pi-plus"  @click="showNewTestDialog = true"/>
+          <Button label="New" icon="pi pi-plus" data-cy="new-test-button" @click="showNewTestDialog=true"/>
         </div>
         <TestsDatatable/>
       </template>

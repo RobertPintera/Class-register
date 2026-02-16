@@ -2,7 +2,6 @@
 import type { AdvancedFilter } from '@/models/AdvancedFilter';
 import type { SimpleFilter } from '@/models/SimpleFilter';
 import router from '@/router';
-import { useRegisterStore } from '@/stores/useRegisterStore';
 import { useTestsStore } from '@/stores/useTestsStore';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { ref } from 'vue';
@@ -41,7 +40,7 @@ const getSeverity = (isMandatory: boolean): string => {
   <DataTable :value="testsStore.tests" class="custom-table"
   scrollable removableSort paginator paginatorPosition="bottom" :rows=10
   v-model:filters="filters" filterDisplay="menu" :globalFilterFields="['name','weight','isMandatory']"
-  @rowSelect="onRowSelect" selectionMode="single">
+  @rowSelect="onRowSelect" selectionMode="single" :pt="{ headerRow: { 'data-cy': 'tests-table-header-row' } }">
     <template #header>
       <div class="flex flex-wrap gap-2 items-center justify-between">
         <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
@@ -65,7 +64,7 @@ const getSeverity = (isMandatory: boolean): string => {
         </div>
       </template>
       <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" placeholder="Search by Name" />
+        <InputText v-model="filterModel.value" type="text" placeholder="Search by Name" data-cy="name-input"/>
       </template>
     </Column>
     <Column field="weight" header="Weight" filterField="weight">
@@ -75,7 +74,7 @@ const getSeverity = (isMandatory: boolean): string => {
         </div>
       </template>
       <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" placeholder="Search by Weight" />
+        <InputText v-model="filterModel.value" type="text" placeholder="Search by Weight" data-cy="weight-input"/>
       </template>
     </Column>
     <Column field="isMandatory" header="Mandatory" dataType="boolean">
@@ -86,7 +85,7 @@ const getSeverity = (isMandatory: boolean): string => {
       </template>
       <template #filter="{ filterModel }">
         <label for="mandatory-filter" class="font-bold"> Mandatory </label>
-        <Checkbox v-model="filterModel.value" :indeterminate="filterModel.value === null" binary inputId="mandatory-filter" />
+        <Checkbox v-model="filterModel.value" :indeterminate="filterModel.value === null" binary inputId="mandatory-filter" data-cy="mandatory-checkbox"/>
       </template>
     </Column>
   </DataTable>

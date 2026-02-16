@@ -103,44 +103,44 @@ const submit = (event: FormSubmitEvent<Record<string, any>>) => {
     <Form v-slot="$form" :initialValues :resolver @submit="submit" class="flex flex-col gap-3 mt-2 w-full">
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputText id="name" name="name" variant="filled" class="w-full" />
+          <InputText id="name" name="name" variant="filled" class="w-full" data-cy="name-input"/>
           <label for="name">Name</label>
         </FloatLabel>
         <Message v-if="$form.name?.invalid" severity="error" size="small" variant="simple">{{ $form.name.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="maxPoints" name="maxPoints" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1"/>
+          <InputNumber id="maxPoints" name="maxPoints" class="w-full" variant="filled" data-cy="points-input" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1"/>
           <label for="maxPoints">Max points</label>
         </FloatLabel>
         <Message v-if="$form.maxPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.maxPoints.error?.message }}</Message>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="weight" name="weight" class="w-full" variant="filled" :min="0" :max="100" :maxFractionDigits="1" :step="0.1"/>
+          <InputNumber id="weight" name="weight" class="w-full" variant="filled" data-cy="weight-input" :min="0" :max="100" :maxFractionDigits="1" :step="0.1"/>
           <label for="weight">Weight</label>
         </FloatLabel>
         <Message v-if="$form.weight?.invalid" severity="error" size="small" variant="simple">{{ $form.weight.error?.message }}</Message>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox id="isRequired" name="isRequired" binary />
+        <Checkbox id="isRequired" name="isRequired" data-cy="required-checkbox" binary />
         <label for="isRequired">Required</label>
       </div>
       <div class="flex flex-col gap-1">
         <FloatLabel variant="on">
-          <InputNumber id="requiredPoints" name="requiredPoints" class="w-full" variant="filled" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
+          <InputNumber id="requiredPoints" name="requiredPoints" class="w-full" variant="filled" data-cy="required-points-input" :min="0" :max="10000" :maxFractionDigits="1" :step="0.1" :disabled="!$form.isRequired?.value"/>
           <label for="requiredPoints">Min points</label>
         </FloatLabel>
         <Message v-if="$form.requiredPoints?.invalid" severity="error" size="small" variant="simple">{{ $form.requiredPoints.error?.message }}</Message>
       </div>
       <div class="flex items-center gap-2">
-        <Checkbox id="isMandatory" name="isMandatory" binary/>
+        <Checkbox id="isMandatory" name="isMandatory" data-cy="mandatory-checkbox" binary/>
         <label for="isMandatory">Mandatory</label>
       </div>
 
       <div class="flex justify-end gap-2 mt-4">
-        <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" @click="cancel" />
-        <Button label="Add" icon="pi pi-check" type="submit" autofocus />
+        <Button label="Cancel" variant="outlined" severity="secondary" icon="pi pi-times" data-cy="cancel-button" @click="cancel" />
+        <Button label="Add" icon="pi pi-check" type="submit" data-cy="add-button" autofocus />
       </div>
     </Form>
   </Dialog>
