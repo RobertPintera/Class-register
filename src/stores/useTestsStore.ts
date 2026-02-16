@@ -20,8 +20,7 @@ export const useTestsStore = defineStore('tests', () => {
 
 
   const addTest = async (test: Omit<Test, 'id'>) => {
-    const newTest = await testService.addTest(test);
-    _tests.value.push(newTest);
+    await testService.addTest(test);
   };
 
   const updateTest = async (id: string, updated: Partial<Omit<Test, 'id'>>) => {
