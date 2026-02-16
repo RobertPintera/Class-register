@@ -34,6 +34,7 @@ Class Register is a web application built with Vue.js that allows managing stude
 - **Eslint** - Static analysis tool for keeping the codebase clean and reliable
 - **JsPDF** - Generating PDF documents in the browser
 - **Jspdf-AutoTable** - Plugin for JsPDF to create tables easily in PDF files
+- **Cypress** - End-to-end testing framework for browser-based applications and components
 
 ## Configuration
 
