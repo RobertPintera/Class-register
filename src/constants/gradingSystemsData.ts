@@ -27,19 +27,19 @@ export function useGradingSystems(): GradingSystem[] {
       { name: '1', minPercentage: 0 },
     ] },
     { name: 'Japanese University', gradethresholds: [
-      { name: '優', minPercentage: 80 },
-      { name: '良', minPercentage: 70 },
-      { name: '可', minPercentage: 60 },
-      { name: '認', minPercentage: 50 },
-      { name: '不可', minPercentage: 0 }
+      { name: 'yū', minPercentage: 80 },
+      { name: 'ryō', minPercentage: 70 },
+      { name: 'ka', minPercentage: 60 },
+      { name: 'nin', minPercentage: 50 },
+      { name: 'fuka', minPercentage: 0 }
     ] },
     { name: 'Japanese', gradethresholds: [
-      { name: '秀', minPercentage: 90 },
-      { name: '優', minPercentage: 80 },
-      { name: '良', minPercentage: 70 },
-      { name: '可', minPercentage: 60 },
-      { name: '認', minPercentage: 50 },
-      { name: '不可', minPercentage: 0 }
+      { name: 'shū', minPercentage: 90 },
+      { name: 'yū', minPercentage: 80 },
+      { name: 'ryō', minPercentage: 70 },
+      { name: 'ka', minPercentage: 60 },
+      { name: 'nin', minPercentage: 50 },
+      { name: 'fuka', minPercentage: 0 }
     ] },
     { name: 'UK GCSE/A-Level', gradethresholds: [
       { name: 'A*', minPercentage: 90 },

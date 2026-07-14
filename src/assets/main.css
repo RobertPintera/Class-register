@@ -26,12 +26,12 @@
   --color-topbar-background: #ffffff;
   --color-sidebar-background: #ffffff;
   --color-sidebaritem-hover-background: #e8f1ff;
-  --color-sidebaritem-active-background: #d2e3ff;
+  --color-sidebaritem-active-background: #d6e6ff;
   --color-primary-border: #c7cfd9;
   --color-primary-text: #213547;
   --color-cell-datatable: #f1f5f9;
   --color-card: #ffffff;
-  --color-footer-background: #c0d6ff;
+    --color-footer-background: #afc6f0;
   /* <----- PrimeVue -----> */
   --color-second-border: #e2e8f0;
 }
@@ -48,7 +48,7 @@
     --color-primary-text: #ffffff;
     --color-cell-datatable: #505669;
     --color-card: #232329;
-    --color-footer-background: #24272e;
+    --color-footer-background: #1f2229;
     /* <----- PrimeVue -----> */
     --color-second-border: #505669;
   }
