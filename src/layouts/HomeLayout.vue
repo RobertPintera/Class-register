@@ -5,9 +5,11 @@ import TopBar from '@/components/core/TopBar.vue';
 </script>
 
 <template>
-  <TopBar :is-toggle-sidebar="false"/>
-  <div class="pt-16">
-    <router-view />
+  <div class="flex flex-col min-h-screen">
+    <TopBar :is-toggle-sidebar="false"/>
+    <main class="pt-16 grow">
+        <router-view />
+    </main>
+    <Footer/>
   </div>
-  <Footer/>
 </template>

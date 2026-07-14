@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tailwindcss-primeui";
-@custom-variant dark (&:where(.dark, .dark *)); 
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root{
   /* <----- PrimeVue -----> */
@@ -23,7 +23,7 @@
 @theme{
   --color-primary-background: #fafcff;
   --color-secondary-background: #e0eeff;
-  --color-topbar-background: #ffffff; 
+  --color-topbar-background: #ffffff;
   --color-sidebar-background: #ffffff;
   --color-sidebaritem-hover-background: #e8f1ff;
   --color-sidebaritem-active-background: #d2e3ff;
@@ -56,31 +56,31 @@
 
 @layer base {
   h1:not(.sr-only) {
-    @apply text-4xl font-bold leading-tight;
+    @apply text-3xl sm:text-4xl font-bold leading-tight;
   }
   h2 {
-    @apply text-3xl font-semibold leading-snug;
+    @apply text-2xl sm:text-3xl font-semibold leading-snug;
   }
   h3 {
-    @apply text-2xl font-semibold leading-snug;
+    @apply text-xl sm:text-2xl font-semibold leading-snug;
   }
   h4 {
-    @apply text-xl font-medium leading-snug;
+    @apply text-lg sm:text-xl font-medium leading-snug;
   }
   h5 {
-    @apply text-lg font-medium leading-snug;
+    @apply text-base sm:text-lg font-medium leading-snug;
   }
   h6 {
-    @apply text-base font-medium leading-snug;
+    @apply text-sm sm:text-base font-medium leading-snug;
   }
   p {
-    @apply text-base leading-relaxed;
+    @apply text-sm sm:text-base leading-relaxed;
   }
 }
 
 @layer utilities{
   .text-highlight{
-    @apply text-lg;
+    @apply text-base sm:text-lg;
   }
 }
 
@@ -100,7 +100,7 @@
   .cards-section{
     @apply flex flex-col mx-2;
   }
-  
+
   /* <----- PrimeVue -----> */
   /* ----- Datatable ----- */
   .custom-table{
